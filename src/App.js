@@ -1,7 +1,6 @@
 import { AnimatePresence } from 'framer-motion';
 import React, { Fragment } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { getLayout } from 'utils';
 import { ROUTES } from '~/app/routes';
 import { PrivateRoute } from '~/components';
 import { getLayout } from '~/utils';

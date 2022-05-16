@@ -12,12 +12,12 @@ export const ROUTES = [
   {
     path: PATH.home,
     component: HomePage,
-    isPublic: true,
+    isPublic: true
   },
   {
     path: PATH.counter,
     component: Counter,
-    layout: null,
-  },
+    layout: null
+  }
 ];
 //#endregion
