@@ -6,10 +6,10 @@ export const getLayout = (layout) => {
   let Layout = DefaultLayout;
 
   if (layout) {
-    Layout = layout
+    Layout = layout;
   } else if (layout === null) {
-    Layout = Fragment
+    Layout = Fragment;
   }
-  return Layout
-}
-//#endregion 
+  return Layout;
+};
+//#endregion

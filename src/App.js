@@ -1,8 +1,10 @@
-import { PrivateRoute } from 'components';
+import { AnimatePresence } from 'framer-motion';
 import React, { Fragment } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { getLayout } from 'utils';
 import { ROUTES } from '~/app/routes';
+import { PrivateRoute } from '~/components';
+import { getLayout } from '~/utils';
 
 function App() {
   const location = useLocation();
@@ -30,9 +32,11 @@ function App() {
   };
 
   return (
-    <Routes key="location" location={location}>
-      {renderRoutes(ROUTES)}
-    </Routes>
+    <AnimatePresence exitBeforeEnter>
+      <Routes location={location} key={location.pathname}>
+        {renderRoutes(ROUTES)}
+      </Routes>
+    </AnimatePresence>
   );
 }
 

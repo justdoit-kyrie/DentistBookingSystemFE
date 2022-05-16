@@ -1,9 +1,9 @@
-const { extendTheme } = require("@chakra-ui/react");
+const { extendTheme } = require('@chakra-ui/react');
 
 export const theme = extendTheme({
   styles: {
     global: {
-      "*,*:before,*:after": {
+      '*,*:before,*:after': {
         m: 0,
         p: 0,
         boxSizing: 'border-box'
@@ -16,7 +16,7 @@ export const theme = extendTheme({
       body: {
         bg: 'white',
         color: 'black',
-        overFlow: 'hidden'
+        overflow: 'hidden'
       },
 
       a: {
@@ -26,8 +26,8 @@ export const theme = extendTheme({
 
       img: {
         maxWidth: '100%',
-        display: 'block',
-      },
-    },
-  },
-})
+        display: 'block'
+      }
+    }
+  }
+});
