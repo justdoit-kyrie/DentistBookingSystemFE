@@ -1,2 +1,3 @@
-export { default as Counter } from './Counter';
+export * from './Auth';
+
 export { default as HomePage } from './Home';

@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  value: 0,
+  value: 0
 };
 
-export const counterSlice = createSlice({
+export const authSlice = createSlice({
   name: 'counter',
   initialState,
   reducers: {
@@ -13,14 +13,14 @@ export const counterSlice = createSlice({
     },
     decrement: (state) => {
       state.value -= 1;
-    },
-  },
+    }
+  }
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export const { increment, decrement, incrementByAmount } = authSlice.actions;
 
 //#region selectors
 export const selectCount = (state) => state.counter.value;
 //#endregion
 
-export default counterSlice.reducer;
+export default authSlice.reducer;

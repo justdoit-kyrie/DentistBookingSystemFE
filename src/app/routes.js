@@ -1,4 +1,5 @@
-import { Counter, HomePage } from 'features';
+import { AuthLayout } from '~/components';
+import { HomePage, LoginPage, RegisterPage } from '~/features';
 import { PATH } from './constants';
 
 //#region routes
@@ -15,9 +16,16 @@ export const ROUTES = [
     isPublic: true
   },
   {
-    path: PATH.counter,
-    component: Counter,
-    layout: null
+    path: PATH.login,
+    component: LoginPage,
+    layout: AuthLayout
+  },
+  {
+    path: PATH.register,
+    component: RegisterPage,
+    layout: AuthLayout
   }
 ];
 //#endregion
+
+export const LANGUAGE_KEY = 'i18nextLng';
