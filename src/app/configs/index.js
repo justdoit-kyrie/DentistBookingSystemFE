@@ -1,1 +1,1 @@
-export * from './persist-config'
+export * from './persist-config';

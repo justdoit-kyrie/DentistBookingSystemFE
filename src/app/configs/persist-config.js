@@ -3,10 +3,10 @@ import storage from 'redux-persist/lib/storage';
 
 const basePersistConfig = {
   storage,
-  stateReconciler: autoMergeLevel2,
-}
+  stateReconciler: autoMergeLevel2
+};
 
 export const counterPersistConfig = {
   ...basePersistConfig,
-  key: 'counter',
-}
+  key: 'counter'
+};
