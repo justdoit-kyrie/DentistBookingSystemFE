@@ -8,7 +8,6 @@ const Wrapper = ({ children, ...passProps }, ref) => {
       minW="15rem"
       maxH="20rem"
       boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
-      bg="white"
       direction="column"
       gap="0.5rem"
       overflow="auto"

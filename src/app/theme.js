@@ -1,10 +1,22 @@
 const { extendTheme } = require('@chakra-ui/react');
 
+// mode
+const config = {
+  initialColorMode: 'light',
+  useSystemColorMode: false
+};
+
 export const theme = extendTheme({
+  config,
   colors: {
+    white: {
+      200: 'rgba(255,255,255, 0.5)'
+    },
     grey: {
       100: '#efefef',
+      200: '#bababa',
       300: '#5F5D5B',
+      400: '#6e6868',
       500: '#3C3C3C'
     },
     primary: {
@@ -25,11 +37,15 @@ export const theme = extendTheme({
       },
 
       body: {
-        bg: 'white',
-        color: 'black',
+        letterSpacing: '0.1rem',
         overflow: 'hidden',
         // eslint-disable-next-line quotes
-        fontFamily: `'JetBrains Mono', monospace`
+        fontFamily: `'IBM Plex Sans',ProximaNova,Arial,Tahoma,PingFangSC,sans-serif`
+      },
+
+      'button, textarea, input, select, a': {
+        // eslint-disable-next-line quotes
+        fontFamily: `'IBM Plex Sans',ProximaNova,Arial,Tahoma,PingFangSC,sans-serif`
       },
 
       a: {
@@ -77,19 +93,14 @@ export const theme = extendTheme({
     Button: {
       // 1. We can update the base styles
       baseStyle: {
-        fontWeight: '900',
+        fontWeight: '700',
         textTransform: 'capitalize',
-        color: 'grey.300',
 
         p: '1rem 2rem',
         border: 'none',
         outline: 'none',
 
-        cursor: 'pointer',
-
-        '&:focus': {
-          'box-shadow': 'none'
-        }
+        cursor: 'pointer'
       },
       // 2. We can add a new button size or extend existing
       sizes: {
@@ -116,12 +127,15 @@ export const theme = extendTheme({
         },
         default: {
           bg: 'transparent',
-          fontWeight: '800'
+          fontWeight: '800',
+          color: ({ colorMode }) => (colorMode === 'light' ? 'grey.300' : 'grey.200')
         },
         outline: {
           bg: 'transparent',
           fontWeight: '700',
-          border: '1px solid #ddd',
+          border: '1px solid',
+          borderColor: ({ colorMode }) => (colorMode === 'light' ? 'grey.300' : 'white.200'),
+          transition: 'all 0.25s linear',
 
           _hover: {
             bg: 'primary.400',
@@ -129,18 +143,6 @@ export const theme = extendTheme({
           }
         }
       }
-    },
-    InputGroup: {
-      // 1. We can update the base styles
-      baseStyle: {},
-      // 2. We can add a new button size or extend existing
-      sizes: {
-        lg: {
-          bg: 'red'
-        }
-      },
-      // 3. We can add a new visual variant
-      variants: {}
     }
   }
 });

@@ -3,8 +3,7 @@
   margin: 0 auto;
   position: relative;
 
-  color: black;
-  font-weight: 800;
+  font-weight: 900;
 
   &::after,
   &::before {
@@ -15,7 +14,7 @@
 
     width: 1rem;
     height: 0.75px;
-    background: black;
+    background: currentColor;
   }
   &::after {
     right: calc(100% + 0.5rem);

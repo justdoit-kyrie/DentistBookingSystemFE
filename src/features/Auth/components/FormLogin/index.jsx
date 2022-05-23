@@ -1,18 +1,18 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import classnames from 'classnames/bind';
+import { motion } from 'framer-motion';
 import React from 'react';
 import GoogleLogin from 'react-google-login';
 import { useForm } from 'react-hook-form';
+import { withTranslation } from 'react-i18next';
 import { BsCircle, BsCircleFill } from 'react-icons/bs';
+import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import { PWD_REGEX } from '~/app/constants';
 import { InputField } from '~/components';
 import styles from './FormLogin.module.scss';
-import { AiOutlineGoogle } from 'react-icons/ai';
-import { withTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
 
 const cx = classnames.bind(styles);
 // initial validation rules
@@ -71,7 +71,7 @@ const FormLogin = ({ t }) => {
         />
 
         <Link to="/trouble" style={{ width: 'fit-content' }}>
-          <Text color="black" fontWeight="700" mt="-0.5rem" w="fit-content">
+          <Text fontWeight="700" mt="-0.5rem" w="fit-content" _hover={{ textDecor: 'underline' }}>
             {t('auth.login.subTitle.1')}
           </Text>
         </Link>
@@ -84,7 +84,6 @@ const FormLogin = ({ t }) => {
           size="full"
           variant="primary"
           textTransform="capitalize"
-          color="black"
           borderRadius="1rem"
         >
           {t('auth.login.submit')}
@@ -95,8 +94,7 @@ const FormLogin = ({ t }) => {
         <GoogleLogin
           clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
           render={(renderProps) => (
-            // disabled={renderProps.disabled}
-            <Button size="lg" h="auto" variant="outline" onClick={renderProps.onClick} leftIcon={<AiOutlineGoogle />}>
+            <Button size="lg" h="auto" variant="outline" onClick={renderProps.onClick} leftIcon={<FcGoogle />}>
               Google
             </Button>
           )}

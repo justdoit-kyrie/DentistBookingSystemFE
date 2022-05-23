@@ -5,7 +5,7 @@ import Wrapper from './components/Wrapper';
 const DropDown = ({ children, dropdown }) => {
   return (
     <Tippy
-      delay={[100, 200]}
+      delay={[100, 100]}
       interactive
       placement="bottom"
       render={(attrs) => (

@@ -1,10 +1,11 @@
-import { FormControl, FormErrorMessage, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
+import { FormControl, FormErrorMessage, Input, InputGroup, InputRightElement, useColorMode } from '@chakra-ui/react';
 import React, { useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 
 const InputField = (props) => {
   const { name, errors, control, type = 'text', placeholder, rightIcon, rightIconActive } = props;
   const [isFocus, setIsFocus] = useState(false);
+  const { colorMode } = useColorMode();
 
   const IconComponent = isFocus ? rightIconActive : rightIcon;
 
@@ -29,10 +30,13 @@ const InputField = (props) => {
             <InputGroup>
               <Input
                 {...field}
+                borderColor={colorMode === 'light' ? 'grey.300' : 'white'}
+                _hover={colorMode === 'light' ? 'grey.300' : 'white'}
                 onFocus={() => setIsFocus(!isFocus)}
                 onBlur={() => setIsFocus(false)}
                 type={type}
                 placeholder={placeholder}
+                _placeholder={{ color: colorMode === 'light' ? 'grey.500' : 'white.200' }}
                 h="3.5rem"
                 fontSize="1.2rem"
               />

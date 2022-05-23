@@ -1,5 +1,3 @@
-import { FiFlag } from 'react-icons/fi';
-
 // path of app routes
 export const PATH = {
   home: '/',
@@ -12,13 +10,11 @@ export const LANGUAGES = [
   {
     value: 'en',
     label: 'english',
-    icon: FiFlag,
     countryCode: 'US'
   },
   {
     value: 'vi',
     label: 'tiếng việt',
-    icon: FiFlag,
     countryCode: 'VN'
   }
 ];
