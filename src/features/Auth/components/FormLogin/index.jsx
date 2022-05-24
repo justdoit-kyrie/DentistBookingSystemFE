@@ -3,11 +3,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import classnames from 'classnames/bind';
 import { motion } from 'framer-motion';
 import React from 'react';
-import GoogleLogin from 'react-google-login';
 import { useForm } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { BsCircle, BsCircleFill } from 'react-icons/bs';
-import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
 import { PWD_REGEX } from '~/app/constants';
@@ -46,10 +44,6 @@ const FormLogin = ({ t }) => {
     resolver: yupResolver(schema)
   });
   const onSubmit = (data) => console.log(data);
-
-  const handleResponseGoogle = (response) => {
-    console.log({ response });
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -91,17 +85,18 @@ const FormLogin = ({ t }) => {
         <Box>
           <Text className={cx('line')}>{t('auth.login.subTitle.2')}</Text>
         </Box>
-        <GoogleLogin
+        {/* <GoogleLogin
           clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
           render={(renderProps) => (
             <Button size="lg" h="auto" variant="outline" onClick={renderProps.onClick} leftIcon={<FcGoogle />}>
               Google
             </Button>
           )}
-          onSuccess={handleResponseGoogle}
+          autoLoad={true}
+          onSuccess={handleResponseGoogleSuccess}
           onFailure={handleResponseGoogle}
           cookiePolicy={'single_host_origin'}
-        />
+        /> */}
         <Flex justify="center" align="center">
           <Text mr="0.25rem">{t('auth.login.subTitle.3')}</Text>
           <Link to="/register">

@@ -23,7 +23,6 @@
     "react": "^18.1.0",
     "react-country-flag": "^3.0.2",
     "react-dom": "^18.1.0",
-    "react-google-login": "^5.2.2",
     "react-hook-form": "^7.31.1",
     "react-i18next": "^11.16.9",
     "react-icons": "^4.3.1",
