@@ -12,6 +12,7 @@ function App() {
     return routes.map(({ path, component, layout, isPublic = false }, idx) => {
       const Page = component;
       const Layout = getLayout(layout);
+
       const Comp = isPublic ? Fragment : PrivateRoute;
 
       return (

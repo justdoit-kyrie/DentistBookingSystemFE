@@ -1,0 +1,30 @@
+{
+  "auth": {
+    "login": {
+      "title": "{{logo}} login",
+      "description": "Hey, Enter your details to get sign in to your account",
+      "emailPlaceholder": "Enter Email",
+      "pwdPlaceholder": "Password",
+      "submit": "Sign In",
+      "subTitle": {
+        "1": "Having trouble in sign in?",
+        "2": "Or Sign in with",
+        "3": "Dont't have an account?",
+        "4": "request now"
+      }
+    },
+    "register": {
+      "title": "{{logo}} register",
+      "description": "Hey, Enter your details to get sign in to your account",
+      "emailPlaceholder": "Enter Email",
+      "pwdPlaceholder": "Password",
+      "submit": "sign up",
+      "subTitle": {
+        "1": "Having trouble in sign in?",
+        "2": "Or Sign in with",
+        "3": "Already have an account?",
+        "4": "sign in"
+      }
+    }
+  }
+}

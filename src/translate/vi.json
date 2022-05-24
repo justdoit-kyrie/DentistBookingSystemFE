@@ -1,0 +1,18 @@
+{
+  "auth": {
+    "login": {
+      "title": "{{logo}} đăng nhập",
+      "description": "Này, Nhập thông tin chi tiết của bạn để đăng nhập vào tài khoản của bạn",
+      "emailPlaceholder": "Nhập Email",
+      "pwdPlaceholder": "Password",
+      "submit": "Đăng nhập",
+      "subTitle": {
+        "1": "Bạn gặp sự cố khi đăng nhập?",
+        "2": "Hoặc đăng nhập bằng",
+        "3": "Không có tài khoản?",
+        "4": "Yêu cầu ngay bây giờ"
+      }
+    },
+    "register": {}
+  }
+}
