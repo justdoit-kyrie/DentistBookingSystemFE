@@ -1,26 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  value: 0
+  loading: false,
+  loggedUser: null
 };
 
 export const authSlice = createSlice({
-  name: 'counter',
+  name: 'auth',
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1;
+    init: (state) => {
+      state.loading = true;
     },
-    decrement: (state) => {
-      state.value -= 1;
+    loginSuccess: (state, payload) => {
+      state.loggedUser = payload;
+      state.loading = false;
+    },
+    loginFailed: (state) => {
+      state.loading = false;
+    },
+    logout: (state) => {
+      state.loggedUser = null;
     }
   }
 });
 
-export const { increment, decrement, incrementByAmount } = authSlice.actions;
+export const { init, loginSuccess, loginFailed, logout } = authSlice.actions;
 
 //#region selectors
-export const selectCount = (state) => state.counter.value;
+export const selectLoggedUser = (state) => state.auth.loggedUser;
+export const selectLoading = (state) => state.auth.loading;
 //#endregion
 
 export default authSlice.reducer;

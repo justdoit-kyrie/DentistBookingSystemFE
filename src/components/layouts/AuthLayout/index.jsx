@@ -6,8 +6,7 @@ import ReactCountryFlag from 'react-country-flag';
 import { withTranslation } from 'react-i18next';
 import Particles from 'react-particles-js';
 import { Link } from 'react-router-dom';
-import { LANGUAGES } from '~/app/constants';
-import { LANGUAGE_KEY } from '~/app/routes';
+import { LANGUAGES, LANGUAGE_KEY } from '~/app/constants';
 import DarkThemParticles from '~/assets/particles/particlesjs-config-dark-theme.json';
 import LightThemParticles from '~/assets/particles/particlesjs-config-light-theme.json';
 import { Dropdown, ToggleColorButton } from '~/components/common';
@@ -134,7 +133,8 @@ const AuthLayout = (props) => {
           left="50%"
           transform="translate(-50%, -50%)"
           w={getWidth()}
-          h={getHeight()}
+          minH={getHeight()}
+          h="fit-content"
           background="transparent"
           backdropFilter="blur(2px)"
           border={colorMode === 'light' ? '1px solid #151111' : '1px solid #ffffff'}

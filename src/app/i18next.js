@@ -5,7 +5,7 @@ import { initReactI18next } from 'react-i18next';
 import EN from '~/translate/en.json';
 import VI from '~/translate/vi.json';
 import { getLocalStorageWithoutParse } from '~/utils';
-import { LANGUAGE_KEY } from './routes';
+import { LANGUAGE_KEY } from './constants';
 
 const resources = {
   en: {
