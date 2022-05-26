@@ -4,6 +4,7 @@
       "title": "{{logo}} đăng nhập",
       "description": "Này, Nhập thông tin chi tiết của bạn để đăng nhập vào tài khoản của bạn",
       "emailPlaceholder": "Nhập Email",
+      "displayNamePlaceholder": "Nhập tên",
       "pwdPlaceholder": "Password",
       "submit": "Đăng nhập",
       "subTitle": {

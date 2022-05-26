@@ -1,10 +1,15 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectLoggedUser } from '../Auth/authSlice';
+import React, { useEffect } from 'react';
+import { axios } from '~/apis';
+import { API_ROUTES } from '~/app/constants';
 
 const HomePage = () => {
-  const { payload: userInfo } = useSelector(selectLoggedUser) || {};
-  console.log({ userInfo });
+  useEffect(() => {
+    (async () => {
+      const res = await axios.get(API_ROUTES['get-dentists']);
+      console.log({ res });
+    })();
+  }, []);
+
   return <div className="">HomePage</div>;
 };
 

@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import classnames from 'classnames/bind';
 import { signInWithPopup } from 'firebase/auth';
 import { motion } from 'framer-motion';
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { AiOutlineUser } from 'react-icons/ai';
@@ -13,10 +13,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import { axios } from '~/apis';
-import { API_ROUTES, ORTHERS_LOGIN_METHOD, PWD_REGEX } from '~/app/constants';
+import { API_ROUTES, AUTH_KEY, ORTHERS_LOGIN_METHOD, PWD_REGEX } from '~/app/constants';
 import { Firebase } from '~/app/firebase';
 import { InputField } from '~/components';
-import { setLocalStorage } from '~/utils';
+import { setLocalStorage, splitDisplayName } from '~/utils';
 import { init, loginFailed, loginSuccess } from '../../authSlice';
 import styles from './FormLogin.module.scss';
 
@@ -32,8 +32,7 @@ const schema = yup
       .matches(
         PWD_REGEX,
         'password is at least one uppercase letter, one lowercase letter, one number and one special character'
-      ),
-    displayName: yup.string()
+      )
   })
   .required();
 
@@ -41,15 +40,13 @@ const schema = yup
 const defaultValues = {
   userName: '',
   password: '',
-  rememberMe: true,
-  displayName: ''
+  rememberMe: true
 };
 
-const FormLogin = ({ t }) => {
+const FormLogin = ({ t, setWithoutDisplayName }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { colorMode } = useColorMode();
-  const [isWithoutDisplayName, setIsWithoutDisplayName] = useState(false);
 
   //init firebase
   const firebase = new Firebase();
@@ -67,9 +64,6 @@ const FormLogin = ({ t }) => {
   const onSubmit = async (data) => {
     try {
       dispatch(init());
-      if (isWithoutDisplayName) {
-        return;
-      }
       const res = await axios.post(`${API_ROUTES.login}`, data);
       if (res.code) {
         const { message } = res;
@@ -78,7 +72,7 @@ const FormLogin = ({ t }) => {
       } else {
         const { accessToken, refreshToken, ...others } = res;
         dispatch(loginSuccess({ ...others }));
-        setLocalStorage('auth', { accessToken, refreshToken });
+        setLocalStorage(AUTH_KEY, { accessToken, refreshToken });
         return navigate('/');
       }
       console.log({ res });
@@ -91,17 +85,16 @@ const FormLogin = ({ t }) => {
     try {
       const { user } = await signInWithPopup(auth, provider);
       const { accessToken, refreshToken, displayName, email, photoURL, uid } = user;
-      const [firstName, ...rest] = displayName.split(' ');
-      const lastName = rest.join(' ');
 
       // handle case not have displayName
       if (!displayName) {
-        setIsWithoutDisplayName(true);
+        setWithoutDisplayName({ email, photoURL, uid });
         return;
       }
 
+      const { firstName, lastName } = splitDisplayName(displayName);
       dispatch(loginSuccess({ firstName, lastName, email, photoURL, uid }));
-      setLocalStorage('auth', { accessToken, refreshToken });
+      setLocalStorage(AUTH_KEY, { accessToken, refreshToken });
       return navigate('/');
     } catch (error) {
       console.log({ error });
@@ -138,35 +131,6 @@ const FormLogin = ({ t }) => {
       );
     });
   };
-
-  if (isWithoutDisplayName)
-    return (
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Flex direction="column" gap="2rem">
-          <InputField
-            errors={errors}
-            control={control}
-            name="userName"
-            placeholder={t('auth.login.emailPlaceholder')}
-            rightIcon={AiOutlineUser}
-            rightIconActive={FaUser}
-          />
-
-          <Button
-            as={motion.button}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.9 }}
-            type="submit"
-            size="full"
-            variant="primary"
-            textTransform="capitalize"
-            borderRadius="1rem"
-          >
-            {t('auth.login.submit')}
-          </Button>
-        </Flex>
-      </form>
-    );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

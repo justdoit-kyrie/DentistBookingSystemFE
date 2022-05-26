@@ -4,6 +4,7 @@ import { BsFacebook, BsGithub } from 'react-icons/bs';
 
 // local storage key
 export const LANGUAGE_KEY = 'i18nextLng';
+export const AUTH_KEY = 'auth';
 
 // colors
 export const COLORS = {
@@ -63,5 +64,7 @@ export const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\
 // api routes
 export const API_ROUTES = {
   login: '/Users/authenticate',
-  register: '/Users/register'
+  register: '/Users/register',
+  logout: '/logout',
+  'get-dentists': '/dentists'
 };

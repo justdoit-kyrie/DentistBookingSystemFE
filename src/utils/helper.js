@@ -19,3 +19,10 @@ export const getLocalStorage = (key) => JSON.parse(localStorage.getItem(key));
 export const getLocalStorageWithoutParse = (key) => localStorage.getItem(key);
 export const setLocalStorage = (key, value) => localStorage.setItem(key, JSON.stringify(value));
 //#endregion
+
+//#region split last name + first name
+export const splitDisplayName = (displayName) => {
+  const [firstName, ...rest] = displayName.split(' ');
+  const lastName = rest.join(' ');
+  return { firstName, lastName };
+};

@@ -1,10 +1,11 @@
 import { Box, Flex, Heading, Text, useColorMode, useMediaQuery } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Loading } from '~/components';
 import { selectLoading } from '../../authSlice';
+import FormDisplayName from '../../components/FormDisplayName';
 import FormLogin from '../../components/FormLogin';
 
 const effect = {
@@ -27,6 +28,8 @@ const Login = ({ t }) => {
   const { colorMode } = useColorMode();
   const isLoading = useSelector(selectLoading);
 
+  const [withoutDisplayName, setWithoutDisplayName] = useState();
+
   return (
     <>
       {isLoading && <Loading />}
@@ -48,7 +51,11 @@ const Login = ({ t }) => {
             {t('auth.login.description')}
           </Text>
         </Box>
-        <FormLogin />
+        {withoutDisplayName ? (
+          <FormDisplayName withoutDisplayName={withoutDisplayName} />
+        ) : (
+          <FormLogin setWithoutDisplayName={setWithoutDisplayName} />
+        )}
       </Flex>
     </>
   );
