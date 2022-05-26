@@ -4,6 +4,7 @@
       "title": "{{logo}} login",
       "description": "Hey, Enter your details to get sign in to your account",
       "emailPlaceholder": "Enter Email",
+      "displayNamePlaceholder": "Enter Name",
       "pwdPlaceholder": "Password",
       "submit": "Sign In",
       "subTitle": {

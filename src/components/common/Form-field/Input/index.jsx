@@ -1,6 +1,7 @@
 import { FormControl, FormErrorMessage, Input, InputGroup, InputRightElement, useColorMode } from '@chakra-ui/react';
 import React, { useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
+import { COLORS } from '~/app/constants';
 
 const InputField = (props) => {
   const { name, errors, control, type = 'text', placeholder, rightIcon, rightIconActive } = props;
@@ -12,10 +13,10 @@ const InputField = (props) => {
   const isError = errors[name] ? true : false;
   const iconColor = useMemo(() => {
     if (isFocus) {
-      return '#3182ce';
+      return COLORS.primary[200];
     }
     if (isError) {
-      return 'red';
+      return COLORS.red[500];
     }
     return '';
   }, [isFocus]);
@@ -42,7 +43,7 @@ const InputField = (props) => {
               />
               {rightIcon && rightIconActive && (
                 <InputRightElement pointerEvents="none" top="50%" right="0.75rem" transform="translateY(-50%)">
-                  <IconComponent color={iconColor} fontSize="1.1rem" />
+                  <IconComponent color={iconColor} fontSize="1.7rem" />
                 </InputRightElement>
               )}
             </InputGroup>

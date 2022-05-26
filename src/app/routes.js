@@ -1,5 +1,5 @@
-import { AuthLayout } from '~/components';
-import { HomePage, LoginPage, RegisterPage } from '~/features';
+import { AuthLayout, NotFound } from '~/components';
+import { HomePage, LoginPage } from '~/features';
 import { PATH } from './constants';
 
 //#region routes
@@ -21,11 +21,8 @@ export const ROUTES = [
     layout: AuthLayout
   },
   {
-    path: PATH.register,
-    component: RegisterPage,
-    layout: AuthLayout
+    path: PATH.notFound,
+    component: NotFound
   }
 ];
 //#endregion
-
-export const LANGUAGE_KEY = 'i18nextLng';

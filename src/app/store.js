@@ -1,15 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { FLUSH, PAUSE, PERSIST, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
+import persistReducer from 'redux-persist/es/persistReducer';
 import { default as authReducer } from '~/features/Auth/authSlice';
-import { counterPersistConfig } from './configs';
+import { rootPersistConfig } from './configs';
 
 //#region config store redux & redux-persist
-const rootReducer = {
-  auth: persistReducer(counterPersistConfig, authReducer)
-};
+const rootReducer = combineReducers({
+  auth: authReducer
+});
 
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistReducer(rootPersistConfig, rootReducer),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

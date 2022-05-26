@@ -1,30 +1,30 @@
 import { Box, Button, Flex, Text, useColorMode, useMediaQuery } from '@chakra-ui/react';
+import classnames from 'classnames/bind';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { withTranslation } from 'react-i18next';
+import Particles from 'react-particles-js';
 import { Link } from 'react-router-dom';
-import { LANGUAGES } from '~/app/constants';
-import { LANGUAGE_KEY } from '~/app/routes';
+import { LANGUAGES, LANGUAGE_KEY } from '~/app/constants';
+import DarkThemParticles from '~/assets/particles/particlesjs-config-dark-theme.json';
+import LightThemParticles from '~/assets/particles/particlesjs-config-light-theme.json';
 import { Dropdown, ToggleColorButton } from '~/components/common';
 import { getLocalStorageWithoutParse } from '~/utils';
-import CountryFlag from './components/CountryFlag';
-import LightThemParticles from '~/assets/particles/particlesjs-config-light-theme.json';
-import DarkThemParticles from '~/assets/particles/particlesjs-config-dark-theme.json';
-import Particles from 'react-particles-js';
 import styles from './AuthLayout.module.scss';
-import classnames from 'classnames/bind';
+import CountryFlag from './components/CountryFlag';
 
 const cx = classnames.bind(styles);
 
 const AuthLayout = (props) => {
   const { i18n, children } = props;
   const [countryCode, setCountryCode] = useState(
-    LANGUAGES.find((v) => v.value === getLocalStorageWithoutParse(LANGUAGE_KEY)).countryCode
+    () => LANGUAGES.find((v) => v.value === getLocalStorageWithoutParse(LANGUAGE_KEY))?.countryCode || 'US'
   );
+
   const { colorMode } = useColorMode();
 
-  //#region  reponsive
+  //#region  responsive
   const [isLessThan767] = useMediaQuery('(max-width: 767px)');
   const [isLessThan1023] = useMediaQuery('(max-width: 1023px)');
   const [isLessThan1279] = useMediaQuery('(max-width: 1279px)');
@@ -133,7 +133,8 @@ const AuthLayout = (props) => {
           left="50%"
           transform="translate(-50%, -50%)"
           w={getWidth()}
-          h={getHeight()}
+          minH={getHeight()}
+          h="fit-content"
           background="transparent"
           backdropFilter="blur(2px)"
           border={colorMode === 'light' ? '1px solid #151111' : '1px solid #ffffff'}

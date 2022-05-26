@@ -1,24 +1,30 @@
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, useColorMode } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import classnames from 'classnames/bind';
+import { signInWithPopup } from 'firebase/auth';
 import { motion } from 'framer-motion';
 import React from 'react';
-import GoogleLogin from 'react-google-login';
 import { useForm } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
-import { BsCircle, BsCircleFill } from 'react-icons/bs';
-import { FcGoogle } from 'react-icons/fc';
-import { Link } from 'react-router-dom';
+import { AiOutlineUser } from 'react-icons/ai';
+import { FaUser } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import * as yup from 'yup';
-import { PWD_REGEX } from '~/app/constants';
+import { axios } from '~/apis';
+import { API_ROUTES, AUTH_KEY, ORTHERS_LOGIN_METHOD, PWD_REGEX } from '~/app/constants';
+import { Firebase } from '~/app/firebase';
 import { InputField } from '~/components';
+import { setLocalStorage, splitDisplayName } from '~/utils';
+import { init, loginFailed, loginSuccess } from '../../authSlice';
 import styles from './FormLogin.module.scss';
 
 const cx = classnames.bind(styles);
 // initial validation rules
 const schema = yup
   .object({
-    email: yup.string().required('email is required').email('email is not correct format'),
+    userName: yup.string().required('userName is required'),
     password: yup
       .string()
       .required('password is required')
@@ -32,11 +38,20 @@ const schema = yup
 
 // initial values
 const defaultValues = {
-  email: '',
-  password: ''
+  userName: '',
+  password: '',
+  rememberMe: true
 };
 
-const FormLogin = ({ t }) => {
+const FormLogin = ({ t, setWithoutDisplayName }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { colorMode } = useColorMode();
+
+  //init firebase
+  const firebase = new Firebase();
+  const auth = firebase.getAuth();
+
   const {
     control,
     handleSubmit,
@@ -45,10 +60,76 @@ const FormLogin = ({ t }) => {
     defaultValues,
     resolver: yupResolver(schema)
   });
-  const onSubmit = (data) => console.log(data);
 
-  const handleResponseGoogle = (response) => {
-    console.log({ response });
+  const onSubmit = async (data) => {
+    try {
+      dispatch(init());
+      const res = await axios.post(`${API_ROUTES.login}`, data);
+      if (res.code) {
+        const { message } = res;
+        dispatch(loginFailed());
+        toast.error(message);
+      } else {
+        const { accessToken, refreshToken, ...others } = res;
+        dispatch(loginSuccess({ ...others }));
+        setLocalStorage(AUTH_KEY, { accessToken, refreshToken });
+        return navigate('/');
+      }
+      console.log({ res });
+    } catch (error) {
+      dispatch(loginFailed());
+    }
+  };
+
+  const handleOthersLogin = async (provider) => {
+    try {
+      const { user } = await signInWithPopup(auth, provider);
+      const { accessToken, refreshToken, displayName, email, photoURL, uid } = user;
+
+      // handle case not have displayName
+      if (!displayName) {
+        setWithoutDisplayName({ email, photoURL, uid });
+        return;
+      }
+
+      const { firstName, lastName } = splitDisplayName(displayName);
+      dispatch(loginSuccess({ firstName, lastName, email, photoURL, uid }));
+      setLocalStorage(AUTH_KEY, { accessToken, refreshToken });
+      return navigate('/');
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
+  const renderLoginMethods = (data) => {
+    return data.map(({ value, icon, provider }, index) => {
+      const Icon = icon.value;
+      if (icon.color)
+        return (
+          <Button
+            key={index}
+            size="lg"
+            h="auto"
+            variant="outline"
+            leftIcon={<Icon fontSize="1.5rem" color={icon.color} />}
+            onClick={() => handleOthersLogin(provider)}
+          >
+            {value}
+          </Button>
+        );
+      return (
+        <Button
+          key={index}
+          size="lg"
+          h="auto"
+          variant="outline"
+          leftIcon={<Icon fontSize="1.5rem" color={colorMode === 'light' ? icon.lightColor : icon.darkColor} />}
+          onClick={() => handleOthersLogin(provider)}
+        >
+          {value}
+        </Button>
+      );
+    });
   };
 
   return (
@@ -57,10 +138,10 @@ const FormLogin = ({ t }) => {
         <InputField
           errors={errors}
           control={control}
-          name="email"
+          name="userName"
           placeholder={t('auth.login.emailPlaceholder')}
-          rightIcon={BsCircle}
-          rightIconActive={BsCircleFill}
+          rightIcon={AiOutlineUser}
+          rightIconActive={FaUser}
         />
         <InputField
           errors={errors}
@@ -91,17 +172,9 @@ const FormLogin = ({ t }) => {
         <Box>
           <Text className={cx('line')}>{t('auth.login.subTitle.2')}</Text>
         </Box>
-        <GoogleLogin
-          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-          render={(renderProps) => (
-            <Button size="lg" h="auto" variant="outline" onClick={renderProps.onClick} leftIcon={<FcGoogle />}>
-              Google
-            </Button>
-          )}
-          onSuccess={handleResponseGoogle}
-          onFailure={handleResponseGoogle}
-          cookiePolicy={'single_host_origin'}
-        />
+
+        <Flex justify="space-evenly">{renderLoginMethods(ORTHERS_LOGIN_METHOD)}</Flex>
+
         <Flex justify="center" align="center">
           <Text mr="0.25rem">{t('auth.login.subTitle.3')}</Text>
           <Link to="/register">

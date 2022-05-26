@@ -6,7 +6,8 @@ const basePersistConfig = {
   stateReconciler: autoMergeLevel2
 };
 
-export const counterPersistConfig = {
+export const rootPersistConfig = {
   ...basePersistConfig,
-  key: 'counter'
+  key: 'root',
+  blacklist: ['auth']
 };

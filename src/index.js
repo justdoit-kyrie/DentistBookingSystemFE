@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 import '../node_modules/normalize.css/normalize.css';
+import '../node_modules/react-toastify/dist/ReactToastify.css';
 import App from './App';
 import i18n from './app/i18next';
 import { persistor, store } from './app/store';
