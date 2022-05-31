@@ -16,7 +16,7 @@ const PrivateRoute = ({ children }) => {
 
       if (!refreshToken) return navigate('/login');
 
-      var res = await axios.post('/Users/getProfile', { refreshToken });
+      var res = await axios.post('/getProfile', { refreshToken });
       if (!res.user) {
         return navigate('/login');
       }

@@ -12,8 +12,7 @@ import { PATH } from './constants';
 export const ROUTES = [
   {
     path: PATH.home,
-    component: HomePage,
-    isPublic: true
+    component: HomePage
   },
   {
     path: PATH.login,
