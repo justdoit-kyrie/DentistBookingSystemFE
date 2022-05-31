@@ -12,7 +12,7 @@ export const authSlice = createSlice({
     init: (state) => {
       state.loading = true;
     },
-    loginSuccess: (state, payload) => {
+    loginSuccess: (state, { payload }) => {
       state.loggedUser = payload;
       state.loading = false;
     },

@@ -1,26 +1,17 @@
-import { Box, Button, Flex, Text, useColorMode, useMediaQuery } from '@chakra-ui/react';
+import { Box, Flex, useColorMode, useMediaQuery } from '@chakra-ui/react';
 import classnames from 'classnames/bind';
-import { motion } from 'framer-motion';
-import React, { useState } from 'react';
-import ReactCountryFlag from 'react-country-flag';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
 import Particles from 'react-particles-js';
-import { Link } from 'react-router-dom';
-import { LANGUAGES, LANGUAGE_KEY } from '~/app/constants';
 import DarkThemParticles from '~/assets/particles/particlesjs-config-dark-theme.json';
 import LightThemParticles from '~/assets/particles/particlesjs-config-light-theme.json';
-import { Dropdown, ToggleColorButton } from '~/components/common';
-import { getLocalStorageWithoutParse } from '~/utils';
+import { Header } from '~/components/common';
 import styles from './AuthLayout.module.scss';
-import CountryFlag from './components/CountryFlag';
 
 const cx = classnames.bind(styles);
 
 const AuthLayout = (props) => {
-  const { i18n, children } = props;
-  const [countryCode, setCountryCode] = useState(
-    () => LANGUAGES.find((v) => v.value === getLocalStorageWithoutParse(LANGUAGE_KEY))?.countryCode || 'US'
-  );
+  const { children } = props;
 
   const { colorMode } = useColorMode();
 
@@ -53,78 +44,11 @@ const AuthLayout = (props) => {
   };
   //#endregion
 
-  const renderLanguages = () =>
-    LANGUAGES.map(({ label, value, countryCode }, index) => {
-      return (
-        <Flex
-          key={`language - ${index}`}
-          align="center"
-          gap="0.5rem"
-          p="1rem"
-          cursor="pointer"
-          _hover={{ bg: colorMode === 'light' ? 'grey.100' : 'grey.400' }}
-          onClick={() => {
-            i18n.changeLanguage(value);
-            setCountryCode(countryCode);
-          }}
-        >
-          <CountryFlag countryCode={countryCode} w="2rem" h="2rem" borderRadius="100rem" overflow="hidden" />
-          <Box>
-            <ReactCountryFlag
-              countryCode={countryCode}
-              svg
-              cdnUrl="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.4.3/flags/1x1/"
-              cdnSuffix="svg"
-              style={{ width: 'auto', height: 'auto' }}
-            />
-          </Box>
-          <Text as="span" textTransform="capitalize">
-            {label}
-          </Text>
-        </Flex>
-      );
-    });
-
   return (
     <Box className="wrapper" w="100vw" h="100vh" position="relative">
       <Particles params={colorMode === 'light' ? LightThemParticles : DarkThemParticles} className={cx('particles')} />
       <Box className="container" w="100%" h="100%">
-        <Flex justify="space-between" align="center" pt="2rem" background="transparent">
-          <h1>Logo</h1>
-          <Flex align="center" gap="1rem">
-            <Box>
-              <Dropdown dropdown={renderLanguages()}>
-                <CountryFlag
-                  countryCode={countryCode}
-                  w="2rem"
-                  h="2rem"
-                  borderRadius="100rem"
-                  overflow="hidden"
-                  className={cx('flag-icon')}
-                />
-              </Dropdown>
-            </Box>
-
-            <Link to="/register">
-              <Button variant="default" h="auto" _hover={{ textDecor: 'underline' }}>
-                sign up
-              </Button>
-            </Link>
-            <Link to="/">
-              <Button
-                as={motion.button}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                variant="primary"
-                size="lg"
-                h="auto"
-              >
-                Home
-              </Button>
-            </Link>
-            <ToggleColorButton />
-          </Flex>
-        </Flex>
+        <Header borderBottom="1px solid #e6e6e6" />
         <Flex
           justify="center"
           align="center"

@@ -6,6 +6,8 @@ import { loginSuccess } from '../../authSlice';
 import { useNavigate } from 'react-router-dom';
 
 const PrivateRoute = ({ children }) => {
+  console.log(123);
+
   // handle authentication here
   const navigate = useNavigate();
   const dispatch = useDispatch();

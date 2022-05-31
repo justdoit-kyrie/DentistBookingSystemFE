@@ -1,6 +1,7 @@
+/* eslint-disable indent */
 import axios from 'axios';
-import { API_ROUTES, AUTH_KEY } from '~/app/constants';
-import { getLocalStorage } from '~/utils';
+import { API_CODE, API_ROUTES, AUTH_KEY, history } from '~/app/constants';
+import { getLocalStorage, setLocalStorage } from '~/utils';
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
   timeout: 1000,
@@ -10,7 +11,12 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     const url = config.url;
-    if (url.includes(API_ROUTES.login) || url.includes(API_ROUTES.register) || url.includes(API_ROUTES.logout)) {
+    if (
+      url.includes(API_ROUTES.login) ||
+      url.includes(API_ROUTES.register) ||
+      url.includes(API_ROUTES.logout) ||
+      url.includes(API_ROUTES.refreshToken)
+    ) {
       return config;
     }
 
@@ -25,8 +31,30 @@ instance.interceptors.request.use(
 );
 
 instance.interceptors.response.use(
-  function (response) {
-    if (response && response.data) return response.data;
+  async function (response) {
+    if (response && response.data) {
+      const { code, message } = response.data;
+      if (code && message) {
+        switch (+code) {
+          case API_CODE.invalidToken:
+            break;
+          case API_CODE.expiredToken:
+            if (message === 'Token has expired') {
+              const { refreshToken } = getLocalStorage(AUTH_KEY) || {};
+              const { accessToken, code, message } = await instance.post(API_ROUTES.refreshToken, { refreshToken });
+              if (+code === API_CODE.OK && message === 'Generate new token successfully') {
+                const config = response.config;
+                setLocalStorage(AUTH_KEY, { accessToken, refreshToken });
+                return await instance(config);
+              } else {
+                history.replace('/login');
+              }
+            }
+            break;
+        }
+      }
+      return response.data;
+    }
     return response;
   },
   function (error) {

@@ -70,12 +70,11 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
         dispatch(loginFailed());
         toast.error(message);
       } else {
-        const { accessToken, refreshToken, ...others } = res;
-        dispatch(loginSuccess({ ...others }));
+        const { accessToken, refreshToken, user } = res;
+        dispatch(loginSuccess({ ...user }));
         setLocalStorage(AUTH_KEY, { accessToken, refreshToken });
         return navigate('/');
       }
-      console.log({ res });
     } catch (error) {
       dispatch(loginFailed());
     }

@@ -17,11 +17,14 @@ export const ROUTES = [
   {
     path: PATH.login,
     component: LoginPage,
-    layout: AuthLayout
+    layout: AuthLayout,
+    isPublic: true
   },
   {
     path: PATH.notFound,
-    component: NotFound
+    component: NotFound,
+    isPublic: true,
+    layout: null
   }
 ];
 //#endregion
