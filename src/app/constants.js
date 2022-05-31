@@ -69,7 +69,8 @@ export const API_ROUTES = {
   register: '/Users/register',
   logout: '/logout',
   'get-dentists': '/dentists',
-  refreshToken: '/Users/refresh'
+  refreshToken: '/Users/refresh',
+  'get-profile': '/Users/getProfile'
 };
 
 // api status code
