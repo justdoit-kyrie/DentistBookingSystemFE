@@ -1,9 +1,5 @@
 import { Switch, Tooltip, useColorMode } from '@chakra-ui/react';
-import classNames from 'classnames/bind';
 import React from 'react';
-import { ToastContainer } from 'react-toastify';
-import styles from './ToggleColorButton.module.scss';
-const cx = classNames.bind(styles);
 
 const ToggleColorButton = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -26,19 +22,6 @@ const ToggleColorButton = () => {
           onChange={toggleColorMode}
         />
       </Tooltip>
-      <ToastContainer
-        theme={colorMode}
-        position="top-right"
-        autoClose={1000}
-        hideProgressBar
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        className={cx('toast')}
-      />
     </>
   );
 };

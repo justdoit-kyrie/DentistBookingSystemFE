@@ -1,0 +1,14 @@
+.p-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem;
+
+  padding: 2rem 0;
+}
+
+.p-dataview {
+  &-footer {
+    background: transparent !important;
+    border: none !important;
+  }
+}

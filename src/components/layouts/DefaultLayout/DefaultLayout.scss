@@ -1,0 +1,36 @@
+@import '../../../app/styles/variables.scss';
+.p-carousel {
+  &-container {
+    & > button {
+      display: none;
+    }
+  }
+
+  &-indicators {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &-indicator {
+    & > .p-button {
+      width: 4rem !important;
+      border: none;
+      border-radius: 12px !important;
+      padding: 0;
+      background-color: white !important;
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    &.p-highlight {
+      & > .p-button {
+        border-color: white !important;
+        background-color: $primary-500 !important;
+      }
+    }
+  }
+}

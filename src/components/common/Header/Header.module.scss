@@ -1,0 +1,16 @@
+@import '../../../app/styles/variables';
+
+.logo {
+  cursor: pointer;
+  z-index: 2;
+  font-size: 1.75rem;
+}
+
+.flag-icon {
+  position: relative;
+  z-index: 2;
+}
+
+.nav-item.active * {
+  color: $desc-200;
+}

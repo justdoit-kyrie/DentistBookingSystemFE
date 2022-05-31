@@ -21,7 +21,12 @@ export const theme = extendTheme({
     },
     primary: {
       100: '#F5F2EA',
-      400: '#93B4FB'
+      200: '#2cafcb',
+      400: '#93B4FB',
+      500: '#2e6ff9'
+    },
+    desc: {
+      500: 'rgba(255, 255, 255, 0.8)'
     }
   },
   styles: {
@@ -38,7 +43,7 @@ export const theme = extendTheme({
 
       body: {
         letterSpacing: '0.1rem',
-        overflow: 'hidden',
+        overflowX: 'hidden',
         // eslint-disable-next-line quotes
         fontFamily: `'IBM Plex Sans',ProximaNova,Arial,Tahoma,PingFangSC,sans-serif`
       },
@@ -86,6 +91,16 @@ export const theme = extendTheme({
             background: '#555'
           }
         }
+      },
+
+      // others
+      '.overlay': {
+        position: 'absolute',
+        inset: 0,
+        width: '100%',
+        height: '100%',
+        bg: 'rgba(0,0,0,0.17)',
+        zIndex: '1'
       }
     }
   },
@@ -125,10 +140,26 @@ export const theme = extendTheme({
         primary: {
           bg: 'primary.400'
         },
+        ['primary-circle']: {
+          bg: 'primary.500',
+          border: '1px solid transparent',
+          borderRadius: '4rem',
+          fontWeight: '500',
+
+          _hover: {
+            bg: 'transparent',
+            borderColor: 'primary.500',
+            color: 'primary.500'
+          }
+        },
         default: {
           bg: 'transparent',
           fontWeight: '800',
-          color: ({ colorMode }) => (colorMode === 'light' ? 'grey.300' : 'grey.200')
+          color: ({ colorMode }) => (colorMode === 'light' ? 'grey.300' : 'grey.200'),
+
+          _focus: { boxShadow: 'none', outline: 'none', outlineOffset: 0 },
+
+          _hover: { textDecor: 'underline' }
         },
         outline: {
           bg: 'transparent',
