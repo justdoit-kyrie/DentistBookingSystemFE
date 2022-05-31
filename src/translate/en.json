@@ -4,24 +4,35 @@
       "title": "{{logo}} login",
       "description": "Hey, Enter your details to get sign in to your account",
       "emailPlaceholder": "Enter Email",
-      "displayNamePlaceholder": "Enter Name",
       "pwdPlaceholder": "Password",
       "submit": "Sign In",
       "subTitle": {
-        "1": "Having trouble in sign in?",
-        "2": "Or Sign in with",
-        "3": "Dont't have an account?",
-        "4": "request now"
+        "1": "Having Trouble?",
+        "2": "Or Sign In With",
+        "3": "Don't Have An Account?",
+        "4": "Sign Up Now"
       }
     },
     "register": {
       "title": "{{logo}} register",
       "description": "Hey, Enter your details to get sign in to your account",
-      "emailPlaceholder": "Enter Email",
+      "userNamePlaceholder": "Username",
+      "emailPlaceholder": "Email",
+      "phoneNumberPlaceholder":"Phone Number",
       "pwdPlaceholder": "Password",
-      "submit": "sign up",
+      "firstNamePlaceholder": "First Name",
+      "lastNamePlaceholder": "Last Name",
+      "confirmPwdPlaceholder": "Confirm Password",
+      "dobPlaceholder": "Date Of Birth",
+      "yearPlaceholder": "YYYY",
+      "monthPlaceholder":"MM",
+      "dayPlaceholder":"DD",
+      
+      "genderMalePlaceHolder":"Male",
+      "genderFemalePlaceHolder":"Female",
+      "submit": "Sign Up",
       "subTitle": {
-        "1": "Having trouble in sign in?",
+        "1": "Having trouble?",
         "2": "Or Sign in with",
         "3": "Already have an account?",
         "4": "sign in"

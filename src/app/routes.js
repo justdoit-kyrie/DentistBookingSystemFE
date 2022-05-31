@@ -1,5 +1,5 @@
 import { AuthLayout, NotFound } from '~/components';
-import { HomePage, LoginPage } from '~/features';
+import { HomePage, LoginPage, RegisterPage } from '~/features';
 import { PATH } from './constants';
 
 //#region routes
@@ -25,6 +25,12 @@ export const ROUTES = [
     component: NotFound,
     isPublic: true,
     layout: null
+  },
+  {
+    path: PATH.register,
+    component: RegisterPage,
+    layout: AuthLayout,
+    isPublic: true
   }
 ];
 //#endregion

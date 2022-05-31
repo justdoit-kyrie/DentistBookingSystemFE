@@ -1,0 +1,59 @@
+.line {
+  width: fit-content;
+  margin: 0 auto;
+  position: relative;
+
+  color: black;
+  font-weight: 800;
+
+  &::after,
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 1rem;
+    height: 0.75px;
+    background: black;
+  }
+  &::after {
+    right: calc(100% + 0.5rem);
+  }
+  &::before {
+    left: calc(100% + 0.5rem);
+  }
+}
+
+#override-calendar{
+  width: 100%;
+  min-width: 0%;
+}
+
+#override-calendar input {  
+  border-radius: var(--chakra-radii-md);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: none;
+  border:1px solid;
+  font-size: 1.2rem;
+  color: inherit;
+  background:inherit;
+  padding-inline-end: var(--chakra-space-4);
+  padding-inline-start: var(--chakra-space-4);
+  transition-property: var(--chakra-transition-property-common);
+  transition-duration: var(--chakra-transition-duration-normal);
+  font-family: 'IBM Plex Sans',ProximaNova,Arial,Tahoma,PingFangSC,sans-serif;
+}
+
+#override-calendar input:focus{
+  z-index: 1;
+  border-color: #63b3ed;
+  box-shadow: 0 0 0 1px #63b3ed;
+}
+
+.p-datepicker.p-component.override-panel .p-datepicker-header{
+  color:inherit !important;
+  background: inherit !important;
+}
+

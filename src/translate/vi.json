@@ -4,16 +4,38 @@
       "title": "{{logo}} đăng nhập",
       "description": "Này, Nhập thông tin chi tiết của bạn để đăng nhập vào tài khoản của bạn",
       "emailPlaceholder": "Nhập Email",
-      "displayNamePlaceholder": "Nhập tên",
       "pwdPlaceholder": "Password",
       "submit": "Đăng nhập",
       "subTitle": {
-        "1": "Bạn gặp sự cố khi đăng nhập?",
-        "2": "Hoặc đăng nhập bằng",
-        "3": "Không có tài khoản?",
-        "4": "Yêu cầu ngay bây giờ"
+        "1": "Gặp Sự Cố?",
+        "2": "Hoặc Đăng Nhập Bằng",
+        "3": "Không Có Tài Khoản?",
+        "4": "Đăng Ký Ngay"
       }
     },
-    "register": {}
+    "register": {
+      "title": "{{logo}} Đăng Ký",
+      "description": "Vui Lòng Nhập Đẩy Đủ Thông Tin Để Tạo Tài Khoản",
+      "userNamePlaceholder": "Tên Tài Khoản",
+      "emailPlaceholder": "Email",
+      "phoneNumberPlaceholder": "Số Điện Thoại",
+      "pwdPlaceholder": "Mật Khẩu",
+      "firstNamePlaceholder": "Tên",
+      "lastNamePlaceholder": "Họ",
+      "confirmPwdPlaceholder": "Nhập Lại Mật Khẩu",
+      "dobPlaceholder": "Ngày Tháng Năm Sinh",
+      "yearPlaceholder": "Năm",
+      "monthPlaceholder": "Tháng",
+      "dayPlaceholder": "Ngày",
+      "genderMalePlaceHolder":"Nam",
+      "genderFemalePlaceHolder":"Nữ",
+      "submit": "Đăng Ký",
+      "subTitle": {
+        "1": "Gặp Vấn Đề?",
+        "2": "Hoặc Đăng Nhập Bằng",
+        "3": "Đã Có Tài Khoản?",
+        "4": "Đăng Nhập"
+      }
+    }
   }
 }

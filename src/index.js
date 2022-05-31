@@ -10,6 +10,7 @@ import '../node_modules/normalize.css/normalize.css';
 import '../node_modules/primeicons/primeicons.css';
 import '../node_modules/primereact/resources/primereact.min.css'; //core css
 import '../node_modules/primereact/resources/themes/lara-light-indigo/theme.css'; //theme
+import '../node_modules/primeicons/primeicons.css';                                //icons
 import '../node_modules/react-toastify/dist/ReactToastify.css';
 import App from './App';
 import { history } from './app/constants';

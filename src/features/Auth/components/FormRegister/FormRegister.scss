@@ -1,0 +1,9 @@
+.p-datepicker {
+  &-header {
+    background: none !important;
+  }
+
+  &:not(.p-datepicker-inline) &-header {
+    background: none !important;
+  }
+}

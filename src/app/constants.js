@@ -25,7 +25,8 @@ export const COLORS = {
 export const PATH = {
   home: '/',
   login: '/login',
-  notFound: '*'
+  notFound: '*',
+  register: '/register',
 };
 
 // language
