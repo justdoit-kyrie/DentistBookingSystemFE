@@ -1,34 +1,26 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import { axios } from '~/apis';
-import { AUTH_KEY } from '~/app/constants';
-import { loginSuccess } from '~/features/Auth/authSlice';
-import { getLocalStorage, removeLocalStorage } from '~/utils';
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../../authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const PrivateRoute = ({ children }) => {
+
+  // handle authentication here
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  var refreshToken = localStorage.getItem('refreshToken');
 
-  useEffect(() => {
-    (async () => {
-      try {
-        var { refreshToken } = getLocalStorage(AUTH_KEY) || {};
+  var res =  axios.post('/getProfile', refreshToken);
+  console.log({ res });
+  
+  if(res.User === null){
+    navigate('/login');
+  } else {
+    dispatch(loginSuccess( {...res.User} ));
+    return <div>{children}</div>;
+  }
 
-        if (!refreshToken) return navigate('/login');
-
-        var res = await axios.post('/getProfile', { refreshToken });
-        if (!res.user) {
-          removeLocalStorage(AUTH_KEY);
-          return navigate('/login');
-        }
-        dispatch(loginSuccess({ ...res.user, role: res.role }));
-      } catch (error) {
-        removeLocalStorage(AUTH_KEY);
-      }
-    })();
-  }, []);
-  return children;
 };
 
 export default PrivateRoute;
