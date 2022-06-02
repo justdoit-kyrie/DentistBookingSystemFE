@@ -1,3 +1,4 @@
+import { WarningIcon } from '@chakra-ui/icons';
 import { FormControl, FormErrorMessage, Input, InputGroup, InputRightElement, useColorMode } from '@chakra-ui/react';
 import React, { useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
@@ -47,7 +48,7 @@ const InputField = (props) => {
                 </InputRightElement>
               )}
             </InputGroup>
-            {isError && <FormErrorMessage>{errors[name].message}</FormErrorMessage>}
+            {isError && <FormErrorMessage>{errors[name].message} <WarningIcon w={3} h={3} color="red.500"></WarningIcon></FormErrorMessage>}
           </FormControl>
         );
       }}

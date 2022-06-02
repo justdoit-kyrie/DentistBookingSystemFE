@@ -5,20 +5,20 @@ import {
   Flex,
   Grid,
   Text,
-  Radio,
-  RadioGroup,
   InputGroup,
-  InputRightElement
+  InputRightElement,
+  RadioGroup,
+  Radio
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import classnames from 'classnames/bind';
 import React, { useState } from 'react';
 // import GoogleLogin from 'react-google-login';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
-import { PWD_REGEX } from '~/app/constants';
+import { API_ROUTES, PWD_REGEX, EMAIL_REGEX, PHONE_REGEX, USER_REGEX, NAME_REGEX, DATE_FORMAT, API_CODE } from '~/app/constants';
 import { InputField } from '~/components';
 import styles from './FormRegister.module.scss';
 // import { AiOutlineGoogle } from 'react-icons/ai';
@@ -27,79 +27,102 @@ import { motion } from 'framer-motion';
 import { CalendarField } from '~/components';
 import './FormRegister.scss';
 import { axios } from '~/apis';
+import moment from 'moment';
+import { useDispatch } from 'react-redux';
+import { init, loginFailed, registerSuccess } from '../../authSlice';
 
 const cx = classnames.bind(styles);
 // initial validation rules
 const schema = yup
   .object({
-    email: yup.string().required('email is required').email('email is not correct format'),
+    gender: yup.string().required('required'),
+    username: yup
+      .string()
+      .required('User name is required')
+      .min(5, 'User name must have at least 5 characters')
+      .max(30, 'User name must have less than 30 characters')
+      .matches(USER_REGEX, 'Please enter a valid user name'),
     password: yup
       .string()
-      .required('password is required')
-      .min(12, 'password is longer than 12 characters')
+      .required('Password is required')
+      .min(12, 'Password is longer than 12 characters')
       .matches(
         PWD_REGEX,
-        'password is at least one uppercase letter, one lowercase letter, one number and one special character'
-      )
+        'Password is at least one uppercase letter, one lowercase letter, one number and one special character'
+      ),
+    confirmPassword: yup
+      .string()
+      .required('Confirm password is required')
+      .oneOf([yup.ref('password'), null], 'Passwords must match'),
+    email: yup.string().required('Email is required').matches(EMAIL_REGEX, 'Please enter a valid email address'),
+    phoneNumber: yup
+      .string()
+      .required('Phone number is required')
+      .matches(PHONE_REGEX, 'Please enter a valid phone number'),
+    firstName: yup.string().required('First name is required').matches(NAME_REGEX, 'Please enter a valid first name'),
+    lastName: yup.string().required('Last name is required').matches(NAME_REGEX, 'Please enter a valid last name'),
+    dob: yup.string().required('Please select date of birth')
   })
   .required();
 
 // initial values
 const defaultValues = {
   email: '',
-  password: ''
+  password: '',
+  confirmPassword: '',
+  username: '',
+  firstName: '',
+  lastName: '',
+  phoneNumber: '',
+  dob: '',
+  gender: 0
 };
 
 // Render years
 
 const FormRegister = ({ t }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const {
     control,
     handleSubmit,
     formState: { errors }
   } = useForm({
-    defaultValues
-    // resolver: yupResolver(schema)
+    defaultValues,
+    resolver: yupResolver(schema)
   });
   const onSubmit = async (data) => {
+    dispatch(init());
     try {
-      console.log('data', data);
-      const { code, message } = await axios.post('/register', { ...data });
-      if(+code === 200) {
-        // redirect to login
-      }else {
-        // show toast
+      console.log('data', { data });
+      const { code, message } = await axios.post(`${API_ROUTES.register}`, {
+        ...data,
+        gender: +data.gender,
+        dob: moment(data.dob).format(DATE_FORMAT['yyyy-MM-DD'])
+      });
+      if (+code === API_CODE.OK) {
+        console.log(message);
+        dispatch(registerSuccess({ userName: data.username, password: data.password }));
+        return navigate(API_ROUTES.login);
+      } else {
+        console.log(message);
+        dispatch(loginFailed());
       }
     } catch (error) {
       // show toast
+      dispatch(loginFailed());
     }
   };
-
-  const [gender, setGender] = React.useState();
 
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
 
-  const [date1, setDate1] = useState(null);
-
-  let today = new Date();
-  let month = today.getMonth();
-  let year = today.getFullYear();
-  let prevMonth = month === 0 ? 11 : month - 1;
-  let prevYear = prevMonth === 11 ? year - 1 : year;
-  let nextMonth = month === 11 ? 0 : month + 1;
-  let nextYear = nextMonth === 0 ? year + 1 : year;
-  let minDate = new Date();
-  minDate.setMonth(prevMonth);
-  minDate.setFullYear(prevYear);
-
-  let maxDate = new Date();
-  maxDate.setMonth(nextMonth);
-  maxDate.setFullYear(nextYear);
-
   // const handleResponseGoogle = (response) => {
   //   console.log({ response });
   // };
+
+  // ve van de avatar thi len firebase document
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ position: '' }}>
@@ -108,7 +131,7 @@ const FormRegister = ({ t }) => {
           <InputField
             errors={errors}
             control={control}
-            name="firtName"
+            name="firstName"
             placeholder={t('auth.register.firstNamePlaceholder')}
           />
 
@@ -144,7 +167,7 @@ const FormRegister = ({ t }) => {
             placeholder={t('auth.register.pwdPlaceholder')}
             type={show ? 'text' : 'password'}
           />
-          <InputRightElement onClick={handleClick} top="50%" right="0.75rem" transform="translateY(-50%)">
+          <InputRightElement onClick={handleClick} top="5%">
             {show ? <BsFillEyeFill /> : <BsFillEyeSlashFill />}
           </InputRightElement>
         </InputGroup>
@@ -157,7 +180,7 @@ const FormRegister = ({ t }) => {
             placeholder={t('auth.register.confirmPwdPlaceholder')}
             type={show ? 'text' : 'password'}
           />
-          <InputRightElement onClick={handleClick} top="50%" right="0.75rem" transform="translateY(-50%)">
+          <InputRightElement onClick={handleClick} top="5%">
             {show ? <BsFillEyeFill /> : <BsFillEyeSlashFill />}
           </InputRightElement>
         </InputGroup>
@@ -166,23 +189,26 @@ const FormRegister = ({ t }) => {
           name="dob"
           errors={errors}
           control={control}
-          id={cx('override-calendar')}
           panelClassName="override-panel"
           placeholder={t('auth.register.dobPlaceholder')}
-          value={date1}
-          onChange={(e) => setDate1(e.value)}
+        />
+        <Controller
+          name="gender"
+          control={control}
+          render={({ field }) => (
+            <RadioGroup {...field}>
+              <Grid templateColumns="repeat(2,1fr)" gap={6}>
+                <Radio value="0" isFocusable>
+                  Male
+                </Radio>
+                <Radio value="1" isFocusable>
+                  Female
+                </Radio>
+              </Grid>
+            </RadioGroup>
+          )}
         />
 
-        <RadioGroup name="gender" onChange={setGender} value={gender}>
-          <Grid templateColumns="repeat(2,1fr)" gap={6}>
-            <Radio name="gender" value="Male" size="lg" fontSize="2rem">
-              {t('auth.register.genderMalePlaceHolder')}
-            </Radio>
-            <Radio name="gender" value="Female" size="lg" fontSize="2rem">
-              {t('auth.register.genderFemalePlaceHolder')}
-            </Radio>
-          </Grid>
-        </RadioGroup>
         <Button
           as={motion.button}
           whileHover={{ scale: 1.05 }}

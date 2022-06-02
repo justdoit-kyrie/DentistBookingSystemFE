@@ -1,13 +1,16 @@
-import { FormControl, FormErrorMessage, InputGroup, InputRightElement } from '@chakra-ui/react';
+import { FormControl, FormErrorMessage, InputGroup, InputRightElement, useColorMode } from '@chakra-ui/react';
+import { WarningIcon } from '@chakra-ui/icons';
 import { Calendar } from 'primereact/calendar';
 import React, { useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 
 const CalendarField = (props) => {
-  const { name, errors, control, type = 'text', placeholder, rightIcon, rightIconActive, id ,panelClassName} = props;
+  const { name, errors, control, type = 'text', placeholder, rightIcon, rightIconActive, id, panelClassName } = props;
   const [isFocus, setIsFocus] = useState(false);
 
   const IconComponent = isFocus ? rightIconActive : rightIcon;
+
+  const { colorMode } = useColorMode();
 
   const isError = errors[name] ? true : false;
   const iconColor = useMemo(() => {
@@ -19,6 +22,28 @@ const CalendarField = (props) => {
     }
     return '';
   }, [isFocus]);
+
+  const getBorderColor = () => {
+    if (isError && colorMode === 'dark') {
+      return '#FC8181';
+    }
+    if (isError && colorMode === 'light') {
+      return '#E53E3E';
+    }
+    if (!isError && colorMode === 'light') {
+      return 'var(--chakra-colors-grey-300)';
+    }
+  };
+
+  const getBoxShadowColor = () => {
+    if (isError && colorMode === 'light') {
+      return '0 0 0 1px #e53e3e';
+    }
+    if (isError && colorMode === 'dark') {
+      return '0 0 0 1px #fc8181';
+    }
+  };
+  
 
   return (
     <Controller
@@ -37,6 +62,10 @@ const CalendarField = (props) => {
                 placeholder={placeholder}
                 h="3.5rem"
                 fontSize="1.2rem"
+                inputStyle={{
+                  borderColor: getBorderColor(),
+                  boxShadow: getBoxShadowColor()
+                }}
                 dateFormat="yy-mm-dd"
                 panelClassName={panelClassName}
                 panelStyle={{
@@ -53,7 +82,11 @@ const CalendarField = (props) => {
                 </InputRightElement>
               )}
             </InputGroup>
-            {isError && <FormErrorMessage>{errors[name].message}</FormErrorMessage>}
+            {isError && (
+              <FormErrorMessage>
+                {errors[name].message} <WarningIcon w={3} h={3} color="red.500" />
+              </FormErrorMessage>
+            )}
           </FormControl>
         );
       }}

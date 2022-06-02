@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { AiOutlineUser } from 'react-icons/ai';
 import { FaUser } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
@@ -17,7 +17,7 @@ import { API_ROUTES, AUTH_KEY, ORTHERS_LOGIN_METHOD, PWD_REGEX } from '~/app/con
 import { Firebase } from '~/app/firebase';
 import { InputField } from '~/components';
 import { setLocalStorage, splitDisplayName } from '~/utils';
-import { init, loginFailed, loginSuccess } from '../../authSlice';
+import { init, loginFailed, loginSuccess, selectRegisteredUser } from '../../authSlice';
 import styles from './FormLogin.module.scss';
 
 const cx = classnames.bind(styles);
@@ -47,17 +47,29 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { colorMode } = useColorMode();
+  const registerInfo = useSelector(selectRegisteredUser);
 
   //init firebase
   const firebase = new Firebase();
   const auth = firebase.getAuth();
+
+  //
+  const getDefaultValue = () => {
+    if (registerInfo) {
+      return { ...registerInfo, rememberMe: true };
+    } else {
+      return defaultValues;
+    }
+  };
+
+  console.log(getDefaultValue());
 
   const {
     control,
     handleSubmit,
     formState: { errors }
   } = useForm({
-    defaultValues,
+    defaultValues: getDefaultValue(),
     resolver: yupResolver(schema)
   });
 
@@ -73,7 +85,7 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
         const { accessToken, refreshToken, user } = res;
         dispatch(loginSuccess({ ...user }));
         setLocalStorage(AUTH_KEY, { accessToken, refreshToken });
-        return navigate('/');
+        return navigate(API_ROUTES.home);
       }
     } catch (error) {
       dispatch(loginFailed());
@@ -94,7 +106,7 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
       const { firstName, lastName } = splitDisplayName(displayName);
       dispatch(loginSuccess({ firstName, lastName, email, photoURL, uid }));
       setLocalStorage(AUTH_KEY, { accessToken, refreshToken });
-      return navigate('/');
+      return navigate(API_ROUTES.home);
     } catch (error) {
       console.log({ error });
     }
