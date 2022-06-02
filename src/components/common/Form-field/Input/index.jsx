@@ -1,8 +1,8 @@
-import { WarningIcon } from '@chakra-ui/icons';
 import { FormControl, FormErrorMessage, Input, InputGroup, InputRightElement, useColorMode } from '@chakra-ui/react';
 import React, { useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { COLORS } from '~/app/constants';
+import { BsFillExclamationCircleFill } from 'react-icons/bs';
 
 const InputField = (props) => {
   const { name, errors, control, type = 'text', placeholder, rightIcon, rightIconActive } = props;
@@ -50,7 +50,7 @@ const InputField = (props) => {
             </InputGroup>
             {isError && (
               <FormErrorMessage>
-                {errors[name].message} <WarningIcon w={3} h={3} color="red.500"></WarningIcon>
+                {errors[name].message} <BsFillExclamationCircleFill/>
               </FormErrorMessage>
             )}
           </FormControl>

@@ -1,8 +1,8 @@
 import { FormControl, FormErrorMessage, InputGroup, InputRightElement, useColorMode } from '@chakra-ui/react';
-import { WarningIcon } from '@chakra-ui/icons';
 import { Calendar } from 'primereact/calendar';
 import React, { useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
+import { BsFillExclamationCircleFill } from 'react-icons/bs';
 
 const CalendarField = (props) => {
   const { name, errors, control, type = 'text', placeholder, rightIcon, rightIconActive, id, panelClassName } = props;
@@ -84,7 +84,7 @@ const CalendarField = (props) => {
             </InputGroup>
             {isError && (
               <FormErrorMessage>
-                {errors[name].message} <WarningIcon w={3} h={3} color="red.500" />
+                {errors[name].message} <BsFillExclamationCircleFill/>
               </FormErrorMessage>
             )}
           </FormControl>
