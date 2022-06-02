@@ -48,7 +48,7 @@ const AuthLayout = (props) => {
     <Box className="wrapper" w="100vw" h="100vh" position="relative">
       <Particles params={colorMode === 'light' ? LightThemParticles : DarkThemParticles} className={cx('particles')} />
       <Box className="container" w="100%" h="100%">
-        <Header borderBottom="1px solid #e6e6e6" />
+        <Header/>
         <Flex
           justify="center"
           align="center"

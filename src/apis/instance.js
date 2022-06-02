@@ -37,6 +37,7 @@ instance.interceptors.response.use(
       if (code && message) {
         switch (+code) {
           case API_CODE.invalidToken:
+            history.replace('/login');
             break;
           case API_CODE.expiredToken:
             if (message === 'Token has expired') {

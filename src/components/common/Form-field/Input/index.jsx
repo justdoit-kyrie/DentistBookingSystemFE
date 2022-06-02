@@ -2,6 +2,7 @@ import { FormControl, FormErrorMessage, Input, InputGroup, InputRightElement, us
 import React, { useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { COLORS } from '~/app/constants';
+import { BsFillExclamationCircleFill } from 'react-icons/bs';
 
 const InputField = (props) => {
   const { name, errors, control, type = 'text', placeholder, rightIcon, rightIconActive } = props;
@@ -47,7 +48,11 @@ const InputField = (props) => {
                 </InputRightElement>
               )}
             </InputGroup>
-            {isError && <FormErrorMessage>{errors[name].message}</FormErrorMessage>}
+            {isError && (
+              <FormErrorMessage>
+                {errors[name].message} <BsFillExclamationCircleFill/>
+              </FormErrorMessage>
+            )}
           </FormControl>
         );
       }}

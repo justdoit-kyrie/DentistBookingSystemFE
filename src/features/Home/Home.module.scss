@@ -1,6 +1,19 @@
+@import '../../app/styles/variables.scss';
+
 .about-icon {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.clinic-item,
+.dentist-item {
+  padding: 0 $gap-carousel-item;
+}
+
+.clinic-item {
+  text-transform: capitalize;
+  &:hover {
+    color: $primary-500;
+  }
 }

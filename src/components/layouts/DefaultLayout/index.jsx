@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import classNames from 'classnames/bind';
 import { motion } from 'framer-motion';
-import { Carousel } from 'primereact/carousel';
 import React, { useEffect, useRef } from 'react';
 import BG1 from '~/assets/images/bg_1.jpg';
 import BG2 from '~/assets/images/bg_2.jpg';
+import { CustomCarousel } from '~/components/common';
 import Header from '~/components/common/Header';
 import styles from './DefaultLayout.module.scss';
 import './DefaultLayout.scss';
@@ -120,7 +120,13 @@ const DefaultLayout = ({ children }) => {
   return (
     <Box className="wrapper" w="100vw" h="100vh">
       <Box position="relative">
-        <Carousel value={banners} itemTemplate={itemTemplate} numVisible={1} numScroll={1} />
+        <CustomCarousel
+          value={banners}
+          callback={itemTemplate}
+          numVisible={1}
+          numScroll={1}
+          containerClassName="no-action"
+        />
         <div ref={ref} className={cx('header-wrapper')}>
           <Box className="container">
             <Header />
