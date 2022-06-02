@@ -25,7 +25,9 @@ export const COLORS = {
 export const PATH = {
   home: '/',
   login: '/login',
-  notFound: '*'
+  notFound: '*',
+  clinic: '/clinic/:id',
+  dentist: '/dentist/:id'
 };
 
 // language

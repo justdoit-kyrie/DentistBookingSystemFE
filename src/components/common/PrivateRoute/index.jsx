@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { axios } from '~/apis';
 import { AUTH_KEY } from '~/app/constants';
 import { loginSuccess } from '~/features/Auth/authSlice';
-import { getLocalStorage } from '~/utils';
+import { getLocalStorage, removeLocalStorage } from '~/utils';
 
 const PrivateRoute = ({ children }) => {
   const navigate = useNavigate();
@@ -12,15 +12,20 @@ const PrivateRoute = ({ children }) => {
 
   useEffect(() => {
     (async () => {
-      var { refreshToken } = getLocalStorage(AUTH_KEY) || {};
+      try {
+        var { refreshToken } = getLocalStorage(AUTH_KEY) || {};
 
-      if (!refreshToken) return navigate('/login');
+        if (!refreshToken) return navigate('/login');
 
-      var res = await axios.post('/getProfile', { refreshToken });
-      if (!res.user) {
-        return navigate('/login');
+        var res = await axios.post('/getProfile', { refreshToken });
+        if (!res.user) {
+          removeLocalStorage(AUTH_KEY);
+          return navigate('/login');
+        }
+        dispatch(loginSuccess({ ...res.user, role: res.role }));
+      } catch (error) {
+        removeLocalStorage(AUTH_KEY);
       }
-      dispatch(loginSuccess({ ...res.user, role: res.role }));
     })();
   }, []);
   return children;

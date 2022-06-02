@@ -1,5 +1,5 @@
 import { AuthLayout, NotFound } from '~/components';
-import { HomePage, LoginPage } from '~/features';
+import { ClinicPage, DentistPage, HomePage, LoginPage } from '~/features';
 import { PATH } from './constants';
 
 //#region routes
@@ -23,6 +23,18 @@ export const ROUTES = [
   {
     path: PATH.notFound,
     component: NotFound,
+    isPublic: true,
+    layout: null
+  },
+  {
+    path: PATH.dentist,
+    component: DentistPage,
+    isPublic: true,
+    layout: null
+  },
+  {
+    path: PATH.clinic,
+    component: ClinicPage,
     isPublic: true,
     layout: null
   }

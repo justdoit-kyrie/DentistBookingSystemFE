@@ -1,11 +1,5 @@
 @import '../../../app/styles/variables.scss';
 .p-carousel {
-  &-container {
-    & > button {
-      display: none;
-    }
-  }
-
   &-indicators {
     position: absolute;
     bottom: 10%;
@@ -33,4 +27,43 @@
       }
     }
   }
+
+  & .no-action {
+    & > .p-carousel-prev,
+    & > .p-carousel-next {
+      display: none;
+    }
+  }
+  & .custom-action {
+    & .p-carousel-prev,
+    & .p-carousel-next {
+      width: $custom-size-carousel-button;
+      height: $custom-size-carousel-button;
+
+      & .pi {
+        font-size: 1.4rem !important;
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 0.2rem #ddd;
+      }
+    }
+
+    &.square {
+      & .p-carousel-prev,
+      & .p-carousel-next {
+        border-radius: 0 !important;
+      }
+    }
+  }
+
+  & .no-indicators {
+    .p-carousel-indicators {
+      display: none;
+    }
+  }
+}
+
+.carousel-header {
+  margin: 0 $custom-size-carousel-button + $gap-carousel-item + 1rem;
 }

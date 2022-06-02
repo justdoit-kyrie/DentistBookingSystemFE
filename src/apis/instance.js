@@ -41,8 +41,6 @@ instance.interceptors.response.use(
             break;
           case API_CODE.expiredToken:
             if (message === 'Token has expired') {
-              console.log('token has expired');
-
               const { refreshToken } = getLocalStorage(AUTH_KEY) || {};
               const { accessToken, code, message } = await instance.post(API_ROUTES.refreshToken, { refreshToken });
               if (+code === API_CODE.OK && message === 'Generate new token successfully') {
