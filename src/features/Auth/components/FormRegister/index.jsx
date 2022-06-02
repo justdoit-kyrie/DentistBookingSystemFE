@@ -30,7 +30,6 @@ import {
   PATH
 } from '~/app/constants';
 import { InputField ,CalendarField} from '~/components';
-import styles from './FormRegister.module.scss';
 // import { AiOutlineGoogle } from 'react-icons/ai';
 import { withTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
@@ -40,7 +39,6 @@ import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { init, loginFailed, registerSuccess } from '../../authSlice';
 
-const cx = classnames.bind(styles);
 // initial validation rules
 const schema = yup
   .object({
@@ -87,7 +85,7 @@ const defaultValues = {
   gender: 0
 };
 
-// Render years
+// Render years 
 
 const FormRegister = ({ t }) => {
   const dispatch = useDispatch();
@@ -95,19 +93,17 @@ const FormRegister = ({ t }) => {
 
   const {
     control,
-    register,
     handleSubmit,
     formState: { errors }
   } = useForm({
     defaultValues,
     resolver: yupResolver(schema)
   });
-  console.log(register('email'));
+
 
   const onSubmit = async (data) => {
     dispatch(init());
     try {
-      console.log('data', { data });
       const { code, message } = await axios.post(`${API_ROUTES.register}`, {
         ...data,
         gender: +data.gender,
@@ -130,11 +126,6 @@ const FormRegister = ({ t }) => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
 
-  // const handleResponseGoogle = (response) => {
-  //   console.log({ response });
-  // };
-
-  // ve van de avatar thi len firebase document
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ position: '' }}>
@@ -234,21 +225,7 @@ const FormRegister = ({ t }) => {
         >
           {t('auth.register.submit')}
         </Button>
-        {/* <Box>
-          <Text className={cx('line')}>{t('auth.register.subTitle.2')}</Text>
-        </Box>
-        <GoogleLogin
-          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-          render={(renderProps) => (
-            // disabled={renderProps.disabled}
-            <Button size="lg" h="auto" variant="outline" onClick={renderProps.onClick} leftIcon={<AiOutlineGoogle />}>
-              Google
-            </Button>
-          )}
-          onSuccess={handleResponseGoogle}
-          onFailure={handleResponseGoogle}
-          cookiePolicy={'single_host_origin'}
-        /> */}
+
         <Flex justify="center" align="center">
           <Text mr="0.25rem">{t('auth.register.subTitle.3')}</Text>
           <Link to={PATH.login}>

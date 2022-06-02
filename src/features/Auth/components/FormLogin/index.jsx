@@ -62,8 +62,6 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
     }
   };
 
-  console.log(getDefaultValue());
-
   const {
     control,
     handleSubmit,
