@@ -1,5 +1,7 @@
 import { AuthLayout, NotFound } from '~/components';
-import { HomePage, LoginPage, RegisterPage } from '~/features';
+
+import { ClinicPage, DentistPage, HomePage, LoginPage, RegisterPage } from '~/features';
+
 import { PATH } from './constants';
 
 //#region routes
@@ -27,10 +29,17 @@ export const ROUTES = [
     layout: null
   },
   {
-    path: PATH.register,
-    component: RegisterPage,
-    layout: AuthLayout,
-    isPublic: true
-  }
+    path: PATH.dentist,
+    component: DentistPage,
+    isPublic: true,
+    layout: null
+  },
+  {
+    path: PATH.clinic,
+    component: ClinicPage,
+    isPublic: true,
+    layout: null
+  },
+  { path: PATH.register, component: RegisterPage, layout: AuthLayout, isPublic: true }
 ];
 //#endregion

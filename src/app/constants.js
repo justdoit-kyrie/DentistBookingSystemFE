@@ -26,7 +26,9 @@ export const PATH = {
   home: '/',
   login: '/login',
   notFound: '*',
-  register: '/register'
+  register: '/register',
+  clinic: '/clinic/:id',
+  dentist: '/dentist/:id'
 };
 
 // language

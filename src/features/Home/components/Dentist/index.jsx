@@ -11,21 +11,21 @@ import { axios } from '~/apis';
 import { API_ROUTES, USER_POSITION } from '~/app/constants';
 import TitleBlock from '../TitleBlock';
 import './Dentist.scss';
+import { Dropdown } from 'primereact/dropdown';
+import SelectedAdvanceDropdown from '../Template/SelectedAdvanceDropdown';
+import OptionAdvanceDropdown from '../Template/OptionAdvanceDropdown';
 
 const sortOptions = [
   { label: 'Price High to Low', value: '!price' },
   { label: 'Price Low to High', value: 'price' }
 ];
 
-const Dentist = ({ dentist }) => {
-  const { title, desc } = dentist;
+const Dentist = () => {
   const [pagination, setPagination] = useState(null);
   const [dentists, setDentists] = useState([]);
   const [first, setFirst] = useState(0);
 
-  const [sortKey, setSortKey] = useState(null);
-  const [sortOrder, setSortOrder] = useState(null);
-  const [sortField, setSortField] = useState(null);
+  const [selectedDentist, setSelectedDentist] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -35,19 +35,19 @@ const Dentist = ({ dentist }) => {
     })();
   }, []);
 
-  const onSortChange = (event) => {
-    const value = event.value;
+  // const onSortChange = (event) => {
+  //   const value = event.value;
 
-    if (value.indexOf('!') === 0) {
-      setSortOrder(-1);
-      setSortField(value.substring(1, value.length));
-      setSortKey(value);
-    } else {
-      setSortOrder(1);
-      setSortField(value);
-      setSortKey(value);
-    }
-  };
+  //   if (value.indexOf('!') === 0) {
+  //     setSortOrder(-1);
+  //     setSortField(value.substring(1, value.length));
+  //     setSortKey(value);
+  //   } else {
+  //     setSortOrder(1);
+  //     setSortField(value);
+  //     setSortKey(value);
+  //   }
+  // };
 
   const onPage = async (event) => {
     try {
@@ -61,9 +61,6 @@ const Dentist = ({ dentist }) => {
     }
   };
 
-  console.log({ dentists });
-
-  // eslint-disable-next-line no-unused-vars
   const renderDentistList = (item) => (
     <Flex
       borderRadius="12px"
@@ -111,8 +108,8 @@ const Dentist = ({ dentist }) => {
     </Flex>
   );
 
-  const renderHeader = () => {
-    return <Flex>header</Flex>;
+  const renderHeader = ({ ...passProps }) => {
+    return <Dropdown valueTemplate={SelectedAdvanceDropdown} itemTemplate={OptionAdvanceDropdown} {...passProps} />;
   };
 
   const renderFooter = () => {
@@ -126,23 +123,28 @@ const Dentist = ({ dentist }) => {
     );
   };
 
-  return (
-    <Box mt="7rem" className="container">
-      <TitleBlock title={title} desc={desc} fontSize="1.5rem" maxW="50%" m="0 auto" textAlign="center" />
-      <Box mt="10rem" as={motion.div}>
-        {pagination && (
-          <DataView
-            layout="grid"
-            value={dentists}
-            header={renderHeader()}
-            footer={renderFooter()}
-            itemTemplate={(dentist) => renderDentistList(dentist)}
-            emptyMessage="no data found"
-          />
-        )}
-      </Box>
-    </Box>
-  );
+  if (pagination)
+    return (
+      <DataView
+        layout="grid"
+        value={dentists}
+        header={renderHeader({
+          value: selectedDentist,
+          options: dentists,
+          optionLabel: 'name',
+          onChange: (e) => setSelectedDentist(e.value),
+          filter: true,
+          showClear: true,
+          filterBy: 'firstName,lastName',
+          placeholder: 'Enter a name'
+        })}
+        footer={renderFooter()}
+        itemTemplate={(dentist) => renderDentistList(dentist)}
+        emptyMessage="no data found"
+      />
+    );
+
+  return;
 };
 
 export default Dentist;

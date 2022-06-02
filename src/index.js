@@ -7,10 +7,11 @@ import { Provider } from 'react-redux';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 import '../node_modules/normalize.css/normalize.css';
-import '../node_modules/primereact/resources/primereact.min.css'; //core css
-import '../node_modules/primereact/resources/themes/lara-light-indigo/theme.css'; //theme
-import '../node_modules/primeicons/primeicons.css'; //icons
 import '../node_modules/react-toastify/dist/ReactToastify.css';
+import '../node_modules/primereact/resources/themes/lara-light-indigo/theme.css'; //theme
+import '../node_modules/primereact/resources/primereact.min.css'; //core css
+import '../node_modules/primeicons/primeicons.css'; //icons
+
 import App from './App';
 import { history } from './app/constants';
 import i18n from './app/i18next';
@@ -25,7 +26,7 @@ root.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <I18nextProvider i18n={i18n}>
-          <ChakraProvider theme={theme}>
+          <ChakraProvider resetCSS theme={theme}>
             <HistoryRouter history={history}>
               <Suspense fallback={<Loading />}>
                 <ColorModeScript initialColorMode={theme.config.initialColorMode} />
