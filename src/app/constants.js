@@ -91,7 +91,6 @@ export const API_ROUTES = {
   'get-dentists': '/dentists',
   refreshToken: '/Users/refresh',
   'get-profile': '/Users/getProfile',
-  home:'/'
 };
 
 // api status code

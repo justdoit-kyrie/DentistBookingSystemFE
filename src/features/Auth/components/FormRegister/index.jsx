@@ -18,13 +18,22 @@ import { Controller, useForm } from 'react-hook-form';
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
-import { API_ROUTES, PWD_REGEX, EMAIL_REGEX, PHONE_REGEX, USER_REGEX, NAME_REGEX, DATE_FORMAT, API_CODE } from '~/app/constants';
-import { InputField } from '~/components';
+import {
+  API_ROUTES,
+  PWD_REGEX,
+  EMAIL_REGEX,
+  PHONE_REGEX,
+  USER_REGEX,
+  NAME_REGEX,
+  DATE_FORMAT,
+  API_CODE,
+  PATH
+} from '~/app/constants';
+import { InputField ,CalendarField} from '~/components';
 import styles from './FormRegister.module.scss';
 // import { AiOutlineGoogle } from 'react-icons/ai';
 import { withTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { CalendarField } from '~/components';
 import './FormRegister.scss';
 import { axios } from '~/apis';
 import moment from 'moment';
@@ -86,12 +95,15 @@ const FormRegister = ({ t }) => {
 
   const {
     control,
+    register,
     handleSubmit,
     formState: { errors }
   } = useForm({
     defaultValues,
     resolver: yupResolver(schema)
   });
+  console.log(register('email'));
+
   const onSubmit = async (data) => {
     dispatch(init());
     try {
@@ -104,7 +116,7 @@ const FormRegister = ({ t }) => {
       if (+code === API_CODE.OK) {
         console.log(message);
         dispatch(registerSuccess({ userName: data.username, password: data.password }));
-        return navigate(API_ROUTES.login);
+        return navigate(PATH.login);
       } else {
         console.log(message);
         dispatch(loginFailed());
@@ -196,12 +208,12 @@ const FormRegister = ({ t }) => {
           name="gender"
           control={control}
           render={({ field }) => (
-            <RadioGroup {...field}>
+            <RadioGroup {...field} >
               <Grid templateColumns="repeat(2,1fr)" gap={6}>
-                <Radio value="0" isFocusable>
+                <Radio value="0" isRequired>
                   Male
                 </Radio>
-                <Radio value="1" isFocusable>
+                <Radio value="1" isRequired>
                   Female
                 </Radio>
               </Grid>
@@ -239,7 +251,7 @@ const FormRegister = ({ t }) => {
         /> */}
         <Flex justify="center" align="center">
           <Text mr="0.25rem">{t('auth.register.subTitle.3')}</Text>
-          <Link to="/login">
+          <Link to={PATH.login}>
             <Text fontWeight={900} textTransform="capitalize" _hover={{ textDecor: 'underline' }}>
               {t('auth.register.subTitle.4')}
             </Text>

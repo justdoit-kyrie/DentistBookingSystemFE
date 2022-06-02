@@ -48,7 +48,11 @@ const InputField = (props) => {
                 </InputRightElement>
               )}
             </InputGroup>
-            {isError && <FormErrorMessage>{errors[name].message} <WarningIcon w={3} h={3} color="red.500"></WarningIcon></FormErrorMessage>}
+            {isError && (
+              <FormErrorMessage>
+                {errors[name].message} <WarningIcon w={3} h={3} color="red.500"></WarningIcon>
+              </FormErrorMessage>
+            )}
           </FormControl>
         );
       }}

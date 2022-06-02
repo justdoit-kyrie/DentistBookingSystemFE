@@ -13,7 +13,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import { axios } from '~/apis';
-import { API_ROUTES, AUTH_KEY, ORTHERS_LOGIN_METHOD, PWD_REGEX } from '~/app/constants';
+import { API_ROUTES, AUTH_KEY, ORTHERS_LOGIN_METHOD, PATH, PWD_REGEX } from '~/app/constants';
 import { Firebase } from '~/app/firebase';
 import { InputField } from '~/components';
 import { setLocalStorage, splitDisplayName } from '~/utils';
@@ -85,7 +85,7 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
         const { accessToken, refreshToken, user } = res;
         dispatch(loginSuccess({ ...user }));
         setLocalStorage(AUTH_KEY, { accessToken, refreshToken });
-        return navigate(API_ROUTES.home);
+        return navigate(PATH.home);
       }
     } catch (error) {
       dispatch(loginFailed());
@@ -106,7 +106,7 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
       const { firstName, lastName } = splitDisplayName(displayName);
       dispatch(loginSuccess({ firstName, lastName, email, photoURL, uid }));
       setLocalStorage(AUTH_KEY, { accessToken, refreshToken });
-      return navigate(API_ROUTES.home);
+      return navigate(PATH.home);
     } catch (error) {
       console.log({ error });
     }
@@ -188,7 +188,7 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
 
         <Flex justify="center" align="center">
           <Text mr="0.25rem">{t('auth.login.subTitle.3')}</Text>
-          <Link to="/register">
+          <Link to={PATH.register}>
             <Text fontWeight={900} textTransform="capitalize" _hover={{ textDecor: 'underline' }}>
               {t('auth.login.subTitle.4')}
             </Text>
