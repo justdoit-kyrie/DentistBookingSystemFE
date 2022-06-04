@@ -15,5 +15,126 @@
       }
     },
     "register": {}
+  },
+  "home": {
+    "header": {
+      "nav": {
+        "home": "trang chủ",
+        "about": "giới thiệu",
+        "services": "dịch vụ",
+        "doctors": "bác sĩ",
+        "blog": "blog",
+        "contact": "liên lạc"
+      },
+      "dropdown": {
+        "profile": "xem thông tin",
+        "language": "ngôn ngữ",
+        "logout": "đăng xuất",
+        "en": "english",
+        "vi": "việt nam"
+      },
+      "banners": {
+        "content": [
+          {
+            "title": "Nha khoa hiện đại trong một môi trường yên tĩnh và thư giãn",
+            "desc": "Một con sông nhỏ tên là Duden chảy ngang qua nơi ở của họ và cung cấp cho nó những chất dinh dưỡng cần thiết."
+          },
+          {
+            "title": "Hiện đại đạt được nụ cười hoàn hảo như mong muốn của bạn",
+            "desc": "Một con sông nhỏ tên là Duden chảy ngang qua nơi ở của họ và cung cấp cho nó những chất dinh dưỡng cần thiết."
+          }
+        ],
+        "action": "tạo cuộc hẹn"
+      }
+    },
+    "features": {
+      "title": "Dịch vụ của chúng tôi Giữ cho bạn nụ cười",
+      "desc": "Một con sông nhỏ có tên Duden chảy qua nơi họ ở và cung cấp cho nó những chất dinh dưỡng cần thiết.",
+      "category": [
+        {
+          "title": "Làm trắng răng",
+          "desc": "Ngay cả Pointing toàn năng cũng không kiểm soát được các văn bản mù quáng, nó gần như không có tính chính thống"
+        },
+        {
+          "title": "Làm sạch răng",
+          "desc": "Ngay cả Pointing toàn năng cũng không kiểm soát được các văn bản mù quáng, nó gần như không có tính chính thống"
+        },
+        {
+          "title": "Chân đế chất lượng",
+          "desc": "Ngay cả Pointing toàn năng cũng không kiểm soát được các văn bản mù quáng, nó gần như không có tính chính thống"
+        },
+        {
+          "title": "Thuốc mê hiện đại",
+          "desc": "Ngay cả Pointing toàn năng cũng không kiểm soát được các văn bản mù quáng, nó gần như không có tính chính thống"
+        }
+      ]
+    },
+    "about": {
+      "title": "Dentacare với một liên lạc cá nhân",
+      "desc": "Một con sông nhỏ có tên Duden chảy qua nơi họ ở và cung cấp cho nó những chất dinh dưỡng cần thiết.",
+      "list": [
+        {
+          "title": "Bác sĩ nha khoa có kinh nghiệm tốt",
+          "desc": "Xa xa, đằng sau những ngọn núi chữ, xa những quốc gia Vokalia và Consonantia, có những văn tự mù mịt."
+        },
+        {
+          "title": "Cơ sở công nghệ cao",
+          "desc": "Xa xa, đằng sau những ngọn núi chữ, xa những quốc gia Vokalia và Consonantia, có những văn tự mù mịt."
+        },
+        {
+          "title": "Phòng khám tiện nghi",
+          "desc": "Xa xa, đằng sau những ngọn núi chữ, xa những quốc gia Vokalia và Consonantia, có những văn tự mù mịt."
+        }
+      ]
+    },
+    "dentist": {
+      "title": "Gặp Nha sĩ Kinh nghiệm của Chúng tôi",
+      "desc": "Một con sông nhỏ có tên Duden chảy qua nơi họ ở và cung cấp cho nó những chất dinh dưỡng cần thiết. Đó là một đất nước hoang tưởng, trong đó các bộ phận của câu"
+    },
+    "clinic": {
+      "title": "Gặp gỡ Phòng khám của chúng tôi",
+      "desc": "Một con sông nhỏ có tên Duden chảy qua nơi họ ở và cung cấp cho nó những chất dinh dưỡng cần thiết. Đó là một đất nước hoang tưởng, trong đó các bộ phận của câu"
+    },
+    "service": {
+      "title": "Giá tốt nhất của chúng tôi",
+      "desc": "Một con sông nhỏ có tên Duden chảy qua nơi họ ở và cung cấp cho nó những chất dinh dưỡng cần thiết. Đó là một đất nước hoang tưởng, trong đó các bộ phận của câu"
+    },
+    "newsletter": {
+      "title": "Đăng ký bản tin của chúng tôi",
+      "desc": "Xa xa, đằng sau những ngọn núi chữ, xa những quốc gia Vokalia và Consonantia, có những văn tự mù mịt. Tách biệt họ sống trong",
+      "placeholder": "Từ khóa",
+      "action": "Đăng kí"
+    },
+    "quote": {
+      "title": "Quy trình DentaCare & Dịch vụ Chất lượng Cao",
+      "desc": "Ngay cả Pointing toàn năng cũng không kiểm soát được các văn bản mù, nó gần như là một cuộc sống gần như không có thần thoại Một ngày nọ, một dòng văn bản mù nhỏ có tên Lorem Ipsum quyết định rời đi đến Thế giới Ngữ pháp xa xôi. Bởi vì có hàng ngàn Dấu phẩy xấu, Dấu hỏi hoang dã và Semikoli ranh ma",
+      "list": ["Consectetur adipisicing elit", "Adipisci repellat accusamus", "Tempore reprehenderit vitae"],
+      "form": {
+        "title": "Nhận báo giá miễn phí",
+        "placeHolder": {
+          "fullName": "Họ và tên",
+          "email": "Email",
+          "phone": "Số Điện thoại",
+          "website": "Trang Web",
+          "message": "Tin nhắn"
+        },
+        "action": "đặt hàng ngay bây giờ"
+      }
+    },
+    "footer": {
+      "desc": "Xa xa, đằng sau những ngọn núi chữ, xa những quốc gia Vokalia và Consonantia, có những văn tự mù mịt.",
+      "heading": ["đường dẫn", "Văn phòng"],
+      "links": {
+        "address": "203 Fake St. Mountain View, San Francisco, California, USA",
+        "phone": "+84879496314",
+        "mail": "ducndmse151198@fpt.edu.vn",
+        "about": "về chúng tôi",
+        "service": "dịch vụ",
+        "feature": "tính năng",
+        "clinic": "phòng khám",
+        "dentist": "nha sĩ"
+      },
+      "copyRight": ["Bản quyền © 2022 Mọi quyền được bảo lưu | Mẫu này được làm ", "bởi {{name}}"]
+    }
   }
 }

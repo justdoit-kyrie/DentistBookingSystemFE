@@ -23,32 +23,32 @@ const cx = classNames.bind(styles);
 
 const MOCK_DATA = {
   DROPDOWN_ITEMS: [
-    { label: 'View profile', icon: AiOutlineUser, to: '/profile' },
+    { icon: AiOutlineUser, to: '/profile', label: 'profile' },
     {
-      label: 'Language',
+      label: 'language',
       icon: GrLanguage,
       children: {
         label: 'Language 1',
         data: [
           {
             code: 'en',
-            label: 'English',
+            label: 'en',
             fw: 500,
             onClick: () => i18n.changeLanguage('en')
           },
-          { code: 'vi', label: 'Việt Nam', fw: 500, onClick: () => i18n.changeLanguage('vi') }
+          { code: 'vi', label: 'vi', fw: 500, onClick: () => i18n.changeLanguage('vi') }
         ]
       }
     },
-    { label: 'Log out', icon: CgLogOut, isBorder: true }
+    { icon: CgLogOut, isBorder: true, label: 'logout' }
   ],
   NAV_ITEMS: [
     { to: '/', label: 'home' },
-    { to: '/about', label: 'About' },
-    { to: '/services', label: 'Services' },
-    { to: '/doctors', label: 'Doctors' },
-    { to: '/blog', label: 'Blog' },
-    { to: '/contact', label: 'Contact' }
+    { to: '/about', label: 'about' },
+    { to: '/services', label: 'services' },
+    { to: '/doctors', label: 'doctors' },
+    { to: '/blog', label: 'blog' },
+    { to: '/contact', label: 'contact' }
   ]
 };
 
@@ -80,11 +80,11 @@ const Header = ({ t, tReady, i18n, ...passProps }) => {
 
   const handleMenuHoverColor = (code) => {
     if (code === language) return {};
-    const color = colorMode === 'light' ? { bg: 'grey.100' } : { bg: 'grey.400' };
-    return color;
+    return { bg: 'grey.100' };
   };
 
   const handleBack = () => setHistory((prev) => prev.slice(0, prev.length - 1));
+  const handleHidden = () => setHistory([{ data: DROPDOWN_ITEMS }]);
 
   const renderDropdownItem = () => {
     let unique;
@@ -124,7 +124,9 @@ const Header = ({ t, tReady, i18n, ...passProps }) => {
             color="black"
           >
             <Icon {...iconProps} />
-            <Text fontWeight={fw}>{label}</Text>
+            <Text fontWeight={fw} textTransform="capitalize">
+              {t(`home.header.dropdown.${label}`)}
+            </Text>
           </Flex>
         </Comp>
       );
@@ -167,7 +169,7 @@ const Header = ({ t, tReady, i18n, ...passProps }) => {
     NAV_ITEMS.map(({ to, label }, index) => (
       <NavLink key={`${index}`} className={(v) => cx('nav-item', { active: v.isActive })} to={to}>
         <Button variant="default" color="inherit" fontSize="1.5rem" fontWeight="500">
-          {label}
+          {t(`home.header.nav.${label}`)}
         </Button>
       </NavLink>
     ));
@@ -188,6 +190,7 @@ const Header = ({ t, tReady, i18n, ...passProps }) => {
             dropdown={renderDropdownItem()}
             label={history.length > 1 ? current.label : ''}
             onBack={handleBack}
+            onHidden={handleHidden}
           >
             <Image
               w="3.5rem"
@@ -198,11 +201,12 @@ const Header = ({ t, tReady, i18n, ...passProps }) => {
               zIndex="2"
             ></Image>
           </DropDown>
+          <ToggleColorButton />
         </Flex>
       )}
       {!userInfo && (
         <Flex align="center" gap="1rem">
-          <Dropdown dropdown={renderLanguages()}>
+          <Dropdown dropdown={renderLanguages()} bg={colorMode === 'light' ? 'white' : 'navy-500'}>
             <CountryFlag
               countryCode={countryCode}
               w="3rem"

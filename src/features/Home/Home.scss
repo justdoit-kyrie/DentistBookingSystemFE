@@ -1,0 +1,70 @@
+@import '../../app/styles/variables.scss';
+
+::-webkit-scrollbar {
+  height: 4px;
+}
+
+.p-multiselect {
+  min-width: $multi-select-min-width;
+  max-width: 100%;
+
+  &-label,
+  &-empty-message,
+  &-filter {
+    font-size: 1.5rem;
+  }
+  &-label {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    overflow-x: auto;
+  }
+  &-clear-icon {
+    cursor: pointer;
+  }
+
+  &.dark {
+    background: transparent;
+    &:not(.p-disabled):hover {
+      border-color: #788daa;
+    }
+  }
+
+  @media screen and (max-width: 1279px) {
+    min-width: 100%;
+  }
+}
+
+.carousel-header {
+  @media screen and (max-width: 767px) {
+    margin: 0;
+  }
+}
+
+.dropdown-panel.dark {
+  background: $dark-mode-color-700;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 3px 6px 0px;
+
+  & .p-multiselect-header,
+  & .p-checkbox-box,
+  & .p-multiselect-filter {
+    background: inherit;
+  }
+
+  & .p-multiselect-filter,
+  & .p-multiselect-empty-message {
+    color: #fff;
+  }
+  & .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover {
+    background: $dark-mode-color-500;
+  }
+  & .p-multiselect-items .p-multiselect-item.p-highlight {
+    background: $navy-500;
+  }
+
+  ::-webkit-scrollbar {
+    &-track {
+      background: $dark-mode-color-600;
+    }
+  }
+}

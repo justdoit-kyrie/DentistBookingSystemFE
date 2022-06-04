@@ -12,7 +12,13 @@ export const theme = extendTheme({
     white: {
       200: 'rgba(255,255,255, 0.5)'
     },
+    black: {
+      100: 'rgba(255, 255, 255, 0.05)',
+      500: '#191919'
+    },
     grey: {
+      50: '#f5f5f5',
+      70: '#808080',
       100: '#efefef',
       200: '#bababa',
       300: '#5F5D5B',
@@ -23,10 +29,17 @@ export const theme = extendTheme({
       100: '#F5F2EA',
       200: '#2cafcb',
       400: '#93B4FB',
-      500: '#2e6ff9'
+      500: '#2f89fc'
+    },
+    navy: {
+      100: '#788daa',
+      500: '#3a486e'
     },
     desc: {
       500: 'rgba(255, 255, 255, 0.8)'
+    },
+    linearGradient: {
+      100: 'linear-gradient(200deg, #2f89fc 0%, #2cbcbc 100%)'
     }
   },
   styles: {
@@ -38,7 +51,9 @@ export const theme = extendTheme({
       },
 
       html: {
-        fontSize: '62.5%'
+        fontSize: '62.5%',
+        scrollBehavior: 'smooth',
+        scrollPaddingTop: '2rem'
       },
 
       body: {
@@ -144,13 +159,7 @@ export const theme = extendTheme({
           bg: 'primary.500',
           border: '1px solid transparent',
           borderRadius: '4rem',
-          fontWeight: '500',
-
-          _hover: {
-            bg: 'transparent',
-            borderColor: 'primary.500',
-            color: 'primary.500'
-          }
+          fontWeight: '500'
         },
         default: {
           bg: 'transparent',
@@ -172,6 +181,24 @@ export const theme = extendTheme({
             bg: 'primary.400',
             borderColor: 'primary.400'
           }
+        }
+      }
+    },
+    Heading: {
+      // 1. We can update the base styles
+      baseStyle: {},
+      // 2. We can add a new button size or extend existing
+      sizes: {},
+      // 3. We can add a new visual variant
+      variants: {
+        normal: {
+          fontWeight: 400
+        },
+        medium: {
+          fontWeight: 500
+        },
+        'semi-bold': {
+          fontWeight: 600
         }
       }
     }

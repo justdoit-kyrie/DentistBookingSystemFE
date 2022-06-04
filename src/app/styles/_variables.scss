@@ -1,3 +1,5 @@
+$grey-50: #f5f5f5;
+$grey-70: #808080;
 $grey-100: #efefef;
 $grey-200: #e1e1e1;
 $grey-300: #5f5d5b;
@@ -5,8 +7,16 @@ $grey-400: #6e6868;
 $grey-500: #3c3c3c;
 
 $primary-100: #f5f2ea;
+$primary-200: #2cafcb;
 $primary-400: #93b4fb;
 $primary-500: #2e6ff9;
+
+$dark-mode-color-500: #2c3650;
+$dark-mode-color-600: #232b3e;
+$dark-mode-color-700: #1a202c;
+
+$navy-100: #788daa;
+$navy-500: #3a486e;
 
 $desc-100: rgba(255, 255, 255, 0.8);
 $desc-200: rgba(255, 255, 255, 0.5);
@@ -14,3 +24,16 @@ $desc-200: rgba(255, 255, 255, 0.5);
 // carousel [prime-react]
 $custom-size-carousel-button: 4rem;
 $gap-carousel-item: 1rem;
+
+// multi-select
+$multi-select-min-width: 33rem;
+
+// key-frame
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(315deg);
+  }
+}

@@ -70,8 +70,9 @@ export const API_ROUTES = {
   login: '/Users/authenticate',
   register: '/Users/register',
   logout: '/logout',
-  'get-dentists': '/dentists',
   refreshToken: '/Users/refresh',
+  'get-clinics': '/clinics',
+  'get-dentists': '/dentists',
   'get-profile': '/Users/getProfile'
 };
 
@@ -97,4 +98,10 @@ export const USER_POSITION = {
   0: 'head',
   1: 'dentist',
   2: 'assistant'
+};
+
+// home-block-name
+export const HOME_BLOCK_NAME = {
+  dentist: 'dentist',
+  clinic: 'clinic'
 };
