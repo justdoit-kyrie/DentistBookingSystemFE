@@ -18,18 +18,17 @@
       "description": "Hey, Enter your details to get sign in to your account",
       "userNamePlaceholder": "Username",
       "emailPlaceholder": "Email",
-      "phoneNumberPlaceholder":"Phone Number",
+      "phoneNumberPlaceholder": "Phone Number",
       "pwdPlaceholder": "Password",
       "firstNamePlaceholder": "First Name",
       "lastNamePlaceholder": "Last Name",
       "confirmPwdPlaceholder": "Confirm Password",
       "dobPlaceholder": "Date Of Birth",
       "yearPlaceholder": "YYYY",
-      "monthPlaceholder":"MM",
-      "dayPlaceholder":"DD",
-      
-      "genderMalePlaceHolder":"Male",
-      "genderFemalePlaceHolder":"Female",
+      "monthPlaceholder": "MM",
+      "dayPlaceholder": "DD",
+      "genderMalePlaceHolder": "Male",
+      "genderFemalePlaceHolder": "Female",
       "submit": "Sign Up",
       "subTitle": {
         "1": "Having trouble?",
@@ -37,6 +36,127 @@
         "3": "Already have an account?",
         "4": "sign in"
       }
+    }
+  },
+  "home": {
+    "header": {
+      "nav": {
+        "home": "home",
+        "about": "about",
+        "services": "services",
+        "doctors": "doctors",
+        "blog": "blog",
+        "contact": "contact"
+      },
+      "dropdown": {
+        "profile": "View profile",
+        "language": "Language",
+        "logout": "Log out",
+        "en": "english",
+        "vi": "việt nam"
+      },
+      "banners": {
+        "content": [
+          {
+            "title": "Modern Dentistry in a Calm and Relaxed Environment",
+            "desc": "A small river named Duden flows by their place and supplies it with the necessary regelialia."
+          },
+          {
+            "title": "Modern Achieve Your Desired Perfect Smile",
+            "desc": "A small river named Duden flows by their place and supplies it with the necessary regelialia."
+          }
+        ],
+        "action": "Make a Appointment"
+      }
+    },
+    "features": {
+      "title": "Our Service Keeps you Smile",
+      "desc": "A small river named Duden flows by their place and supplies it with the necessary regelialia.",
+      "category": [
+        {
+          "title": "Teeth Whitening",
+          "desc": "Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic."
+        },
+        {
+          "title": "Teeth Cleaning",
+          "desc": "Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic."
+        },
+        {
+          "title": "Quality Brackets",
+          "desc": "Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic."
+        },
+        {
+          "title": "Modern Anesthetic",
+          "desc": "Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic."
+        }
+      ]
+    },
+    "about": {
+      "title": "Dentacare with a personal touch",
+      "desc": "A small river named Duden flows by their place and supplies it with the necessary regelialia.",
+      "list": [
+        {
+          "title": "Well Experience Dentist",
+          "desc": "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts."
+        },
+        {
+          "title": "High Technology Facilities",
+          "desc": "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts."
+        },
+        {
+          "title": "Comfortable Clinics",
+          "desc": "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts."
+        }
+      ]
+    },
+    "dentist": {
+      "title": "Meet Our Experience Dentist",
+      "desc": "A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences"
+    },
+    "clinic": {
+      "title": "Meet Our Clinic",
+      "desc": "A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences"
+    },
+    "service": {
+      "title": "Our Best Pricing",
+      "desc": "A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences"
+    },
+    "newsletter": {
+      "title": "Subcribe to our Newsletter",
+      "desc": "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in",
+      "placeholder": "Keyword",
+      "action": "Subcribe"
+    },
+    "quote": {
+      "title": "DentaCare Procedure & High Quality Service",
+      "desc": "Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar. Because there were thousands of bad Commas, wild Question Marks and devious Semikoli",
+      "list": ["Consectetur adipisicing elit", "Adipisci repellat accusamus", "Tempore reprehenderit vitae"],
+      "form": {
+        "title": "Get a Free Quote",
+        "placeHolder": {
+          "fullName": "Full Name",
+          "email": "Email",
+          "phone": "Phone",
+          "website": "Website",
+          "message": "Message"
+        },
+        "action": "order now"
+      }
+    },
+    "footer": {
+      "desc": "Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.",
+      "heading": ["Quick Links", "Office"],
+      "links": {
+        "address": "203 Fake St. Mountain View, San Francisco, California, USA",
+        "phone": "+84879496314",
+        "mail": "ducndmse151198@fpt.edu.vn",
+        "about": "about",
+        "service": "service",
+        "feature": "feature",
+        "clinic": "clinic",
+        "dentist": "dentist"
+      },
+      "copyRight": ["Copyright ©2022 All rights reserved | This template is made", "by {{name}}"]
     }
   }
 }

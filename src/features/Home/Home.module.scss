@@ -1,19 +1,85 @@
 @import '../../app/styles/variables.scss';
 
+//#region common
+.carousel-p-1 {
+  padding-left: $gap-carousel-item;
+  padding-right: $gap-carousel-item;
+}
+//#endregion
+
+//#region about
 .about-icon {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.clinic-item,
-.dentist-item {
-  padding: 0 $gap-carousel-item;
-}
+//#endregion
 
+//#region clinic
 .clinic-item {
   text-transform: capitalize;
   &:hover {
     color: $primary-500;
   }
 }
+//#endregion
+
+//#region service
+.service-item {
+  &-procedure {
+    color: $grey-70;
+
+    & > * {
+      padding: 1rem 0;
+      color: inherit;
+    }
+
+    & > *:nth-child(odd) {
+      background: $grey-50;
+    }
+
+    &.dark {
+      color: white;
+
+      & > *:nth-child(odd) {
+        background: $primary-500;
+      }
+    }
+  }
+
+  &-action {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+  }
+
+  &:hover {
+    border-color: $primary-500;
+
+    .service-item-action {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+//#endregion
+
+//#region images
+.image-item {
+  &-wrapper {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+  }
+  &:hover {
+    .image-item-wrapper {
+      opacity: 1;
+      visibility: visible;
+    }
+    .image-item-box {
+      animation: rotate 1s cubic-bezier(0.215, 0.61, 0.355, 1) both;
+    }
+  }
+}
+//#endregion

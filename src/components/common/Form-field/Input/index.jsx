@@ -5,7 +5,7 @@ import { COLORS } from '~/app/constants';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 
 const InputField = (props) => {
-  const { name, errors, control, type = 'text', placeholder, rightIcon, rightIconActive } = props;
+  const { name, errors, control, type = 'text', placeholder, rightIcon, rightIconActive, ...passProps } = props;
   const [isFocus, setIsFocus] = useState(false);
   const { colorMode } = useColorMode();
 
@@ -41,6 +41,7 @@ const InputField = (props) => {
                 _placeholder={{ color: colorMode === 'light' ? 'grey.500' : 'white.200' }}
                 h="3.5rem"
                 fontSize="1.2rem"
+                {...passProps}
               />
               {rightIcon && rightIconActive && (
                 <InputRightElement pointerEvents="none" top="50%" right="0.75rem" transform="translateY(-50%)">

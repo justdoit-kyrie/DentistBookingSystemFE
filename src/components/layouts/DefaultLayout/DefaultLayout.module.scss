@@ -1,3 +1,5 @@
+@import '../../../app/styles/variables.scss';
+
 .header-wrapper {
   position: absolute;
   top: 0;
@@ -23,6 +25,13 @@
 
     &.sleep {
       transition: all 0.25s ease;
+    }
+  }
+
+  &.dark {
+    &.scrolled {
+      background: $dark-mode-color-700;
+      color: white;
     }
   }
 }

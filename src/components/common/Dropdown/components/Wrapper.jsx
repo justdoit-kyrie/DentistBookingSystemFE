@@ -15,7 +15,6 @@ const Wrapper = ({ label, children, onBack, ...passProps }, ref) => {
       overflow="auto"
       borderRadius="0.5rem"
       zIndex="999"
-      bg="white"
       {...passProps}
     >
       {label && (

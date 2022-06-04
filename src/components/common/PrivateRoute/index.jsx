@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { axios } from '~/apis';
@@ -10,7 +10,7 @@ const PrivateRoute = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     (async () => {
       try {
         var { refreshToken } = getLocalStorage(AUTH_KEY) || {};

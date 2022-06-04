@@ -1,14 +1,23 @@
-import { Box } from '@chakra-ui/react';
+import { Box, useMediaQuery } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { TitleBlock } from '..';
 
 const FeatureBlock = (props) => {
-  const { effect, header, children } = props;
+  const { effect, header, mt = '7rem', children, id } = props;
   const { title, desc } = header;
+
+  const [isLessThan1023] = useMediaQuery('(max-width: 1023px)');
+
   return (
     <Box
-      mt="7rem"
+      sx={{
+        '@media screen and (max-width: 1023px)': {
+          mt: '5rem'
+        }
+      }}
+      id={id}
+      mt={mt}
       className="container"
       as={motion.div}
       variants={effect}
@@ -16,8 +25,8 @@ const FeatureBlock = (props) => {
       whileInView="animate"
       viewport={{ once: true }}
     >
-      <TitleBlock title={title} desc={desc} fontSize="1.5rem" maxW="50%" m="0 auto" textAlign="center" />
-      <Box mt="10rem" position="relative">
+      <TitleBlock title={title} desc={desc} fontSize="1.5rem" m="0 auto" textAlign="center" />
+      <Box mt={isLessThan1023 ? '7rem' : '10rem'} position="relative">
         {children}
       </Box>
     </Box>

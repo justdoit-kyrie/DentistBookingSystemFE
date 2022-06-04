@@ -1,61 +1,69 @@
-/* eslint-disable no-unused-vars */
-import { Box, Circle, Flex, Heading, Image, Square, Text } from '@chakra-ui/react';
-import classnames from 'classnames/bind';
-import { motion } from 'framer-motion';
-import { Dropdown } from 'primereact/dropdown';
-import React, { useEffect, useState } from 'react';
+import { Box, Flex, Skeleton, Text, useColorMode } from '@chakra-ui/react';
+import { MultiSelect } from 'primereact/multiselect';
+import React, { useEffect, useRef, useState } from 'react';
+import { withTranslation } from 'react-i18next';
 import { FaCheck } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { axios } from '~/apis';
-import { API_ROUTES, USER_POSITION } from '~/app/constants';
+import { API_CODE, API_ROUTES, HOME_BLOCK_NAME } from '~/app/constants';
 import ABOUT_BG_2 from '~/assets/images/about_2.jpg';
 import FEATURE_BG_1 from '~/assets/images/feature_1.png';
 import FEATURE_BG_2 from '~/assets/images/feature_2.png';
 import FEATURE_BG_3 from '~/assets/images/feature_3.png';
 import FEATURE_BG_4 from '~/assets/images/feature_4.png';
-import { CustomCarousel } from '~/components';
-import { Dentist, TitleBlock } from './components';
-import FeatureBlock from './components/FeatureBlock';
-import { OptionAdvanceDropdown, SelectedAdvanceDropdown } from './components/Template';
-import { BsTwitter } from 'react-icons/bs';
-import { FaFacebookF, FaInstagram, FaTiktok } from 'react-icons/fa';
-
-import styles from './Home.module.scss';
-
-const cx = classnames.bind(styles);
+import { Footer } from '~/components';
+import {
+  About,
+  Clinic,
+  Dentist,
+  Features,
+  Images,
+  Newsletter,
+  OptionAdvanceDropdown,
+  Quote,
+  SelectedAdvanceDropdown,
+  Service
+} from './components';
+import './Home.scss';
+import GALLERY_1 from '~/assets/images/gallery_1.jpg';
+import GALLERY_2 from '~/assets/images/gallery_2.jpg';
+import GALLERY_3 from '~/assets/images/gallery_3.jpg';
+import GALLERY_4 from '~/assets/images/gallery_4.jpg';
 
 const MOCK_DATA = {
-  title: { value: 'Our Service Keeps you Smile', fontSize: '3rem', color: 'primary.200', fontWeight: 400 },
-  desc: {
-    value: 'A small river named Duden flows by their place and supplies it with the necessary regelialia.',
-    color: 'grey'
-  },
-  category: [
-    {
-      img: FEATURE_BG_1,
-      title: 'Teeth Whitening',
-      desc: 'Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.'
-    },
-    {
-      img: FEATURE_BG_2,
-      title: 'Teeth Cleaning',
-      desc: 'Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.'
-    },
-    {
-      img: FEATURE_BG_3,
-      title: 'Quality Brackets',
-      desc: 'Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.'
-    },
-    {
-      img: FEATURE_BG_4,
-      title: 'Modern Anesthetic',
-      desc: 'Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.'
-    }
-  ],
-  about: {
-    title: { value: 'Dentacare with a personal touch', fontSize: '3rem', color: 'white', fontWeight: 400 },
+  feature: (t) => ({
+    title: { value: t('home.features.title'), fontSize: '3rem', color: 'primary.200', fontWeight: 400 },
     desc: {
-      value: 'A small river named Duden flows by their place and supplies it with the necessary regelialia.',
+      value: t('home.features.desc'),
+      color: 'grey'
+    },
+    category: [
+      {
+        img: FEATURE_BG_1,
+        title: t('home.features.category.0.title'),
+        desc: t('home.features.category.0.desc')
+      },
+      {
+        img: FEATURE_BG_2,
+        title: t('home.features.category.1.title'),
+        desc: t('home.features.category.1.desc')
+      },
+      {
+        img: FEATURE_BG_3,
+        title: t('home.features.category.2.title'),
+        desc: t('home.features.category.2.desc')
+      },
+      {
+        img: FEATURE_BG_4,
+        title: t('home.features.category.3.title'),
+        desc: t('home.features.category.3.desc')
+      }
+    ]
+  }),
+  about: (t) => ({
+    title: { value: t('home.about.title'), fontSize: '3rem', color: 'white', fontWeight: 400 },
+    desc: {
+      value: t('home.about.desc'),
       color: 'white',
       fontSize: '1.5rem'
     },
@@ -63,129 +71,84 @@ const MOCK_DATA = {
     list: [
       {
         icon: FaCheck,
-        title: { value: 'Well Experience Dentist', fontSize: '2rem', color: 'white', fontWeight: 400 },
+        title: { value: t('home.about.list.0.title'), fontSize: '2rem', color: 'white', fontWeight: 400 },
         desc: {
-          value:
-            'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.',
+          value: t('home.about.list.0.desc'),
           fontSize: '1.5rem',
           opacity: 0.8
         }
       },
       {
         icon: FaCheck,
-        title: { value: 'Well Experience Dentist', fontSize: '2rem', color: 'white', fontWeight: 400 },
+        title: { value: t('home.about.list.1.title'), fontSize: '2rem', color: 'white', fontWeight: 400 },
         desc: {
-          value:
-            'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.',
+          value: t('home.about.list.1.desc'),
           fontSize: '1.5rem',
           opacity: 0.8
         }
       },
       {
         icon: FaCheck,
-        title: { value: 'Well Experience Dentist', fontSize: '2rem', color: 'white', fontWeight: 400 },
+        title: { value: t('home.about.list.2.title'), fontSize: '2rem', color: 'white', fontWeight: 400 },
         desc: {
-          value:
-            'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.',
+          value: t('home.about.list.1.desc'),
           fontSize: '1.5rem',
           opacity: 0.8
         }
       }
     ]
-  },
-  dentist: {
-    title: { value: 'Meet Our Experience Dentist', fontSize: '3rem', color: 'primary.200', fontWeight: 400 },
+  }),
+  dentist: (t) => ({
+    title: { value: t('home.dentist.title'), fontSize: '3rem', color: 'primary.200', fontWeight: 400 },
     desc: {
-      value:
-        'A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences',
+      value: t('home.dentist.desc'),
       color: 'grey'
     }
-  },
-  clinic: {
-    title: { value: 'Meet Our Experience Dentist', fontSize: '3rem', color: 'primary.200', fontWeight: 400 },
+  }),
+  clinic: (t) => ({
+    title: { value: t('home.clinic.title'), fontSize: '3rem', color: 'primary.200', fontWeight: 400 },
     desc: {
-      value:
-        'A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences',
+      value: t('home.clinic.desc'),
+      color: 'grey'
+    }
+  }),
+  service: (t) => ({
+    title: { value: t('home.service.title'), fontSize: '3rem', color: 'primary.200', fontWeight: 400 },
+    desc: {
+      value: t('home.service.desc'),
       color: 'grey'
     },
     list: [
       {
-        name: 'duc iu linh',
-        image:
-          'https://images.unsplash.com/photo-1654004762137-0e4025b88119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
+        name: 'test',
+        price: 12,
+        procedure: 'h1 h2'
       },
       {
-        name: 'name',
-        image:
-          'https://images.unsplash.com/photo-1654004762137-0e4025b88119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
+        name: 'test',
+        price: 12,
+        procedure: 'h1 h2'
       },
       {
-        name: 'name',
-        image:
-          'https://images.unsplash.com/photo-1654004762137-0e4025b88119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
+        name: 'test',
+        price: 12,
+        procedure: 'h1 h2'
       },
       {
-        name: 'name',
-        image:
-          'https://images.unsplash.com/photo-1654004762137-0e4025b88119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
-      },
-      {
-        name: 'name',
-        image:
-          'https://images.unsplash.com/photo-1654004762137-0e4025b88119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
-      },
-      {
-        name: 'name',
-        image:
-          'https://images.unsplash.com/photo-1654004762137-0e4025b88119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
-      },
-      {
-        name: 'name',
-        image:
-          'https://images.unsplash.com/photo-1654004762137-0e4025b88119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
-      },
-      {
-        name: 'name',
-        image:
-          'https://images.unsplash.com/photo-1654004762137-0e4025b88119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
-      },
-      {
-        name: 'name',
-        image:
-          'https://images.unsplash.com/photo-1654004762137-0e4025b88119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
-      },
-      {
-        name: 'name',
-        image:
-          'https://images.unsplash.com/photo-1654004762137-0e4025b88119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
-      },
-      {
-        name: 'name',
-        image:
-          'https://images.unsplash.com/photo-1654004762137-0e4025b88119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
-      },
-      {
-        name: 'name',
-        image:
-          'https://images.unsplash.com/photo-1654004762137-0e4025b88119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
-      },
-      {
-        name: 'name',
-        image:
-          'https://images.unsplash.com/photo-1654004762137-0e4025b88119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
-      },
-      {
-        name: 'name',
-        image:
-          'https://images.unsplash.com/photo-1654004762137-0e4025b88119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
-      },
-      {
-        name: 'name',
-        image:
-          'https://images.unsplash.com/photo-1654004762137-0e4025b88119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
+        name: 'test',
+        price: 12,
+        procedure: 'h1 h2'
       }
     ]
-  }
+  }),
+  newsletter: (t) => ({
+    title: { value: t('home.newsletter.title'), fontSize: '3rem', color: 'white', fontWeight: 400 },
+    desc: {
+      value: t('home.newsletter.desc'),
+      color: 'white'
+    }
+  }),
+  preview: [GALLERY_1, GALLERY_2, GALLERY_3, GALLERY_4]
 };
 
 const effect = {
@@ -215,255 +178,236 @@ const children_effect = {
   }
 };
 
-const ABOUT_ROTATE = 45;
+const HomePage = ({ t }) => {
+  const { feature, about, dentist, clinic, service, newsletter, preview } = MOCK_DATA;
 
-const HomePage = () => {
-  const { title, desc, category, about, dentist, clinic } = MOCK_DATA;
   const [selectedClinic, setSelectedClinic] = useState();
   const [selectedDentist, setSelectedDentist] = useState();
   const [dentists, setDentists] = useState([]);
-  const navigate = useNavigate();
+  const [dentistFilter, setDentistFilter] = useState([]);
+  const [dentistOpts, setDentistOpts] = useState([]);
+  const [clinicsOpts, setClinicsOpts] = useState([]);
+  const [clinicsFilter, setClinicsFilter] = useState([]);
+  const [clinics, setClinics] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const loadLazyTimeout = useRef(null);
+  const { colorMode } = useColorMode();
 
-  const renderHeader = ({ ...passProps }) => {
+  const panelFooterTemplate = (name) => {
+    let length;
+    switch (name) {
+      case HOME_BLOCK_NAME.dentist:
+        length = selectedDentist ? selectedDentist.length : 0;
+        break;
+      case HOME_BLOCK_NAME.clinic:
+        length = selectedClinic ? selectedClinic.length : 0;
+        break;
+    }
+
     return (
-      <Box
-        className="carousel-header"
-        mb="1rem"
-        py="1rem"
-        borderTop="1px solid #dee2e6"
-        borderBottom="1px solid #dee2e6"
-        bg="#f8f9fa"
-      >
-        <Dropdown valueTemplate={SelectedAdvanceDropdown} itemTemplate={OptionAdvanceDropdown} {...passProps} />
+      <Box p="1rem 1.5rem" fontSize="1.4rem" color={colorMode === 'light' ? 'black' : 'white'}>
+        <Text as="span" fontWeight="600">
+          {length}
+        </Text>{' '}
+        item{length > 1 ? 's' : ''} selected.
       </Box>
     );
   };
 
-  const renderAboutList = () =>
-    about.list.map((item, idx) => {
-      const Icon = item.icon;
-      return (
-        <Flex as={motion.div} variants={children_effect} key={`${idx}`} gap="4rem" align="center">
-          <Box position="relative">
-            <Square
-              as={motion.div}
-              initial={{ rotate: ABOUT_ROTATE }}
-              whileHover={{ rotate: 360 - ABOUT_ROTATE, transition: { type: 'spring', duration: 1.5 } }}
-              border="0.5px solid white"
-              size="6rem"
-            ></Square>
-            <Icon fontSize="2rem" color="white" className={cx('about-icon')} />
-          </Box>
-          <TitleBlock title={item.title} desc={item.desc} />
-        </Flex>
-      );
-    });
+  const renderHeader = ({ ...passProps }) => {
+    const onLazyLoad = () => {
+      setLoading(true);
 
-  const renderClinicList = (clinic) => {
+      if (loadLazyTimeout.current) {
+        clearTimeout(loadLazyTimeout.current);
+      }
+
+      //imitate delay of a backend call
+      loadLazyTimeout.current = setTimeout(() => {
+        setLoading(false);
+      }, Math.random() * 500 + 250);
+    };
+
     return (
-      <Flex w="100%" direction="column" align="flex-start" gap="1rem" cursor="pointer" className={cx('clinic-item')}>
-        <Image src={clinic.image} />
-        <Text fontSize="1.6rem">{clinic.name}</Text>
-      </Flex>
+      <Box
+        sx={{
+          '@media screen and (max-width: 767px)': {
+            p: '1rem',
+            mb: '2rem'
+          }
+        }}
+        className="carousel-header"
+        mb="1rem"
+        p="1rem 2rem"
+        borderTop="1px solid"
+        borderBottom="1px solid"
+        borderColor={colorMode === 'light' ? '#dee2e6' : 'grey'}
+      >
+        <MultiSelect
+          className={colorMode === 'light' ? '' : 'dark'}
+          itemTemplate={OptionAdvanceDropdown}
+          selectedItemTemplate={SelectedAdvanceDropdown}
+          emptyFilterMessage="no result can be found"
+          panelClassName={colorMode === 'light' ? '' : 'dropdown-panel dark'}
+          virtualScrollerOptions={{
+            lazy: true,
+            onLazyLoad: onLazyLoad,
+            itemSize: 1,
+            showLoader: true,
+            loading: loading,
+            delay: 250,
+            loadingTemplate: () => {
+              return (
+                <Flex align="center" p="1rem">
+                  <Skeleton width="100%" height="1.7rem" />
+                </Flex>
+              );
+            }
+          }}
+          {...passProps}
+        />
+      </Box>
     );
   };
 
-  const renderDentistList = (item) => (
-    <Box className={cx('dentist-item')}>
-      <Flex
-        borderRadius="12px"
-        w="100%"
-        align="center"
-        direction="column"
-        justify="center"
-        p="2rem 2rem 3rem"
-        border="1px solid grey"
-      >
-        <Circle size="15rem" overflow="hidden">
-          <Image src={item.avatar} alt="avatar" />
-        </Circle>
-        <Flex
-          direction="column"
-          justify="center"
-          align="center"
-          fontSize="1.8rem"
-          textTransform="capitalize"
-          m="2rem 0 2.5rem"
-        >
-          <Heading fontWeight="500">{`${item.firstName} ${item.lastName}`}</Heading>
-          <Text fontSize="1.4rem" color="primary.500" mt="1rem">
-            {USER_POSITION[item.position]}
-          </Text>
-        </Flex>
-        <Text mb="3rem" lineHeight="1.6" fontSize="1.4rem" textAlign="center" color="grey">
-          {item.description}
-        </Text>
-        <Flex justify="space-evenly" color="primary.500" w="100%" maxW="60%" fontSize="1.6rem">
-          <Link to="#" target="_blank">
-            <BsTwitter color="inherit" />
-          </Link>
-          <Link to="#" target="_blank">
-            <FaFacebookF color="inherit" />
-          </Link>
-          <Link to="#" target="_blank">
-            <FaInstagram color="inherit" />
-          </Link>
-          <Link to="#" target="_blank">
-            <FaTiktok color="inherit" />
-          </Link>
-        </Flex>
-      </Flex>
-    </Box>
-  );
+  const handleFilterDropdown = (name) => {
+    let unique;
+    switch (name) {
+      case HOME_BLOCK_NAME.dentist:
+        if (selectedDentist?.length > 0) {
+          unique = selectedDentist.map((item) => dentistOpts.find((v) => v.id === item.id));
+          setDentistFilter(unique);
+        } else {
+          setDentistFilter(dentists);
+        }
+        break;
+      case HOME_BLOCK_NAME.clinic:
+        if (selectedClinic?.length > 0) {
+          unique = selectedClinic.map((item) => clinicsOpts.find((v) => v.id === item.id));
+          setClinicsFilter(unique);
+        } else {
+          setClinicsFilter(clinics);
+        }
+        break;
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      const [
+        { code: dentistCode, content: dentistContent },
+        { code: dentistOptCode, content: dentistOptContent },
+        { code: clinicCode, content: clinicContent },
+        { code: clinicOptCode, content: clinicOptContent }
+      ] = await Promise.all([
+        axios.get(API_ROUTES['get-dentists']),
+        axios.get(API_ROUTES['get-dentists'], {
+          params: {
+            _all: true
+          }
+        }),
+        axios.get(API_ROUTES['get-clinics']),
+        axios.get(API_ROUTES['get-clinics'], {
+          params: {
+            _all: true
+          }
+        })
+      ]);
+
+      if (
+        +dentistCode === API_CODE.invalidToken ||
+        +dentistOptCode === API_CODE.invalidToken ||
+        +clinicCode === API_CODE.invalidToken ||
+        +clinicOptCode === API_CODE.invalidToken
+      ) {
+        throw new Error('have to login first');
+      }
+
+      if (+dentistCode === API_CODE.OK) {
+        setDentists(dentistContent);
+        setDentistFilter(dentistContent);
+      } else {
+        throw new Error('can not fetch dentist data');
+      }
+
+      if (+dentistOptCode === API_CODE.OK) {
+        setDentistOpts(dentistOptContent);
+      } else {
+        throw new Error('can not fetch all dentist data');
+      }
+
+      if (+clinicCode === API_CODE.OK) {
+        setClinics(clinicContent);
+        setClinicsFilter(clinicContent);
+      } else {
+        throw new Error('can not fetch clinic data');
+      }
+
+      if (+clinicOptCode === API_CODE.OK) {
+        setClinicsOpts(clinicOptContent);
+      } else {
+        throw new Error('can not fetch all clinic data');
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   useEffect(() => {
-    let route = '';
-    if (selectedClinic) {
-      route = `/clinic/${selectedClinic.id}`;
+    if (selectedClinic?.length === 0) {
+      handleFilterDropdown(HOME_BLOCK_NAME.clinic);
     }
 
-    if (selectedDentist) {
-      route = `/dentist/${selectedDentist.id}`;
+    if (selectedDentist?.length === 0) {
+      handleFilterDropdown(HOME_BLOCK_NAME.dentist);
     }
-    return navigate(route);
   }, [selectedClinic, selectedDentist]);
 
   useEffect(() => {
-    (async () => {
-      const { content } = await axios.get(API_ROUTES['get-dentists']);
-      if (content?.length > 0) setDentists(content);
-    })();
+    fetchData();
   }, []);
 
   return (
     <>
-      {/* features */}
-      <Box
-        className="container"
-        as={motion.div}
-        variants={effect}
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-      >
-        <TitleBlock title={title} desc={desc} fontSize="1.5rem" maxW="50%" m="0 auto" textAlign="center" />
-        <Flex gap="2rem" mt="5rem">
-          {category.map(({ img, title, desc }, index) => (
-            <Flex
-              as={motion.div}
-              variants={children_effect}
-              key={`${index}`}
-              flex="1"
-              direction="column"
-              gap="1.5rem"
-              justify="center"
-              align="center"
-              fontSize="1.6rem"
-              p="2rem"
-            >
-              <Flex
-                justify="center"
-                align="center"
-                p="2rem"
-                bg="#f8fbff"
-                borderRadius="100rem"
-                w="10rem"
-                h="10rem"
-                mb="1rem"
-              >
-                <Image w="85%" h="85%" src={img} alt="image" />
-              </Flex>
-              <Heading fontWeight="400" fontSize="2.5rem">
-                {title}
-              </Heading>
-              <Text color="grey" textAlign="center">
-                {desc}
-              </Text>
-            </Flex>
-          ))}
-        </Flex>
-      </Box>
+      <Features effect={effect} children_effect={children_effect} feature={feature(t)} />
 
-      {/* about */}
-      {about && (
-        <Flex
-          position="relative"
-          zIndex="3"
-          maxH="68.4rem"
-          bg="linear-gradient(200deg, #2f89fc 0%, #2cbcbc 100%);"
-          mt="7rem"
-        >
-          <Box flex={1}>
-            <Image src={about.image} w="100%" h="100%" alt="image" />
-          </Box>
-          <Flex flex={1} align="center">
-            <Box
-              h="80%"
-              w="80%"
-              pl="10rem"
-              as={motion.div}
-              variants={effect}
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true }}
-            >
-              <TitleBlock title={about.title} desc={about.desc} />
+      {about && <About about={about(t)} effect={effect} children_effect={children_effect} />}
 
-              <Flex direction="column" gap="6rem" mt="5rem">
-                {renderAboutList()}
-              </Flex>
-            </Box>
-          </Flex>
-        </Flex>
-      )}
+      <Dentist
+        dentist={dentist(t)}
+        dentists={dentistFilter}
+        dentistOpts={dentistOpts}
+        effect={effect}
+        renderHeader={renderHeader}
+        selectedDentist={selectedDentist}
+        setSelectedDentist={setSelectedDentist}
+        onFilterDropdown={handleFilterDropdown}
+        panelFooterTemplate={panelFooterTemplate}
+      />
 
-      {/* dentist */}
-      <FeatureBlock header={dentist} effect={effect}>
-        {dentists && (
-          <CustomCarousel
-            header={renderHeader({
-              value: selectedDentist,
-              options: dentists,
-              optionLabel: 'selectedDentist',
-              onChange: (e) => setSelectedDentist(e.value),
-              filter: true,
-              showClear: true,
-              filterBy: 'firstName, lastName',
-              placeholder: 'Enter a dentist name'
-            })}
-            callback={renderDentistList}
-            circular
-            value={dentists}
-            numVisible={3}
-            numScroll={1}
-            contentClassName="no-indicators custom-action square"
-          />
-        )}
-      </FeatureBlock>
+      <Clinic
+        clinic={clinic(t)}
+        clinics={clinicsFilter}
+        clinicOpts={clinicsOpts}
+        effect={effect}
+        renderHeader={renderHeader}
+        selectedClinic={selectedClinic}
+        setSelectedClinic={setSelectedClinic}
+        onFilterDropdown={handleFilterDropdown}
+        panelFooterTemplate={panelFooterTemplate}
+      />
 
-      {/* clinic */}
-      <FeatureBlock header={dentist} effect={effect}>
-        <CustomCarousel
-          header={renderHeader({
-            value: selectedClinic,
-            options: clinic.list,
-            optionLabel: 'selectedClinic',
-            onChange: (e) => setSelectedClinic(e.value),
-            filter: true,
-            showClear: true,
-            filterBy: 'name',
-            placeholder: 'Enter a clinic name'
-          })}
-          callback={renderClinicList}
-          circular
-          value={clinic.list}
-          numVisible={3}
-          numScroll={1}
-          contentClassName="no-indicators custom-action square"
-        />
-      </FeatureBlock>
+      <Service service={service(t)} effect={effect} />
+
+      <Newsletter newsletter={newsletter(t)} effect={effect} />
+
+      <Images preview={preview} />
+
+      <Quote effect={effect} />
+
+      <Footer />
     </>
   );
 };
 
-export default HomePage;
+export default withTranslation()(HomePage);
