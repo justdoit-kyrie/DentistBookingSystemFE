@@ -26,6 +26,7 @@ export const PATH = {
   home: '/',
   login: '/login',
   notFound: '*',
+  register: '/register',
   clinic: '/clinic/:id',
   dentist: '/dentist/:id'
 };
@@ -64,6 +65,23 @@ export const ORTHERS_LOGIN_METHOD = [
 
 // regex for password
 export const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]*$/;
+
+// regex for email
+export const EMAIL_REGEX = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
+
+// regex for phone number
+export const PHONE_REGEX = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/;
+
+// regex for user name
+export const USER_REGEX = /^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$/;
+
+// regex for first & last name
+export const NAME_REGEX = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+
+// regex for date
+export const DATE_FORMAT = {
+  'yyyy-MM-DD': 'yyyy-MM-DD'
+};
 
 // api routes
 export const API_ROUTES = {
