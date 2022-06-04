@@ -27,7 +27,6 @@ const Clinic = (props) => {
   const renderClinicList = (clinic) => {
     return (
       <Flex
-        w="100%"
         direction="column"
         align="flex-start"
         gap="1rem"
@@ -35,8 +34,12 @@ const Clinic = (props) => {
         className={cx('clinic-item', 'carousel-p-1')}
         onClick={() => navigate(PATH.clinic.replace(':id', clinic.id))}
       >
-        {/* <Image src={clinic.image} /> */}
-        <Image src="https://images.unsplash.com/photo-1648737154547-b0dfd281c51e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60" />
+        <Image
+          w="100%"
+          maxH="50vh"
+          objectFit="cover"
+          src="https://images.unsplash.com/photo-1648737154547-b0dfd281c51e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60"
+        />
         <Text fontSize="1.6rem">{clinic.name}</Text>
       </Flex>
     );
