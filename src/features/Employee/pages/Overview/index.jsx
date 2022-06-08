@@ -1,5 +1,17 @@
 /* eslint-disable no-unused-vars */
-import { Box, Button, Circle, Flex, Grid, Heading, Image, Square, Text, useColorMode } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Circle,
+  Flex,
+  Grid,
+  Heading,
+  Image,
+  Square,
+  Text,
+  useColorMode,
+  useMediaQuery
+} from '@chakra-ui/react';
 import classNames from 'classnames/bind';
 import { Calendar } from 'primereact/calendar';
 import { Column } from 'primereact/column';
@@ -241,7 +253,9 @@ const OverViewPage = ({ t }) => {
                   fontSize="2.5rem"
                   lineHeight="1.2"
                 >{`${number}k`}</Heading>
-                <Text textTransform="capitalize">{desc}</Text>
+                <Text textTransform="capitalize" lineHeight="1.4">
+                  {desc}
+                </Text>
               </Flex>
             </Flex>
           );
@@ -252,6 +266,9 @@ const OverViewPage = ({ t }) => {
         sx={{
           '@media screen and (max-width: 1439px)': {
             gridTemplateRows: '233px 1fr'
+          },
+          '@media screen and (max-width: 1279px)': {
+            gridTemplateRows: '362px 1fr'
           }
         }}
         flex="1"

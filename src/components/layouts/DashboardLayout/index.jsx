@@ -1,5 +1,22 @@
 /* eslint-disable no-unused-vars */
-import { Box, Center, Flex, Input, InputGroup, InputLeftElement, useColorMode } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useColorMode,
+  useMediaQuery
+} from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { BiBell, BiSearch } from 'react-icons/bi';
@@ -59,6 +76,8 @@ const DashboardLayout = ({ t, children }) => {
   const [searchField, setSearchField] = useState('');
   const { colorMode, toggleColorMode } = useColorMode();
 
+  const [isLessThan1279] = useMediaQuery('(max-width: 1279px)');
+
   const tmp = _.get(MOCK_DATA, 'DROPDOWN_ITEMS[0].children.data');
   tmp.forEach((item, idx) => {
     _.set(
@@ -67,6 +86,13 @@ const DashboardLayout = ({ t, children }) => {
       colorMode === item.label ? () => {} : toggleColorMode
     );
   });
+
+  if (isLessThan1279)
+    return (
+      <Flex justify="center" align="center" h="100vh">
+        <Heading fontSize="4rem">Please use laptop for this features</Heading>
+      </Flex>
+    );
 
   return (
     <Center w="100vw" h="100vh">
