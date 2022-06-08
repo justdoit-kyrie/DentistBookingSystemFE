@@ -26,7 +26,7 @@ export const PATH = {
   login: '/login',
   notFound: '*',
   register: '/register',
-  assistant: {
+  customer: {
     home: '/',
     clinic: '/clinic/:id',
     dentist: '/dentist/:id'

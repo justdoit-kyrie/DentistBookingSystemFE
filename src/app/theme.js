@@ -138,6 +138,14 @@ export const theme = extendTheme({
         height: '100%',
         bg: 'rgba(0,0,0,0.17)',
         zIndex: '1'
+      },
+      '.hide-scrollbar': {
+        '-ms-overflow-style': 'none',
+        'scrollbar-width': 'none',
+
+        '&::-webkit-scrollbar': {
+          display: 'none'
+        }
       }
     }
   },

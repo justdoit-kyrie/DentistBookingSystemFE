@@ -38,17 +38,17 @@ export const ROUTES = [
     layout: null
   },
   {
-    path: PATH.assistant.home,
+    path: PATH.customer.home,
     component: HomePage
   },
   {
-    path: PATH.assistant.dentist,
+    path: PATH.customer.dentist,
     component: DentistPage,
     isPublic: true,
     layout: null
   },
   {
-    path: PATH.assistant.clinic,
+    path: PATH.customer.clinic,
     component: ClinicPage,
     isPublic: true,
     layout: null

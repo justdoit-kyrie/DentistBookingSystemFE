@@ -83,7 +83,7 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
         const { accessToken, refreshToken, user } = res;
         dispatch(loginSuccess({ ...user }));
         setLocalStorage(AUTH_KEY, { accessToken, refreshToken });
-        return navigate(PATH.home);
+        return navigate(PATH.customer.home);
       }
     } catch (error) {
       dispatch(loginFailed());
