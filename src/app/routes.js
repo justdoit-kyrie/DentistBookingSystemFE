@@ -1,7 +1,18 @@
-import { AuthLayout, NotFound } from '~/components';
-
-import { ClinicPage, DentistPage, HomePage, LoginPage, RegisterPage } from '~/features';
-
+import { AuthLayout, DashboardLayout, NotFound } from '~/components';
+import {
+  AppointmentPage,
+  BlogPage,
+  ClinicPage,
+  DentistPage,
+  HomePage,
+  LoginPage,
+  MessagePage,
+  MyPatientsPage,
+  OverViewPage,
+  ProfilePage,
+  RegisterPage,
+  SettingPage
+} from '~/features';
 import { PATH } from './constants';
 
 //#region routes
@@ -10,12 +21,10 @@ import { PATH } from './constants';
  * @param {React Element} component
  * @param {React Element} layout - default is DefaultLayout, if null don't use layout, if false, use layout
  * @param {Boolean} isPublic - if true, the route is public and default it is private
+ * @param {Number} role -  0: head, 1: dentist, 2: assistant and default is assistant
  */
 export const ROUTES = [
-  {
-    path: PATH.home,
-    component: HomePage
-  },
+  { path: PATH.register, component: RegisterPage, layout: AuthLayout, isPublic: true },
   {
     path: PATH.login,
     component: LoginPage,
@@ -29,17 +38,27 @@ export const ROUTES = [
     layout: null
   },
   {
-    path: PATH.dentist,
+    path: PATH.assistant.home,
+    component: HomePage
+  },
+  {
+    path: PATH.assistant.dentist,
     component: DentistPage,
     isPublic: true,
     layout: null
   },
   {
-    path: PATH.clinic,
+    path: PATH.assistant.clinic,
     component: ClinicPage,
     isPublic: true,
     layout: null
   },
-  { path: PATH.register, component: RegisterPage, layout: AuthLayout, isPublic: true }
+  { path: PATH.dentist.home, component: OverViewPage, layout: DashboardLayout, role: 1, isPublic: true },
+  { path: PATH.dentist.appointment, component: AppointmentPage, layout: DashboardLayout, role: 1, isPublic: true },
+  { path: PATH.dentist.blog, component: BlogPage, layout: DashboardLayout, role: 1, isPublic: true },
+  { path: PATH.dentist.message, component: MessagePage, layout: DashboardLayout, role: 1, isPublic: true },
+  { path: PATH.dentist.myPatients, component: MyPatientsPage, layout: DashboardLayout, role: 1, isPublic: true },
+  { path: PATH.dentist.profile, component: ProfilePage, layout: DashboardLayout, role: 1, isPublic: true },
+  { path: PATH.dentist.setting, component: SettingPage, layout: DashboardLayout, role: 1, isPublic: true }
 ];
 //#endregion

@@ -1,0 +1,14 @@
+@import '../../../app/styles/variables.scss';
+
+.link {
+  color: $grey-300;
+  border-radius: 12px;
+  &:hover:not(.active) {
+    background: $grey-200;
+  }
+
+  &.active {
+    background: $primary-500;
+    color: white;
+  }
+}

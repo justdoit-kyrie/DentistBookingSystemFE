@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { axios } from '~/apis';
@@ -6,11 +6,12 @@ import { AUTH_KEY } from '~/app/constants';
 import { loginSuccess } from '~/features/Auth/authSlice';
 import { getLocalStorage, removeLocalStorage } from '~/utils';
 
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = ({ role, children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  console.log({ role });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     (async () => {
       try {
         var { refreshToken } = getLocalStorage(AUTH_KEY) || {};

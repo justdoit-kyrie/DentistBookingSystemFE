@@ -1,4 +1,16 @@
 {
+  "common": {
+    "dropdown": {
+      "profile": "xem thông tin",
+      "language": "ngôn ngữ",
+      "logout": "đăng xuất",
+      "en": "english",
+      "vi": "việt nam",
+      "theme": "Chế độ",
+      "light": "sáng",
+      "dark": "tối"
+    }
+  },
   "auth": {
     "login": {
       "title": "{{logo}} đăng nhập",
@@ -47,13 +59,6 @@
         "doctors": "bác sĩ",
         "blog": "blog",
         "contact": "liên lạc"
-      },
-      "dropdown": {
-        "profile": "xem thông tin",
-        "language": "ngôn ngữ",
-        "logout": "đăng xuất",
-        "en": "english",
-        "vi": "việt nam"
       },
       "banners": {
         "content": [

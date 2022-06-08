@@ -1,4 +1,16 @@
 {
+  "common": {
+    "dropdown": {
+      "profile": "View profile",
+      "language": "Language",
+      "logout": "Log out",
+      "en": "english",
+      "vi": "việt nam",
+      "theme": "Theme",
+      "light": "Light",
+      "dark": "Dark"
+    }
+  },
   "auth": {
     "login": {
       "title": "{{logo}} login",
