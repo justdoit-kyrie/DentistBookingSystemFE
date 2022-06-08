@@ -16,6 +16,17 @@ export const theme = extendTheme({
       100: 'rgba(255, 255, 255, 0.05)',
       500: '#191919'
     },
+    purple: {
+      400: '#a399f6',
+      500: '#7a6efe'
+    },
+    yellow: {
+      500: '#ffa901'
+    },
+    red: {
+      100: '#feeeee',
+      200: '#ff5363'
+    },
     grey: {
       50: '#f5f5f5',
       70: '#808080',
@@ -28,6 +39,8 @@ export const theme = extendTheme({
     primary: {
       100: '#F5F2EA',
       200: '#2cafcb',
+      250: '#e9f6fe',
+      300: '#24a8fa',
       400: '#93B4FB',
       500: '#2f89fc'
     },
@@ -36,10 +49,19 @@ export const theme = extendTheme({
       500: '#3a486e'
     },
     desc: {
+      300: 'rgba(255, 255, 255, 0.3)',
       500: 'rgba(255, 255, 255, 0.8)'
     },
     linearGradient: {
       100: 'linear-gradient(200deg, #2f89fc 0%, #2cbcbc 100%)'
+    },
+    boxShadow: {
+      100: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
+    },
+    dark: {
+      500: '#2c3650',
+      600: '#232b3e',
+      700: '#1a202c'
     }
   },
   styles: {
@@ -152,6 +174,10 @@ export const theme = extendTheme({
       },
       // 3. We can add a new visual variant
       variants: {
+        danger: {
+          bg: 'red.100',
+          color: 'red.200'
+        },
         primary: {
           bg: 'primary.400'
         },

@@ -1,4 +1,16 @@
 {
+  "common": {
+    "dropdown": {
+      "profile": "View profile",
+      "language": "Language",
+      "logout": "Log out",
+      "en": "english",
+      "vi": "việt nam",
+      "theme": "Theme",
+      "light": "Light",
+      "dark": "Dark"
+    }
+  },
   "auth": {
     "login": {
       "title": "{{logo}} login",
@@ -157,6 +169,52 @@
         "dentist": "dentist"
       },
       "copyRight": ["Copyright ©2022 All rights reserved | This template is made", "by {{name}}"]
+    }
+  },
+  "dashboard": {
+    "dentist": {
+      "sidebar": {
+        "overview": "overview",
+        "appointment": "appointment",
+        "myPatients": "my patients",
+        "message": "message",
+        "blog": "blog",
+        "profile": "profile",
+        "setting": "setting"
+      },
+      "header": {
+        "title": "Welcome, Dr {{name}}",
+        "desc": "Have a nice dat at great work",
+        "subTittle": ["Appointment Request", "Patients", "Today Appointment", "Recent Patients"],
+        "links": {
+          "all": "view all"
+        },
+        "table-header": {
+          "name": "Name",
+          "email": "Email",
+          "date": "Date",
+          "gender": "Gender",
+          "disease": "Disease",
+          "status": "Status"
+        }
+      },
+      "features": [
+        {
+          "label": "Appointments"
+        },
+        {
+          "label": "Total Patient"
+        },
+        {
+          "label": "Clinic Consulting"
+        },
+        {
+          "label": "Video Consulting"
+        }
+      ],
+      "placeholder": {
+        "search": "Search Appointment, Patient or etc"
+      }
     }
   }
 }
