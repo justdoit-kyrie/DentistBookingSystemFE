@@ -11,4 +11,12 @@
     background: $primary-500;
     color: white;
   }
+
+  &.dark {
+    color: white;
+
+    &:hover:not(.active) {
+      background: $dark-mode-color-500;
+    }
+  }
 }

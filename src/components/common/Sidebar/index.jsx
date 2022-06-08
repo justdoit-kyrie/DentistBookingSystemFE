@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { Box, Flex, Heading, Image, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, Image, Text, useColorMode } from '@chakra-ui/react';
 import classNames from 'classnames/bind';
 import _ from 'lodash';
 import React, { Fragment } from 'react';
+import { withTranslation } from 'react-i18next';
 import { AiOutlineCalendar, AiOutlineFileText, AiOutlineSetting } from 'react-icons/ai';
 import { BiMessageRounded } from 'react-icons/bi';
 import { BsGrid } from 'react-icons/bs';
@@ -15,33 +16,33 @@ import styles from './Sidebar.module.scss';
 
 const cx = classNames.bind(styles);
 
-const MOCK_DATA = {
+const MOCK_DATA = (t) => ({
   menu: [
     {
       list: [
         {
           icon: BsGrid,
-          label: 'overview',
+          label: t('dashboard.dentist.sidebar.overview'),
           to: getDestinationURL('overview')
         },
         {
           icon: AiOutlineCalendar,
-          label: 'appointment',
+          label: t('dashboard.dentist.sidebar.appointment'),
           to: getDestinationURL('appointment')
         },
         {
           icon: FiUser,
-          label: 'my patients',
+          label: t('dashboard.dentist.sidebar.myPatients'),
           to: getDestinationURL('myPatients')
         },
         {
           icon: BiMessageRounded,
-          label: 'message',
+          label: t('dashboard.dentist.sidebar.message'),
           to: getDestinationURL('message')
         },
         {
           icon: AiOutlineFileText,
-          label: 'blog',
+          label: t('dashboard.dentist.sidebar.blog'),
           to: getDestinationURL('blog')
         }
       ]
@@ -51,25 +52,27 @@ const MOCK_DATA = {
       list: [
         {
           icon: AiOutlineSetting,
-          label: 'profile',
+          label: t('dashboard.dentist.sidebar.profile'),
           to: getDestinationURL('profile')
         },
         {
           icon: CgProfile,
-          label: 'setting',
+          label: t('dashboard.dentist.sidebar.setting'),
           to: getDestinationURL('setting')
         }
       ]
     }
   ]
-};
+});
 
-const Sidebar = () => {
-  const { menu } = MOCK_DATA;
+const Sidebar = ({ t }) => {
+  const { menu } = MOCK_DATA(t);
+
+  const { colorMode } = useColorMode();
 
   return (
     <Flex
-      flex="0.3"
+      flex="0.2"
       boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
       borderRadius="inherit"
       p="2rem"
@@ -98,7 +101,15 @@ const Sidebar = () => {
           return (
             <Fragment key={`${index}`}>
               {title && (
-                <Heading textTransform="uppercase" mt="2rem">
+                <Heading
+                  sx={{
+                    '@media screen and (max-width: 1439px)': {
+                      fontSize: '1.5rem'
+                    }
+                  }}
+                  textTransform="uppercase"
+                  mt="2rem"
+                >
                   {title}
                 </Heading>
               )}
@@ -109,9 +120,19 @@ const Sidebar = () => {
                     <NavLink
                       key={`${index}`}
                       to={to}
-                      className={({ isActive }) => (isActive ? cx('link', 'active') : cx('link'))}
+                      className={({ isActive }) =>
+                        cx('link', {
+                          active: isActive,
+                          dark: colorMode === 'dark'
+                        })
+                      }
                     >
                       <Flex
+                        sx={{
+                          '@media screen and (max-width: 1439px)': {
+                            fontSize: '1.5rem'
+                          }
+                        }}
                         gap="1rem"
                         align="center"
                         justify="flex-start"
@@ -136,4 +157,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default withTranslation()(Sidebar);

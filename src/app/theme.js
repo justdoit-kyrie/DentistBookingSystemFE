@@ -57,6 +57,11 @@ export const theme = extendTheme({
     },
     boxShadow: {
       100: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
+    },
+    dark: {
+      500: '#2c3650',
+      600: '#232b3e',
+      700: '#1a202c'
     }
   },
   styles: {

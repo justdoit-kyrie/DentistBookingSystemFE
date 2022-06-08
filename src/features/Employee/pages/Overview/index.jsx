@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
-import { Box, Button, Circle, Flex, Grid, Heading, Image, Square, Text } from '@chakra-ui/react';
+import { Box, Button, Circle, Flex, Grid, Heading, Image, Square, Text, useColorMode } from '@chakra-ui/react';
 import classNames from 'classnames/bind';
 import { Calendar } from 'primereact/calendar';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import React, { useEffect, useState } from 'react';
+import { withTranslation } from 'react-i18next';
 import { AiOutlineCalendar, AiOutlineClose, AiOutlineVideoCamera } from 'react-icons/ai';
 import { BsBuilding, BsCheck } from 'react-icons/bs';
 import { FiUser } from 'react-icons/fi';
@@ -15,30 +16,30 @@ import './Overview.scss';
 
 const cx = classNames.bind(styles);
 
-const MOCK_DATA = {
+const MOCK_DATA = (t) => ({
   statistic: [
     {
       icon: AiOutlineCalendar,
       number: 24.4,
-      desc: 'appointments',
+      desc: t('dashboard.dentist.features.0.label'),
       bg: 'purple.500'
     },
     {
       icon: FiUser,
       number: 166.3,
-      desc: 'total patient',
+      desc: t('dashboard.dentist.features.1.label'),
       bg: 'red.500'
     },
     {
       icon: BsBuilding,
       number: 53.5,
-      desc: 'clinic consulting',
+      desc: t('dashboard.dentist.features.2.label'),
       bg: 'yellow.500'
     },
     {
       icon: AiOutlineVideoCamera,
       number: 28.0,
-      desc: 'video consulting',
+      desc: t('dashboard.dentist.features.3.label'),
       bg: 'primary.300'
     }
   ],
@@ -125,10 +126,10 @@ const MOCK_DATA = {
       status: 'Out-Patient'
     }
   ]
-};
+});
 
-const OverViewPage = () => {
-  const { statistic, week, dataTable } = MOCK_DATA;
+const OverViewPage = ({ t }) => {
+  const { statistic, week, dataTable } = MOCK_DATA(t);
 
   const [date, setDate] = useState(new Date());
   const [minDate, setMinDate] = useState(new Date());
@@ -136,6 +137,8 @@ const OverViewPage = () => {
   const [selectedPatient, setSelectedPatient] = useState();
   const [sortField, setSortField] = useState('');
   const [sortOrder, setSortOrder] = useState(1);
+
+  const { colorMode } = useColorMode();
 
   useEffect(() => {
     const day = date.getDate();
@@ -170,21 +173,21 @@ const OverViewPage = () => {
         <Circle size="3rem" overflow="hidden">
           <Image src={image} />
         </Circle>
-        <Text fontWeight="500" color="grey.300" fontSize="1.4rem">
+        <Text fontWeight="500" color={colorMode === 'light' ? 'grey.300' : 'white'} fontSize="1.4rem">
           {name}
         </Text>
       </Flex>
     );
   };
 
-  const bodyDataTableTemplate = (value) => <Text color="grey.300">{value}</Text>;
+  const bodyDataTableTemplate = (value) => <Text color={colorMode === 'light' ? 'grey.300' : 'white'}>{value}</Text>;
 
   return (
     <>
       <Flex direction="column" gap="1rem" fontSize="1.3rem">
-        <Heading textTransform="capitalize">welcome, dr stephen</Heading>
+        <Heading textTransform="capitalize">{t('dashboard.dentist.header.title', { name: 'stephen' })}</Heading>
         <Text color="grey.300" fontWeight="500">
-          Have a nice dat at great work
+          {t('dashboard.dentist.header.desc')}
         </Text>
       </Flex>
 
@@ -192,12 +195,52 @@ const OverViewPage = () => {
         {statistic.map(({ icon, number, desc, bg }, index) => {
           const IconComp = icon;
           return (
-            <Flex flex="1" key={`${index}`} gap="2rem" bg={bg} p="1.5rem 2rem" align="center" borderRadius="1.2rem">
-              <Circle p="1.5rem" bg="desc.300" color="white">
+            <Flex
+              sx={{
+                '@media screen and (max-width: 1439px)': {
+                  p: '1rem'
+                }
+              }}
+              flex="1"
+              key={`${index}`}
+              gap="2rem"
+              bg={bg}
+              p="1.5rem 2rem"
+              align="center"
+              borderRadius="1.2rem"
+            >
+              <Circle
+                sx={{
+                  '@media screen and (max-width: 1439px)': {
+                    p: '1rem'
+                  }
+                }}
+                p="1.5rem"
+                bg="desc.300"
+                color="white"
+              >
                 <IconComp fontSize="3rem" />
               </Circle>
-              <Flex direction="column" fontSize="1.4rem" color="white">
-                <Heading textTransform="capitalize" fontSize="2.5rem">{`${number}k`}</Heading>
+              <Flex
+                sx={{
+                  '@media screen and (max-width: 1439px)': {
+                    fontSize: '1.2rem'
+                  }
+                }}
+                direction="column"
+                fontSize="1.4rem"
+                color="white"
+              >
+                <Heading
+                  sx={{
+                    '@media screen and (max-width: 1439px)': {
+                      fontSize: '2rem'
+                    }
+                  }}
+                  textTransform="capitalize"
+                  fontSize="2.5rem"
+                  lineHeight="1.2"
+                >{`${number}k`}</Heading>
                 <Text textTransform="capitalize">{desc}</Text>
               </Flex>
             </Flex>
@@ -206,14 +249,19 @@ const OverViewPage = () => {
       </Flex>
 
       <Grid
-        gridTemplateColumns="1fr 0.7fr 1fr"
-        gridTemplateRows="repeat(2, 1fr)"
-        gap="1.5rem"
+        sx={{
+          '@media screen and (max-width: 1439px)': {
+            gridTemplateRows: '233px 1fr'
+          }
+        }}
         flex="1"
+        gridTemplateColumns="1fr 0.7fr 1fr"
+        gridTemplateRows="290px 1fr"
         mt="3rem"
+        gap="1.5rem"
         className={cx('grid-template')}
       >
-        <Wrapper label="appointment request" link="view all">
+        <Wrapper label={t('dashboard.dentist.header.subTittle.0')} link={t('dashboard.dentist.header.links.all')}>
           <Flex
             position="absolute"
             inset="0"
@@ -270,8 +318,22 @@ const OverViewPage = () => {
           </Flex>
         </Wrapper>
 
-        <Wrapper label="patients" dropdown={renderDropdown} link="view all">
-          <Flex h="100%" direction="column" borderRadius="1.2rem" gap="2rem">
+        <Wrapper
+          label={t('dashboard.dentist.header.subTittle.1')}
+          dropdown={renderDropdown}
+          link={t('dashboard.dentist.header.links.all')}
+        >
+          <Flex
+            sx={{
+              '@media screen and (max-width: 1439px)': {
+                gap: '1rem'
+              }
+            }}
+            h="100%"
+            direction="column"
+            borderRadius="1.2rem"
+            gap="2rem"
+          >
             <Flex
               flex="1"
               borderRadius="inherit"
@@ -308,7 +370,15 @@ const OverViewPage = () => {
               p="0 2rem"
             >
               <Flex direction="column" gap="0.5rem" textTransform="capitalize" color="white">
-                <Heading>Next Week</Heading>
+                <Heading
+                  sx={{
+                    '@media screen and (max-width: 1439px)': {
+                      fontSize: '1.5rem'
+                    }
+                  }}
+                >
+                  Next Week
+                </Heading>
                 <Text>upcoming schdules-2</Text>
               </Flex>
               <Button variant="primary" size="lg">
@@ -318,7 +388,7 @@ const OverViewPage = () => {
           </Flex>
         </Wrapper>
 
-        <Wrapper label="today appointment" dropdown={renderDropdown}>
+        <Wrapper label={t('dashboard.dentist.header.subTittle.2')} dropdown={renderDropdown}>
           <Flex
             direction="column"
             h="100%"
@@ -334,10 +404,10 @@ const OverViewPage = () => {
                   p="1.5rem 2rem"
                   borderRadius="1.2rem"
                   fontSize="1.2rem"
-                  _hover={{ bg: 'primary.250' }}
+                  _hover={{ bg: colorMode === 'light' ? 'primary.250' : 'dark.500' }}
                 >
                   <ProfileTemplate />
-                  <Text textTransform="capitalize" color="grey.300">
+                  <Text textTransform="capitalize" color={colorMode === 'light' ? 'grey.300' : 'purple.400'}>
                     ongoing
                   </Text>
                 </Flex>
@@ -347,10 +417,10 @@ const OverViewPage = () => {
                   p="1.5rem 2rem"
                   borderRadius="1.2rem"
                   fontSize="1.2rem"
-                  _hover={{ bg: 'primary.250' }}
+                  _hover={{ bg: colorMode === 'light' ? 'primary.250' : 'dark.500' }}
                 >
                   <ProfileTemplate />
-                  <Text textTransform="capitalize" color="grey.300">
+                  <Text textTransform="capitalize" color={colorMode === 'light' ? 'grey.300' : 'purple.400'}>
                     10:25
                   </Text>
                 </Flex>
@@ -360,10 +430,10 @@ const OverViewPage = () => {
                   p="1.5rem 2rem"
                   borderRadius="1.2rem"
                   fontSize="1.2rem"
-                  _hover={{ bg: 'primary.250' }}
+                  _hover={{ bg: colorMode === 'light' ? 'primary.250' : 'dark.500' }}
                 >
                   <ProfileTemplate />
-                  <Text textTransform="capitalize" color="grey.300">
+                  <Text textTransform="capitalize" color={colorMode === 'light' ? 'grey.300' : 'purple.400'}>
                     10:25
                   </Text>
                 </Flex>
@@ -373,10 +443,10 @@ const OverViewPage = () => {
                   p="1.5rem 2rem"
                   borderRadius="1.2rem"
                   fontSize="1.2rem"
-                  _hover={{ bg: 'primary.250' }}
+                  _hover={{ bg: colorMode === 'light' ? 'primary.250' : 'dark.500' }}
                 >
                   <ProfileTemplate />
-                  <Text textTransform="capitalize" color="grey.300">
+                  <Text textTransform="capitalize" color={colorMode === 'light' ? 'grey.300' : 'purple.400'}>
                     10:25
                   </Text>
                 </Flex>
@@ -386,14 +456,15 @@ const OverViewPage = () => {
               <Box p="0 1rem">
                 <Calendar
                   showButtonBar
-                  todayButtonClassName={cx('calendar-today-button')}
-                  clearButtonClassName={cx('calendar-clear-button')}
                   dateFormat={`${minDate.getDate()} - ${maxDate.getDate()} MM, yy`}
                   minDate={minDate}
                   maxDate={maxDate}
                   readOnlyInput
                   value={date}
                   onChange={(e) => setDate(e.value)}
+                  panelClassName={colorMode === 'dark' && 'datePicker-panel dark'}
+                  todayButtonClassName={colorMode === 'dark' && 'calendar-today-button dark'}
+                  clearButtonClassName={colorMode === 'dark' && 'calendar-clear-button dark'}
                 />
               </Box>
               <Flex flex="1" justify="flex-start" p="0 1rem" gap="2rem">
@@ -408,6 +479,7 @@ const OverViewPage = () => {
                       justify="center"
                       fontSize="1.5rem"
                       borderRadius="0.6rem"
+                      p="0.75rem 0"
                       boxShadow={
                         date.getDate() === minDate.getDate() + index ? 'rgba(100, 100, 111, 0.3) 0px 7px 29px 0px' : ''
                       }
@@ -426,47 +498,52 @@ const OverViewPage = () => {
           </Flex>
         </Wrapper>
 
-        <Wrapper label="recent patients" link="view all">
-          <Box position="relative" bg="red" h="100%">
-            <Flex bg="aqua" h="100%" position="absolute" inset="0">
+        <Wrapper label={t('dashboard.dentist.header.subTittle.3')} link={t('dashboard.dentist.header.links.all')}>
+          <Box position="relative" h="100%">
+            <Flex h="100%" position="absolute" inset="0">
               <DataTable
                 value={dataTable}
                 size="large"
-                style={{ width: '100%', overflow: 'hidden' }}
+                className={colorMode === 'dark' && 'dark'}
                 selectionMode="single"
                 selection={selectedPatient}
                 onSelectionChange={(e) => setSelectedPatient(e.value)}
                 scrollable
                 scrollHeight="flex"
-                responsiveLayout="scroll"
+                frozen
                 rowClassName="dataTable-row"
                 sortField={sortField}
                 sortOrder={sortOrder}
                 onSort={handleSort}
               >
-                <Column field="name" header="Name" body={patientNameTemplate} sortable></Column>
+                <Column
+                  field="name"
+                  header={t('dashboard.dentist.header.table-header.name')}
+                  body={patientNameTemplate}
+                  sortable
+                ></Column>
                 <Column field="id" header="ID" body={(rowData) => bodyDataTableTemplate(rowData.id)} sortable></Column>
                 <Column
                   field="date"
-                  header="Date"
+                  header={t('dashboard.dentist.header.table-header.date')}
                   body={(rowData) => bodyDataTableTemplate(rowData.date)}
                   sortable
                 ></Column>
                 <Column
                   field="gender"
-                  header="Gender"
+                  header={t('dashboard.dentist.header.table-header.gender')}
                   body={(rowData) => bodyDataTableTemplate(rowData.gender)}
                   sortable
                 ></Column>
                 <Column
                   field="disease"
-                  header="Diseases"
+                  header={t('dashboard.dentist.header.table-header.disease')}
                   body={(rowData) => bodyDataTableTemplate(rowData.disease)}
                   sortable
                 ></Column>
                 <Column
                   field="status"
-                  header="Status"
+                  header={t('dashboard.dentist.header.table-header.status')}
                   body={(rowData) => bodyDataTableTemplate(rowData.status)}
                   sortable
                 ></Column>
@@ -479,4 +556,4 @@ const OverViewPage = () => {
   );
 };
 
-export default OverViewPage;
+export default withTranslation()(OverViewPage);
