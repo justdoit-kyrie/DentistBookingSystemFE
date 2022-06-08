@@ -1,8 +1,7 @@
 import { Box, Button, Flex, Image, Text, useColorMode } from '@chakra-ui/react';
 import classNames from 'classnames/bind';
 import { motion } from 'framer-motion';
-import _ from 'lodash';
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { withTranslation } from 'react-i18next';
 import { AiOutlineUser } from 'react-icons/ai';
@@ -57,81 +56,12 @@ const Header = ({ t, tReady, i18n, ...passProps }) => {
   const { DROPDOWN_ITEMS, NAV_ITEMS } = MOCK_DATA;
   const { colorMode } = useColorMode();
 
-  const [history, setHistory] = useState([{ data: DROPDOWN_ITEMS }]);
-  const current = history[history.length - 1];
-
   const userInfo = useSelector(selectLoggedUser);
 
   const language = getLocalStorageWithoutParse(LANGUAGE_KEY);
   const [countryCode, setCountryCode] = useState(
     () => LANGUAGES.find((v) => v.value === language)?.countryCode || 'US'
   );
-
-  const handleChangeMenu = (children, callback) => {
-    if (typeof callback == 'function') {
-      callback();
-    }
-
-    const isParent = !!children;
-    if (isParent) {
-      setHistory((prev) => [...prev, children]);
-    }
-  };
-
-  const handleMenuHoverColor = (code) => {
-    if (code === language) return {};
-    return { bg: 'grey.100' };
-  };
-
-  const handleBack = () => setHistory((prev) => prev.slice(0, prev.length - 1));
-  const handleHidden = () => setHistory([{ data: DROPDOWN_ITEMS }]);
-
-  const renderDropdownItem = () => {
-    let unique;
-    const activeItem = current.data.find((v) => v.code === language);
-    if (activeItem) {
-      unique = _.union([activeItem], current.data);
-    } else {
-      unique = current.data;
-    }
-    return unique.map(({ code, label, icon, children, isBorder = false, fw = 700, to = false, onClick }, index) => {
-      const Icon = icon ? icon : Fragment;
-      const Comp = to ? Link : Fragment;
-      const compProps = {};
-      const iconProps = {};
-      if (to) {
-        compProps.to = to;
-      }
-      if (icon) {
-        iconProps.w = '2rem';
-        iconProps.h = '2rem';
-        iconProps.fontSize = '1.75rem';
-      }
-
-      return (
-        <Comp key={`language - ${index}`} {...compProps}>
-          <Flex
-            align="center"
-            gap="1rem"
-            p="1rem"
-            cursor="pointer"
-            _hover={handleMenuHoverColor(code)}
-            bg={code === language ? 'grey.100' : ''}
-            borderTop={isBorder && '1px solid'}
-            borderColor={isBorder && 'grey.100'}
-            fontSize="1.5rem"
-            onClick={() => handleChangeMenu(children, onClick)}
-            color="black"
-          >
-            <Icon {...iconProps} />
-            <Text fontWeight={fw} textTransform="capitalize">
-              {t(`home.header.dropdown.${label}`)}
-            </Text>
-          </Flex>
-        </Comp>
-      );
-    });
-  };
 
   const renderLanguages = () =>
     LANGUAGES.map(({ label, value, countryCode }, index) => {
@@ -185,13 +115,7 @@ const Header = ({ t, tReady, i18n, ...passProps }) => {
       {userInfo && (
         <Flex gap="2rem" align="center">
           <Flex gap="2rem">{renderNavItems()}</Flex>
-          <DropDown
-            placement="bottom-end"
-            dropdown={renderDropdownItem()}
-            label={history.length > 1 ? current.label : ''}
-            onBack={handleBack}
-            onHidden={handleHidden}
-          >
+          <DropDown placement="bottom-end" items={DROPDOWN_ITEMS}>
             <Image
               w="3.5rem"
               h="3.5rem"

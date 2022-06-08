@@ -15,18 +15,20 @@ function App() {
   const { colorMode } = useColorMode();
 
   const renderRoutes = (routes) => {
-    return routes.map(({ path, component, layout, isPublic = false }, idx) => {
+    return routes.map(({ path, component, layout, isPublic = false, role }, idx) => {
       const Page = component;
       const Layout = getLayout(layout);
 
       const Comp = isPublic ? Fragment : PrivateRoute;
+
+      const passProps = !isPublic && { role };
 
       return (
         <Route
           key={`route-${idx}`}
           path={path}
           element={
-            <Comp>
+            <Comp {...passProps}>
               <ToastContainer
                 theme={colorMode}
                 position="top-right"

@@ -29,7 +29,14 @@ const Wrapper = ({ label, children, onBack, ...passProps }, ref) => {
           color="black"
         >
           <FiChevronLeft fontSize="2rem" />
-          <Text fontWeight="700" position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
+          <Text
+            textTransform="capitalize"
+            fontWeight="700"
+            position="absolute"
+            top="50%"
+            left="50%"
+            transform="translate(-50%, -50%)"
+          >
             {label}
           </Text>
         </Box>

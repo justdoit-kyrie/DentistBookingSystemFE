@@ -23,12 +23,23 @@ export const COLORS = {
 
 // path of app routes
 export const PATH = {
-  home: '/',
   login: '/login',
   notFound: '*',
   register: '/register',
-  clinic: '/clinic/:id',
-  dentist: '/dentist/:id'
+  assistant: {
+    home: '/',
+    clinic: '/clinic/:id',
+    dentist: '/dentist/:id'
+  },
+  dentist: {
+    home: '/dashboard/:id/overview',
+    appointment: '/dashboard/:id/appointment',
+    myPatients: '/dashboard/:id/myPatients',
+    message: '/dashboard/:id/message',
+    blog: '/dashboard/:id/blog',
+    profile: '/dashboard/:id/profile',
+    setting: '/dashboard/:id/setting'
+  }
 };
 
 // language

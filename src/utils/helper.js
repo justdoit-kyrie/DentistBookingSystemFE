@@ -1,4 +1,5 @@
 import { DefaultLayout } from 'components';
+import _ from 'lodash';
 import { Fragment } from 'react';
 
 //#region routes helper get layout
@@ -27,3 +28,11 @@ export const splitDisplayName = (displayName) => {
   const lastName = rest.join(' ');
   return { firstName, lastName };
 };
+//#endregion
+
+//#region getDestinationURL
+export const getDestinationURL = (path) => {
+  const url = window.location.pathname;
+  return _.replace(url, url.split('/')[url.split('/').length - 1], path);
+};
+//#endregion

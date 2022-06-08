@@ -1,4 +1,16 @@
 {
+  "common": {
+    "dropdown": {
+      "profile": "xem thông tin",
+      "language": "ngôn ngữ",
+      "logout": "đăng xuất",
+      "en": "english",
+      "vi": "việt nam",
+      "theme": "Chế độ",
+      "light": "sáng",
+      "dark": "tối"
+    }
+  },
   "auth": {
     "login": {
       "title": "{{logo}} đăng nhập",
@@ -47,13 +59,6 @@
         "doctors": "bác sĩ",
         "blog": "blog",
         "contact": "liên lạc"
-      },
-      "dropdown": {
-        "profile": "xem thông tin",
-        "language": "ngôn ngữ",
-        "logout": "đăng xuất",
-        "en": "english",
-        "vi": "việt nam"
       },
       "banners": {
         "content": [
@@ -157,6 +162,52 @@
         "dentist": "nha sĩ"
       },
       "copyRight": ["Bản quyền © 2022 Mọi quyền được bảo lưu | Mẫu này được làm ", "bởi {{name}}"]
+    }
+  },
+  "dashboard": {
+    "dentist": {
+      "sidebar": {
+        "overview": "tổng quát",
+        "appointment": "cuộc hẹn",
+        "myPatients": "bệnh nhân của tôi",
+        "message": "tin nhắn",
+        "blog": "blog",
+        "profile": "Hồ sơ",
+        "setting": "cài đặt"
+      },
+      "header": {
+        "title": "Chào mừng, Tiến sĩ {{name}}",
+        "desc": "Chúc một công việc tốt đẹp",
+        "subTittle": ["Yêu cầu cuộc hẹn", "Người bệnh", "Cuộc hẹn hôm nay", "Bệnh nhân gần đây"],
+        "links": {
+          "all": "xem tất cả"
+        },
+        "table-header": {
+          "name": "Tên",
+          "email": "Email",
+          "date": "Ngày",
+          "gender": "Giới tính",
+          "disease": "Bệnh",
+          "status": "Trạng thái"
+        }
+      },
+      "features": [
+        {
+          "label": "Các cuộc hẹn"
+        },
+        {
+          "label": "Tổng số bệnh nhân"
+        },
+        {
+          "label": "Phòng khám tư vấn"
+        },
+        {
+          "label": "Video tư vấn"
+        }
+      ],
+      "placeholder": {
+        "search": "Tìm kiếm cuộc hẹn, bệnh nhân hoặc v.v."
+      }
     }
   }
 }
