@@ -17,26 +17,27 @@ import App from './App';
 import { history } from './app/constants';
 import i18n from './app/i18next';
 import { persistor, store } from './app/store';
-import { Loading } from './components';
+import { Loading, Toast } from './components';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <I18nextProvider i18n={i18n}>
-          <ChakraProvider resetCSS theme={theme}>
-            <HistoryRouter history={history}>
-              <Suspense fallback={<Loading />}>
-                <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-                <App />
-              </Suspense>
-            </HistoryRouter>
-          </ChakraProvider>
-        </I18nextProvider>
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <I18nextProvider i18n={i18n}>
+        <ChakraProvider resetCSS theme={theme}>
+          <HistoryRouter history={history}>
+            <Suspense fallback={<Loading />}>
+              <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+              <Toast />
+              <App />
+            </Suspense>
+          </HistoryRouter>
+        </ChakraProvider>
+      </I18nextProvider>
+    </PersistGate>
+  </Provider>
+  // </React.StrictMode>
 );

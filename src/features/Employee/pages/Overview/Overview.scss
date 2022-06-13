@@ -1,6 +1,6 @@
 @import '../../../../app/styles/variables.scss';
 
-.p-calendar {
+.p-calendar.overview-calendar {
   flex-shrink: 0;
   & > .p-inputtext {
     font-size: 1.5rem;
@@ -40,16 +40,9 @@
 
 .p-datatable {
   font-size: 1.4rem;
-  width: 100%;
-
-  .p-datatable-table {
-    background: white;
-  }
+  width: 100% !important;
 
   .dataTable-row {
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    border-radius: 0.8rem;
-
     &:not(:last-child),
     &:not(:last-child) {
       margin: 1.5rem 0;
@@ -60,13 +53,31 @@
     }
   }
 
-  &.dark {
-    & .p-datatable-table,
-    & .p-datatable-thead > tr > th,
-    & .p-datatable-tbody > tr {
-      background: $dark-mode-color-700;
+  .p-inputtext {
+    border-color: #ced4da;
+
+    &:not(.p-disabled):hover {
+      border-color: $primary-500 !important;
+    }
+  }
+
+  .p-dropdown:not(.p-disabled):hover,
+  .p-calendar :not(.p-disabled):hover {
+    border-color: $primary-500 !important;
+  }
+
+  &.overview-dataTable-light {
+    .p-datatable-table {
+      background: white;
     }
 
+    .dataTable-row {
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      border-radius: 0.8rem;
+    }
+  }
+
+  &.dataTable-dark {
     & .p-datatable-thead > tr > th .p-sortable-column-icon,
     & .p-datatable-thead > tr > th .p-column-title {
       color: white;
@@ -83,7 +94,7 @@
     }
 
     & .p-datatable-tbody > tr {
-      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 2px 0px;
     }
 
     & .p-datatable-tbody > tr.p-selectable-row:not(.p-highlight):not(.p-datatable-emptymessage):hover {
@@ -95,6 +106,14 @@
       & .p-sortable-column-icon {
         color: $primary-500;
       }
+    }
+  }
+
+  &.overview-dataTable-dark {
+    & .p-datatable-table,
+    & .p-datatable-thead > tr > th,
+    & .p-datatable-tbody > tr {
+      background: $dark-mode-color-700;
     }
   }
 }

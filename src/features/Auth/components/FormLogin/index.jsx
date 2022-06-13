@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import classnames from 'classnames/bind';
 import { signInWithPopup } from 'firebase/auth';
 import { motion } from 'framer-motion';
+import _ from 'lodash';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
@@ -13,7 +14,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import { axios } from '~/apis';
-import { API_ROUTES, AUTH_KEY, ORTHERS_LOGIN_METHOD, PATH, PWD_REGEX } from '~/app/constants';
+import { API_ROUTES, AUTH_KEY, ORTHERS_LOGIN_METHOD, PATH, PWD_REGEX, ROLE } from '~/app/constants';
 import { Firebase } from '~/app/firebase';
 import { InputField } from '~/components';
 import { setLocalStorage, splitDisplayName } from '~/utils';
@@ -28,7 +29,7 @@ const schema = yup
     password: yup
       .string()
       .required('password is required')
-      .min(12, 'password is longer than 12 characters')
+      .min(8, 'password is longer than 12 characters')
       .matches(
         PWD_REGEX,
         'password is at least one uppercase letter, one lowercase letter, one number and one special character'
@@ -83,7 +84,16 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
         const { accessToken, refreshToken, user } = res;
         dispatch(loginSuccess({ ...user }));
         setLocalStorage(AUTH_KEY, { accessToken, refreshToken });
-        return navigate(PATH.home);
+
+        const { role, id } = user;
+        switch (role.toLowerCase()) {
+          case ROLE[0]:
+            break;
+          case ROLE[1]:
+            return navigate(_.replace(PATH.dentist.home, ':id', id));
+          default:
+            return navigate(PATH.customer.home);
+        }
       }
     } catch (error) {
       dispatch(loginFailed());
