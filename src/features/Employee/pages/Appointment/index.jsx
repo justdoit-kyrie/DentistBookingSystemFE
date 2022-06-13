@@ -262,7 +262,7 @@ const AppointmentPage = ({ t }) => {
   } = MOCK_DATA(t);
 
   const BG = useColorModeValue('white', 'transparent');
-  const disabledBg = useColorModeValue('grey.100', 'grey.400');
+  const disabledBg = useColorModeValue('grey.100', 'navy.500');
   const { colorMode } = useColorMode();
   const [isLessThan1919] = useMediaQuery('(max-width: 1919px)');
 
