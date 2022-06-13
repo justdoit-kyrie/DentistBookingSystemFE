@@ -7,29 +7,23 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  Text,
   useColorMode,
   useMediaQuery
 } from '@chakra-ui/react';
+import _ from 'lodash';
 import React, { useState } from 'react';
+import { withTranslation } from 'react-i18next';
 import { AiOutlineQuestionCircle } from 'react-icons/ai';
 import { BiBell, BiSearch } from 'react-icons/bi';
 import { CgLogOut } from 'react-icons/cg';
-import { IoInvertMode } from 'react-icons/io5';
 import { FiChevronDown } from 'react-icons/fi';
 import { GrLanguage } from 'react-icons/gr';
-import { MdOutlineLightMode, MdDarkMode } from 'react-icons/md';
+import { IoInvertMode } from 'react-icons/io5';
+import { MdDarkMode, MdOutlineLightMode } from 'react-icons/md';
 import i18n from '~/app/i18next';
+import notFoundBG from '~/assets/images/notFound-bg.png';
 import { Dropdown, Sidebar } from '~/components/common';
 import { ProfileTemplate } from '~/features/Employee/Templates';
-import _ from 'lodash';
-import { withTranslation } from 'react-i18next';
 
 const MOCK_DATA = {
   DROPDOWN_ITEMS: [
@@ -89,7 +83,14 @@ const DashboardLayout = ({ t, children }) => {
 
   if (isLessThan1279)
     return (
-      <Flex justify="center" align="center" h="100vh">
+      <Flex
+        justify="center"
+        align="center"
+        h="100vh"
+        w="100vw"
+        bg={`url(${notFoundBG}) no-repeat center center`}
+        bgSize="cover"
+      >
         <Heading fontSize="4rem">Please use laptop for this features</Heading>
       </Flex>
     );

@@ -9,6 +9,20 @@
       "theme": "Theme",
       "light": "Light",
       "dark": "Dark"
+    },
+    "month": {
+      "january": "january",
+      "february": "february",
+      "march": "march",
+      "april": "april",
+      "may": "may",
+      "june": "june",
+      "july": "july",
+      "august": "august",
+      "september": "september",
+      "octopus": "octopus",
+      "november": "november",
+      "december": "december"
     }
   },
   "auth": {
@@ -214,6 +228,24 @@
       ],
       "placeholder": {
         "search": "Search Appointment, Patient or etc"
+      },
+      "appointment": {
+        "title": "appointment",
+        "subTittle": ["day", "week", "month"],
+        "table-header": {
+          "monday": "monday",
+          "tuesday": "tuesday",
+          "wednesday": "wednesday",
+          "thursday": "thursday",
+          "friday": "friday",
+          "saturday": "saturday",
+          "sunday": "sunday"
+        },
+        "table-footer": {
+          "pending": "pending",
+          "ongoing": "ongoing",
+          "success": "success"
+        }
       }
     }
   }
