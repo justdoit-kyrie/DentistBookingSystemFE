@@ -98,28 +98,58 @@
   height: 3.9rem !important;
 }
 
-.divider-line {
-  border-color: var(--chakra-colors-gray-400) !important;
-  height: 30%;
-}
-
-.clinic-info {
+.clinic-info-wrapper {
   margin-left: 10rem;
   border-left: 1px solid;
   padding-left: 2rem;
+  border-color: var(--chakra-colors-grey-300);
+  & .info-container {
+    border-bottom: 1px solid var(--chakra-colors-grey-300);
+  }
 }
 
 .comment-title {
   padding-bottom: 1rem;
 }
 
-.doctor-profile-wrapper{
-  margin-bottom:1rem;
+.doctor-profile-wrapper {
+  margin-bottom: 1rem;
 }
 
-.comment-wrapper{
+.comment-wrapper {
   margin: 1rem 0 1rem 0;
   border-top: 0.5px solid;
-  border-color: var(--chakra-colors-grey-400);
+  border-color: var(--chakra-colors-grey-300);
   padding: 1rem 0 1rem 0;
+}
+
+.container {
+  &.doctor-intro,
+  &.user-comment,
+  &.doctor-profile {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--chakra-colors-grey-300);
+  }
+  &.clinic-policy{
+    margin-bottom:1rem;
+  }
+}
+
+.accordion-button {
+  &:focus {
+    box-shadow: none !important;
+  }
+}
+.clinic-accordion {
+  border-radius: 1rem;
+  transition: all 0.2s;
+  & .clinic-accordion-item {
+    border: none;
+  }
+  &:hover {
+    border-color: var(--chakra-colors-blue-200) !important;
+    border: 1px solid;
+    box-shadow: 0 0 0 0.2rem #c7d2fe !important;
+    transition: all 0.2s;
+  }
 }

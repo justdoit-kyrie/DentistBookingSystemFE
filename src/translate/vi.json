@@ -119,14 +119,45 @@
     "dentist": {
       "title": "Gặp Nha sĩ Kinh nghiệm của Chúng tôi",
       "desc": "Một con sông nhỏ có tên Duden chảy qua nơi họ ở và cung cấp cho nó những chất dinh dưỡng cần thiết. Đó là một đất nước hoang tưởng, trong đó các bộ phận của câu",
-      "bookingNow": "Đặt Lịch Ngay",
-      "daypickerPlaceholder":"Chọn Ngày",
-      "timepickerPlaceholder":"Chọn Thời Gian",
-      "doctor": "Bác Sĩ",
-      "trainingProcess":"Quá Trình Đào Tạo",
-      "workingProcess":"Quá Trình Công Tác",
-      "treatment":"Khám Và Điều Trị",
-      "commentTitles":"Phản hồi của bệnh nhân"
+      "booking": {
+        "bookingNow": "Đặt Lịch Ngay",
+        "daypickerPlaceholder": "Chọn Ngày",
+        "timepickerPlaceholder": "Chọn Thời Gian",
+        "clinicLocation": "Địa Chỉ Phòng Khám",
+        "price": "Giá Khám:",
+        "insurance": "Loại Bảo Hiểm Áp Dụng.",
+        "doctor": "Bác Sĩ",
+        "trainingProcess": "Quá Trình Đào Tạo",
+        "workingProcess": "Quá Trình Công Tác",
+        "treatment": "Khám Và Điều Trị",
+        "commentTitles": "Phản hồi của bệnh nhân",
+        "dentacareRole": {
+          "title": "Vai Trò Của DentaCare",
+          "heading": {
+            "1": "Giúp bệnh nhân chọn đúng bác sĩ giỏi và đặt lịch nhanh chóng",
+            "2": "Hỗ trợ trước, trong và sau khi đi khám"
+          },
+          "subTitle": {
+            "before": "Trước khi khám",
+            "during": "Trong khi khám",
+            "after": "Sau khi khám"
+          },
+          "subText": {
+            "1": "Hệ thống bác sĩ chuyên khoa giỏi, uy tín",
+            "2": "Thông tin về bác sĩ đã được xác thực rõ ràng, chính xác",
+            "3": "Sắp xếp khám đúng bác sĩ mà bệnh nhân đã chọn đặt lịch",
+            "4": "Bảo vệ quyền lợi của bệnh nhân khi đi khám",
+            "5": "Miễn phí đặt lịch",
+            "6": "Nhắc lịch khám, dặn dò chuẩn bị trước khám",
+            "7": "Hướng dẫn đi lại, quy trình làm thủ tục khám",
+            "8": "Hỗ trợ giải quyết các vướng mắc trong khi khám",
+            "9": "Hỗ trợ người bệnh những yêu cầu nảy sinh",
+            "10": "Ghi nhận ý kiến của bệnh nhân sau khám",
+            "11": "Hỗ trợ giải đáp, làm rõ những vấn đề chuyên môn",
+            "12": "Bảo vệ quyền lợi của bệnh nhân khi đi khám"
+          }
+        }
+      }
     },
     "clinic": {
       "title": "Gặp gỡ Phòng khám của chúng tôi",

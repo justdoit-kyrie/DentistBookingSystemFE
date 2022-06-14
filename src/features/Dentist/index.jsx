@@ -1,5 +1,10 @@
 // eslint-disable-next-line no-unused-vars
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   Box,
   Breadcrumb,
   BreadcrumbItem,
@@ -13,9 +18,10 @@ import {
   List,
   ListIcon,
   ListItem,
-  Text
+  Text,
+  useColorMode
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import HeaderOnlyLayout from '~/components/layouts/HeaderOnlyLayout';
 import { BsHouseFill, BsChevronRight, BsFillCheckCircleFill } from 'react-icons/bs';
 import { Dropdown } from 'primereact/dropdown';
@@ -23,9 +29,18 @@ import './Dentist.scss';
 import { Calendar } from 'primereact/calendar';
 import { withTranslation } from 'react-i18next';
 import { MdCheckCircle } from 'react-icons/md';
+import styles from './Dentist.module.scss';
+import classNames from 'classnames/bind';
+import { useRef } from 'react';
+import { Footer } from '~/components';
+
+const cx = classNames.bind(styles);
 
 const DentistPage = ({ t }) => {
   const [selectedDate, setSelectedDate] = useState(null);
+
+  const ref = useRef();
+  const { colorMode } = useColorMode();
 
   const onDateChange = (e) => {
     setSelectedDate(e.value);
@@ -38,10 +53,48 @@ const DentistPage = ({ t }) => {
   ];
 
   const [date1, setDate1] = useState(null);
+
+  useEffect(() => {
+    const handler = () => {
+      const innerEle = ref.current;
+      const scrollPos = window.pageYOffset;
+      const innerHeight = innerEle.offsetHeight;
+
+      if (scrollPos > innerHeight) {
+        if (!innerEle.classList.contains(cx('scrolled'))) {
+          innerEle.classList.add(cx('scrolled'));
+        }
+      }
+      if (scrollPos < innerHeight) {
+        if (innerEle.classList.contains(cx('scrolled'))) {
+          innerEle.classList.remove(cx('scrolled'));
+          innerEle.classList.remove(cx('sleep'));
+        }
+      }
+      if (scrollPos > innerHeight * 2) {
+        if (!innerEle.classList.contains(cx('awake'))) {
+          innerEle.classList.add(cx('awake'));
+        }
+      }
+      if (scrollPos < innerHeight * 2) {
+        if (innerEle.classList.contains(cx('awake'))) {
+          innerEle.classList.remove(cx('awake'));
+          innerEle.classList.add(cx('sleep'));
+        }
+      }
+    };
+    document.addEventListener('scroll', handler);
+
+    return () => {
+      document.removeEventListener('scroll', handler);
+    };
+  }, []);
   return (
     <Box>
-      <HeaderOnlyLayout />
-      <Box className="container" w="100%" h="100%" mt="2rem" paddingBottom="2rem" borderBottom="1px solid">
+      <div ref={ref} className={cx('header-wrapper', colorMode === 'light' ? '' : 'dark')}>
+        <HeaderOnlyLayout />
+      </div>
+      <Box className="container doctor-intro" w="100%" h="100%" mt="2rem">
         <Box size="3rem">
           <Breadcrumb spacing="0.8rem" separator={<BsChevronRight color="gray.500" />} fontSize="1.5rem">
             <BreadcrumbItem>
@@ -68,7 +121,7 @@ const DentistPage = ({ t }) => {
           />
           <Box p="0 0 0 3rem" maxW="60%">
             <Flex className="bs-info">
-              <Heading fontSize="5rem">{t('home.dentist.doctor')}</Heading>
+              <Heading fontSize="5rem">{t('home.dentist.booking.doctor')}</Heading>
               <Heading fontSize="5rem" marginLeft="1.5rem">
                 Vladimir Putin
               </Heading>
@@ -87,7 +140,7 @@ const DentistPage = ({ t }) => {
             <Dropdown
               className="date-dropdown"
               panelClassName="date-dropdown-list"
-              placeholder={t('home.dentist.daypickerPlaceholder')}
+              placeholder={t('home.dentist.booking.daypickerPlaceholder')}
               value={selectedDate}
               options={date}
               onChange={onDateChange}
@@ -97,7 +150,7 @@ const DentistPage = ({ t }) => {
               id="time12"
               className="primereact-time-picker"
               panelClassName="primereact-time-picker-panel"
-              placeholder={t('home.dentist.timepickerPlaceholder')}
+              placeholder={t('home.dentist.booking.timepickerPlaceholder')}
               value={date1}
               onChange={(e) => setDate1(e.value)}
               timeOnly
@@ -107,20 +160,20 @@ const DentistPage = ({ t }) => {
               }}
             />
             <Button colorScheme="blue" className="booking-btn" size="lg">
-              {t('home.dentist.bookingNow')}
+              {t('home.dentist.booking.bookingNow')}
             </Button>
           </Flex>
-          <Box className="clinic-info">
-            <Box borderBottom="1px solid" w="100%" paddingBottom="2rem">
-              <Heading fontSize="2rem">Địa Chỉ Khám</Heading>
+          <Box className="clinic-info-wrapper">
+            <Box className="info-container" w="100%" paddingBottom="2rem">
+              <Heading fontSize="2rem">{t('home.dentist.booking.clinicLocation')}</Heading>
               <Text fontSize="1.7rem" fontweight="600">
                 Phòng Khám Đa Khoa NTKDD
               </Text>
               <Text fontSize="1.3rem">243 Chu Văn An, phường 12, quận Bình Thạnh, Tp.HCM</Text>
             </Box>
-            <Box borderBottom="1px solid" paddingBottom="2rem" paddingTop="2rem">
+            <Box className="info-container" paddingBottom="2rem" paddingTop="2rem">
               <HStack>
-                <Heading fontSize="2rem">Giá Khám:</Heading>
+                <Heading fontSize="2rem">{t('home.dentist.booking.price')}</Heading>
                 <Text fontSize="1.7rem">250.000đ.</Text>
                 <Link to="/detail" fontSize="1.7rem" color="var(--chakra-colors-blue-500)">
                   Xem Chi Tiết
@@ -129,7 +182,7 @@ const DentistPage = ({ t }) => {
             </Box>
             <Box paddingBottom="2rem" paddingTop="2rem">
               <HStack>
-                <Heading fontSize="2rem">Loại Bảo Hiểm Áp Dụng.</Heading>
+                <Heading fontSize="2rem">{t('home.dentist.booking.insurance')}</Heading>
                 <Link to="/detail" fontSize="1.7rem" color="var(--chakra-colors-blue-500)">
                   Xem Chi Tiết
                 </Link>
@@ -138,18 +191,11 @@ const DentistPage = ({ t }) => {
           </Box>
         </Flex>
       </Box>
-      <Box
-        className="container doctor-profile"
-        w="100%"
-        h="100%"
-        mt="2rem"
-        paddingBottom="2rem"
-        borderBottom="1px solid"
-      >
+      <Box className="container doctor-profile" w="100%" h="100%" mt="2rem">
         <Box className="doctor-profile-wrapper">
           <HStack>
             <Heading fontSize="2.5rem" marginRight="0.3rem">
-              {t('home.dentist.doctor')}
+              {t('home.dentist.booking.doctor')}
             </Heading>
             <Heading fontSize="2.5rem" marginLeft="1.5rem">
               Vladimir Putin
@@ -172,7 +218,7 @@ const DentistPage = ({ t }) => {
         </Box>
         <Box className="doctor-profile-wrapper">
           <HStack>
-            <Heading fontSize="2.5rem">{t('home.dentist.trainingProcess')}</Heading>
+            <Heading fontSize="2.5rem">{t('home.dentist.booking.trainingProcess')}</Heading>
           </HStack>
           <List spacing={3} fontSize="1.5rem" marginTop="1rem">
             <ListItem>
@@ -191,7 +237,7 @@ const DentistPage = ({ t }) => {
         </Box>
         <Box className="doctor-profile-wrapper">
           <HStack>
-            <Heading fontSize="2.5rem">{t('home.dentist.workingProcess')}</Heading>
+            <Heading fontSize="2.5rem">{t('home.dentist.booking.workingProcess')}</Heading>
           </HStack>
           <List spacing={3} fontSize="1.5rem" marginTop="1rem">
             <ListItem>
@@ -210,7 +256,7 @@ const DentistPage = ({ t }) => {
         </Box>
         <Box className="doctor-profile-wrapper">
           <HStack>
-            <Heading fontSize="2.5rem">{t('home.dentist.treatment')}</Heading>
+            <Heading fontSize="2.5rem">{t('home.dentist.booking.treatment')}</Heading>
           </HStack>
           <List spacing={3} fontSize="1.5rem" marginTop="1rem">
             <ListItem>
@@ -228,9 +274,9 @@ const DentistPage = ({ t }) => {
           </List>
         </Box>
       </Box>
-      <Box className="container user-comment" w="100%" h="100%" mt="2rem" paddingBottom="2rem" borderBottom="1px solid">
+      <Box className="container user-comment" w="100%" h="100%" mt="2rem">
         <Box className="comment-title">
-          <Heading fontSize="3rem">{t('home.dentist.commentTitles')}</Heading>
+          <Heading fontSize="3rem">{t('home.dentist.booking.commentTitles')}</Heading>
         </Box>
         <Box className="comment-wrapper">
           <Flex className="comment-user-name">
@@ -289,6 +335,94 @@ const DentistPage = ({ t }) => {
           <Text fontSize="1.5rem">Dịch vụ tốt!</Text>
         </Box>
       </Box>
+      <Box className="container clinic-policy" w="100%" h="100%" mt="2rem">
+        <Accordion allowToggle className="clinic-accordion">
+          <AccordionItem className="clinic-accordion-item">
+            <h2>
+              <AccordionButton className="accordion-button">
+                <Box flex="1" textAlign="center" fontSize="3rem">
+                  {t('home.dentist.booking.dentacareRole.title')}
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4}>
+              <Box marginBottom="1rem">
+                <Heading fontSize="2rem">{t('home.dentist.booking.dentacareRole.heading.1')}</Heading>
+                <List spacing={3} fontSize="1.5rem" marginTop="1rem">
+                  <ListItem>
+                    <ListIcon as={MdCheckCircle} color="green.500" />
+                    {t('home.dentist.booking.dentacareRole.subText.1')}
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={MdCheckCircle} color="green.500" />
+                    {t('home.dentist.booking.dentacareRole.subText.2')}
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={MdCheckCircle} color="green.500" />
+                    {t('home.dentist.booking.dentacareRole.subText.3')}
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={MdCheckCircle} color="green.500" />
+                    {t('home.dentist.booking.dentacareRole.subText.4')}
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={MdCheckCircle} color="green.500" />
+                    {t('home.dentist.booking.dentacareRole.subText.5')}
+                  </ListItem>
+                </List>
+              </Box>
+              <Box marginBottom="1rem">
+                <Heading fontSize="2rem">{t('home.dentist.booking.dentacareRole.heading.2')}</Heading>
+                <Text fontSize="2rem" marginTop="1rem">
+                  {t('home.dentist.booking.dentacareRole.subTitle.before')}
+                </Text>
+                <List spacing={3} fontSize="1.5rem" marginTop="1rem">
+                  <ListItem>
+                    <ListIcon as={MdCheckCircle} color="green.500" />
+                    {t('home.dentist.booking.dentacareRole.subText.6')}
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={MdCheckCircle} color="green.500" />
+                    {t('home.dentist.booking.dentacareRole.subText.7')}
+                  </ListItem>
+                </List>
+                <Text fontSize="2rem" marginTop="1rem">
+                  {t('home.dentist.booking.dentacareRole.subTitle.during')}
+                </Text>
+                <List spacing={3} fontSize="1.5rem" marginTop="1rem">
+                  <ListItem>
+                    <ListIcon as={MdCheckCircle} color="green.500" />
+                    {t('home.dentist.booking.dentacareRole.subText.8')}
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={MdCheckCircle} color="green.500" />
+                    {t('home.dentist.booking.dentacareRole.subText.9')}
+                  </ListItem>
+                </List>
+                <Text fontSize="2rem" marginTop="1rem">
+                  {t('home.dentist.booking.dentacareRole.subTitle.after')}
+                </Text>
+                <List spacing={3} fontSize="1.5rem" marginTop="1rem">
+                  <ListItem>
+                    <ListIcon as={MdCheckCircle} color="green.500" />
+                    {t('home.dentist.booking.dentacareRole.subText.10')}
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={MdCheckCircle} color="green.500" />
+                    {t('home.dentist.booking.dentacareRole.subText.11')}
+                  </ListItem>
+                  <ListItem>
+                    <ListIcon as={MdCheckCircle} color="green.500" />
+                    {t('home.dentist.booking.dentacareRole.subText.12')}
+                  </ListItem>
+                </List>
+              </Box>
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+      </Box>
+      <Footer />
     </Box>
   );
 };
