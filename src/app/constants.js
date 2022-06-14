@@ -39,7 +39,7 @@ export const PATH = {
     blog: '/dashboard/:id/blog',
     profile: '/dashboard/:id/profile',
     setting: '/dashboard/:id/setting'
-  }
+  },
 };
 
 // language

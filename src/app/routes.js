@@ -39,7 +39,8 @@ export const ROUTES = [
   },
   {
     path: PATH.assistant.home,
-    component: HomePage
+    component: HomePage,
+    isPublic: true
   },
   {
     path: PATH.assistant.dentist,

@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, useColorMode } from '@chakra-ui/react';
+import { Box, Button, Flex, InputGroup, InputRightElement, Text, useColorMode } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import classnames from 'classnames/bind';
 import { signInWithPopup } from 'firebase/auth';
@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { AiOutlineUser } from 'react-icons/ai';
 import { FaUser } from 'react-icons/fa';
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -48,6 +49,9 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
   const navigate = useNavigate();
   const { colorMode } = useColorMode();
   const registerInfo = useSelector(selectRegisteredUser);
+
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
 
   //init firebase
   const firebase = new Firebase();
@@ -152,13 +156,19 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
           rightIcon={AiOutlineUser}
           rightIconActive={FaUser}
         />
-        <InputField
-          errors={errors}
-          control={control}
-          name="password"
-          placeholder={t('auth.login.pwdPlaceholder')}
-          type="password"
-        />
+
+        <InputGroup size="lg">
+          <InputField
+            errors={errors}
+            control={control}
+            name="password"
+            placeholder={t('auth.login.pwdPlaceholder')}
+            type={show ? 'text' : 'password'}
+          />
+          <InputRightElement onClick={handleClick} top="5%">
+            {show ? <BsFillEyeFill /> : <BsFillEyeSlashFill />}
+          </InputRightElement>
+        </InputGroup>
 
         <Link to="/trouble" style={{ width: 'fit-content' }}>
           <Text fontWeight="700" mt="-0.5rem" w="fit-content" _hover={{ textDecor: 'underline' }}>

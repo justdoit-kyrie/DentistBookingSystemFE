@@ -23,7 +23,9 @@
         "2": "Hoặc Đăng Nhập Bằng",
         "3": "Không Có Tài Khoản?",
         "4": "Đăng Ký Ngay"
-      }
+      },
+      "home": "Trang Chủ",
+      "signUp": "Đăng Ký"
     },
     "register": {
       "title": "{{logo}} Đăng Ký",
@@ -116,7 +118,15 @@
     },
     "dentist": {
       "title": "Gặp Nha sĩ Kinh nghiệm của Chúng tôi",
-      "desc": "Một con sông nhỏ có tên Duden chảy qua nơi họ ở và cung cấp cho nó những chất dinh dưỡng cần thiết. Đó là một đất nước hoang tưởng, trong đó các bộ phận của câu"
+      "desc": "Một con sông nhỏ có tên Duden chảy qua nơi họ ở và cung cấp cho nó những chất dinh dưỡng cần thiết. Đó là một đất nước hoang tưởng, trong đó các bộ phận của câu",
+      "bookingNow": "Đặt Lịch Ngay",
+      "daypickerPlaceholder":"Chọn Ngày",
+      "timepickerPlaceholder":"Chọn Thời Gian",
+      "doctor": "Bác Sĩ",
+      "trainingProcess":"Quá Trình Đào Tạo",
+      "workingProcess":"Quá Trình Công Tác",
+      "treatment":"Khám Và Điều Trị",
+      "commentTitles":"Phản hồi của bệnh nhân"
     },
     "clinic": {
       "title": "Gặp gỡ Phòng khám của chúng tôi",
@@ -150,7 +160,7 @@
     },
     "footer": {
       "desc": "Xa xa, đằng sau những ngọn núi chữ, xa những quốc gia Vokalia và Consonantia, có những văn tự mù mịt.",
-      "heading": ["đường dẫn", "Văn phòng"],
+      "heading": ["Đường dẫn", "Văn phòng"],
       "links": {
         "address": "203 Fake St. Mountain View, San Francisco, California, USA",
         "phone": "+84879496314",

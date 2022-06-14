@@ -9,7 +9,8 @@
       "theme": "Theme",
       "light": "Light",
       "dark": "Dark"
-    }
+    },
+    "language": "en-US"
   },
   "auth": {
     "login": {
@@ -23,7 +24,9 @@
         "2": "Or Sign In With",
         "3": "Don't Have An Account?",
         "4": "Sign Up Now"
-      }
+      },
+      "home": "Home",
+      "signUp": "Sign Up"
     },
     "register": {
       "title": "{{logo}} register",
@@ -123,7 +126,15 @@
     },
     "dentist": {
       "title": "Meet Our Experience Dentist",
-      "desc": "A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences"
+      "desc": "A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences",
+      "bookingNow":"Book Now",
+      "daypickerPlaceholder":"Select a day",
+      "timepickerPlaceholder":"Select a time",
+      "doctor":"Doctor",
+      "trainingProcess":"Training Process",
+      "workingProcess":"Working Process",
+      "treatment":"Examination And Treatment",
+      "commentTitles":"Feedback from customers"
     },
     "clinic": {
       "title": "Meet Our Clinic",

@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 
 const CalendarField = (props) => {
-  const { name, errors, control, type = 'text', placeholder, rightIcon, rightIconActive, id, panelClassName } = props;
+  const { name, errors, control, type = 'text', placeholder, rightIcon, rightIconActive, id, panelClassName, className } = props;
   const [isFocus, setIsFocus] = useState(false);
 
   const IconComponent = isFocus ? rightIconActive : rightIcon;
@@ -67,6 +67,7 @@ const CalendarField = (props) => {
                   boxShadow: getBoxShadowColor()
                 }}
                 dateFormat="yy-mm-dd"
+                className={className}
                 panelClassName={panelClassName}
                 panelStyle={{
                   border: '1px solid #63b3ed',
