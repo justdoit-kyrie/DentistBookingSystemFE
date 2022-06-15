@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable indent */
 import {
   Box,
@@ -22,7 +23,7 @@ import { IoMdTrash } from 'react-icons/io';
 import styles from './Appointment.module.scss';
 import './Appointment.scss';
 import React from 'react';
-import { DATE_FORMAT, MONTH, SCHEDULE_TIMER, SCHEDULE_WEEK } from '~/app/constants';
+import { API_CODE, API_ROUTES, DATE_FORMAT, MONTH, SCHEDULE_TIMER, SCHEDULE_WEEK } from '~/app/constants';
 import { Dropdown } from '~/components';
 import { ProfileTemplate } from '../../Templates';
 import { motion } from 'framer-motion';
@@ -31,6 +32,10 @@ import { compareDate, getDaysInMonth, getDaysInWeek, isDateInWeek } from '~/util
 import moment from 'moment';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { withTranslation } from 'react-i18next';
+import { axios } from '~/apis';
+import { useSelector } from 'react-redux';
+import { selectLoggedUser } from '~/features/Auth/authSlice';
+import { Navigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -243,6 +248,14 @@ const MOCK_DATA = (t) => ({
         day: 'monday',
         status: 'ongoing',
         date: [new Date(2022, 5, 10)]
+      },
+      {
+        id: 13,
+        name: 'drug test',
+        time: '10:30',
+        day: 'monday',
+        status: 'ongoing',
+        date: [new Date(2022, 5, 14)]
       }
     ],
     [
@@ -261,6 +274,8 @@ const AppointmentPage = ({ t }) => {
     _constants: { _nav }
   } = MOCK_DATA(t);
 
+  const userInfo = useSelector(selectLoggedUser);
+
   const BG = useColorModeValue('white', 'transparent');
   const disabledBg = useColorModeValue('grey.100', 'navy.500');
   const { colorMode } = useColorMode();
@@ -277,8 +292,30 @@ const AppointmentPage = ({ t }) => {
     daysInWeek.current[daysInWeek.current.length - 1]
   ]);
   const [field, setField] = useState('month');
-  const [data, setData] = useState(fake_data);
+  const [data, setData] = useState([]);
+  const [data2, setData2] = useState([]);
   const [rowHeight, setRowHeight] = useState({ value: 200, num: 3 });
+
+  const fetchData = async () => {
+    try {
+      if (userInfo) {
+        const { code, content } = await axios.get(
+          API_ROUTES['get-booking-by-dentist-it'].replace(':id', userInfo.dentistId)
+        );
+
+        if (+code === API_CODE.OK) {
+          setData2(content.map((item) => ({ ...item, date: [moment(item.date).toDate()] })));
+        }
+      }
+    } catch (error) {
+      // show toast error
+      console.log({ error });
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     switch (field) {
@@ -294,14 +331,13 @@ const AppointmentPage = ({ t }) => {
         );
         break;
       case _nav.week: {
-        setData(() => {
-          const daysInWeek = getDaysInWeek(dateOfWeek[0]);
-          return fake_data.filter((v) =>
-            v.date.length > 1
-              ? isDateInWeek(v.date[0], daysInWeek) && isDateInWeek(v.date[1], daysInWeek)
-              : isDateInWeek(v.date[0], daysInWeek)
-          );
-        });
+        const daysInWeek = getDaysInWeek(dateOfWeek[0]);
+        const uniqueList = fake_data.filter((v) =>
+          v.date.length > 1
+            ? isDateInWeek(v.date[0], daysInWeek) && isDateInWeek(v.date[1], daysInWeek)
+            : isDateInWeek(v.date[0], daysInWeek)
+        );
+        setData(uniqueList);
         break;
       }
       default:
@@ -403,7 +439,7 @@ const AppointmentPage = ({ t }) => {
     return (
       <Flex direction="column" gap="2rem" p="1rem 2rem" minW="40rem">
         <Flex align="center" justify="space-between">
-          <ProfileTemplate title={{ value: 'Stephen Conley', fontSize: '1.5rem', color: 'black' }} />
+          <ProfileTemplate titleColor="black" />
           <Flex gap="1rem" color="black">
             <Circle
               as={motion.div}

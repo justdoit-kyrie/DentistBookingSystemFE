@@ -93,6 +93,7 @@ export const NAME_REGEX = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
 export const DATE_FORMAT = {
   'yyyy-MM-DD': 'yyyy-MM-DD',
   'DD-MM-YYYY': 'DD-MM-YYYY',
+  'YYYY-MM-DD': 'YYYY-MM-DD',
   'dd/mm/yy': 'dd/mm/yy'
 };
 
@@ -104,7 +105,9 @@ export const API_ROUTES = {
   refreshToken: '/Users/refresh',
   'get-clinics': '/clinics',
   'get-dentists': '/dentists',
-  'get-profile': '/Users/getProfile'
+  'get-profile': '/Users/getProfile',
+  'get-booking-by-dentist-it': '/bookings/dentist/:id',
+  users: '/Users'
 };
 
 // api status code

@@ -13,16 +13,16 @@ function App() {
       const Page = component;
       const Layout = getLayout(layout);
 
-      const Comp = isPublic ? Fragment : PrivateRoute;
+      let Comp = isPublic ? Fragment : PrivateRoute;
 
-      const passProps = !isPublic ? { role } : {};
+      const compPassProps = !isPublic ? { role } : {};
 
       return (
         <Route
           key={`route-${idx}`}
           path={path}
           element={
-            <Comp {...passProps}>
+            <Comp {...compPassProps}>
               <Layout>
                 <Page />
               </Layout>

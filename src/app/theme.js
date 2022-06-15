@@ -15,6 +15,7 @@ export const theme = extendTheme({
     black: {
       100: 'rgba(255, 255, 255, 0.05)',
       200: 'rgba(0, 0, 0, 0.05)',
+      400: 'rgba(0, 0, 0, 0.27)',
       500: '#191919'
     },
     purple: {
@@ -145,6 +146,10 @@ export const theme = extendTheme({
         '&::-webkit-scrollbar': {
           display: 'none'
         }
+      },
+
+      'input[type=password]::-ms-reveal, input[type=password]::-ms-clear': {
+        display: 'none'
       }
     }
   },
@@ -266,6 +271,24 @@ export const theme = extendTheme({
           color: 'white'
         }
       }
+    },
+    Radio: {
+      // 1. We can update the base styles
+      baseStyle: {
+        label: {
+          fontWeight: 600
+        }
+      },
+      // 2. We can add a new button size or extend existing
+      sizes: {
+        lg: {
+          label: {
+            fontSize: '1.2rem'
+          }
+        }
+      },
+      // 3. We can add a new visual variant
+      variants: {}
     }
   }
 });

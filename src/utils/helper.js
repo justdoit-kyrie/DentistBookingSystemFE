@@ -2,6 +2,8 @@ import { DefaultLayout } from 'components';
 import _ from 'lodash';
 import moment from 'moment';
 import { Fragment } from 'react';
+import { AUTH_KEY } from '~/app/constants';
+import { logout } from '~/features/Auth/authSlice';
 
 //#region routes helper get layout
 export const getLayout = (layout) => {
@@ -88,4 +90,12 @@ export const isDateInWeek = (date, dayInWeek = getDaysInWeek()) =>
 
 export const compareDate = (date, _date) =>
   moment(date).isSame(_date, 'day') && moment(date).isSame(_date, 'month') && moment(date).isSame(_date, 'year');
+//#endregion
+
+//#region authentication
+export const logoutFunc = ({ navigate, dispatch }) => {
+  removeLocalStorage(AUTH_KEY);
+  dispatch(logout());
+  return navigate('/login');
+};
 //#endregion

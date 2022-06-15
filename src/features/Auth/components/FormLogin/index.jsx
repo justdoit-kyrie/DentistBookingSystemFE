@@ -1,13 +1,14 @@
-import { Box, Button, Flex, Text, useColorMode } from '@chakra-ui/react';
+import { Box, Button, Flex, InputGroup, InputRightElement, Text, useColorMode } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import classnames from 'classnames/bind';
 import { signInWithPopup } from 'firebase/auth';
 import { motion } from 'framer-motion';
 import _ from 'lodash';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { AiOutlineUser } from 'react-icons/ai';
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import { FaUser } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -49,6 +50,8 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
   const navigate = useNavigate();
   const { colorMode } = useColorMode();
   const registerInfo = useSelector(selectRegisteredUser);
+
+  const [show, setShow] = useState(false);
 
   //init firebase
   const firebase = new Firebase();
@@ -162,13 +165,19 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
           rightIcon={AiOutlineUser}
           rightIconActive={FaUser}
         />
-        <InputField
-          errors={errors}
-          control={control}
-          name="password"
-          placeholder={t('auth.login.pwdPlaceholder')}
-          type="password"
-        />
+
+        <InputGroup size="lg">
+          <InputField
+            errors={errors}
+            control={control}
+            name="password"
+            placeholder={t('auth.login.pwdPlaceholder')}
+            type={show ? 'text' : 'password'}
+          />
+          <InputRightElement onClick={() => setShow((prev) => !prev)} top="5%" right="0.75rem">
+            {show ? <BsFillEyeFill fontSize="1.7rem" /> : <BsFillEyeSlashFill fontSize="1.7rem" />}
+          </InputRightElement>
+        </InputGroup>
 
         <Link to="/trouble" style={{ width: 'fit-content' }}>
           <Text fontWeight="700" mt="-0.5rem" w="fit-content" _hover={{ textDecor: 'underline' }}>
