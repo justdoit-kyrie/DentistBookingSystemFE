@@ -27,57 +27,59 @@ const Dentist = (props) => {
 
   const navigate = useNavigate();
 
-  const renderDentistList = (dentist) => (
-    <Box
-      className={cx('carousel-p-1')}
-      cursor="pointer"
-      onClick={() => navigate(PATH.dentist.replace(':id', dentist.id))}
-    >
-      <Flex
-        borderRadius="12px"
-        w="100%"
-        align="center"
-        direction="column"
-        justify="center"
-        p="2rem 2rem 3rem"
-        border="1px solid grey"
+  const renderDentistList = (dentist) => {
+    return (
+      <Box
+        className={cx('carousel-p-1')}
+        cursor="pointer"
+        onClick={() => navigate(PATH.customer.dentist.replace(':id', dentist.id))}
       >
-        <Circle size="15rem" overflow="hidden">
-          <Image src={dentist.avatar} alt="avatar" />
-        </Circle>
         <Flex
+          borderRadius="12px"
+          w="100%"
+          align="center"
           direction="column"
           justify="center"
-          align="center"
-          fontSize="1.8rem"
-          textTransform="capitalize"
-          m="2rem 0 2.5rem"
+          p="2rem 2rem 3rem"
+          border="1px solid grey"
         >
-          <Heading variant="medium">{`${dentist.firstName} ${dentist.lastName}`}</Heading>
-          <Text fontSize="1.4rem" color="primary.500" mt="1rem">
-            {USER_POSITION[dentist.position]}
+          <Circle size="15rem" overflow="hidden">
+            <Image src={dentist.avatar} alt="avatar" />
+          </Circle>
+          <Flex
+            direction="column"
+            justify="center"
+            align="center"
+            fontSize="1.8rem"
+            textTransform="capitalize"
+            m="2rem 0 2.5rem"
+          >
+            <Heading variant="medium">{`${dentist.firstName} ${dentist.lastName}`}</Heading>
+            <Text fontSize="1.4rem" color="primary.500" mt="1rem">
+              {USER_POSITION[dentist.position]}
+            </Text>
+          </Flex>
+          <Text mb="3rem" lineHeight="1.6" fontSize="1.4rem" textAlign="center" color="grey">
+            {dentist.description}
           </Text>
+          <Flex justify="space-evenly" color="primary.500" w="100%" maxW="60%" fontSize="1.6rem">
+            <Link to="#" target="_blank">
+              <BsTwitter color="inherit" />
+            </Link>
+            <Link to="#" target="_blank">
+              <FaFacebookF color="inherit" />
+            </Link>
+            <Link to="#" target="_blank">
+              <FaInstagram color="inherit" />
+            </Link>
+            <Link to="#" target="_blank">
+              <FaTiktok color="inherit" />
+            </Link>
+          </Flex>
         </Flex>
-        <Text mb="3rem" lineHeight="1.6" fontSize="1.4rem" textAlign="center" color="grey">
-          {dentist.description}
-        </Text>
-        <Flex justify="space-evenly" color="primary.500" w="100%" maxW="60%" fontSize="1.6rem">
-          <Link to="#" target="_blank">
-            <BsTwitter color="inherit" />
-          </Link>
-          <Link to="#" target="_blank">
-            <FaFacebookF color="inherit" />
-          </Link>
-          <Link to="#" target="_blank">
-            <FaInstagram color="inherit" />
-          </Link>
-          <Link to="#" target="_blank">
-            <FaTiktok color="inherit" />
-          </Link>
-        </Flex>
-      </Flex>
-    </Box>
-  );
+      </Box>
+    );
+  };
 
   return (
     <FeatureBlock id="dentist" header={dentist} effect={effect}>
