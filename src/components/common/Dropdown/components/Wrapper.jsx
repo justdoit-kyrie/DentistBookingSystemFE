@@ -2,12 +2,12 @@ import { Box, Flex, Text } from '@chakra-ui/react';
 import React, { forwardRef } from 'react';
 import { FiChevronLeft } from 'react-icons/fi';
 
-const Wrapper = ({ label, children, onBack, ...passProps }, ref) => {
+const Wrapper = ({ label, children, onBack, minW = '20rem', ...passProps }, ref) => {
   return (
     <Flex
       py="0.75rem"
       ref={ref}
-      minW="20rem"
+      minW={minW}
       maxH="20rem"
       boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
       direction="column"

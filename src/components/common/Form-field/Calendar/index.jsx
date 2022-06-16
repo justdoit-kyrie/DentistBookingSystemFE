@@ -5,7 +5,7 @@ import { Controller } from 'react-hook-form';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 
 const CalendarField = (props) => {
-  const { name, errors, control, type = 'text', placeholder, rightIcon, rightIconActive, id, panelClassName } = props;
+  const { name, errors, control, placeholder, rightIcon, rightIconActive, id, panelClassName, ...passProps } = props;
   const [isFocus, setIsFocus] = useState(false);
 
   const IconComponent = isFocus ? rightIconActive : rightIcon;
@@ -43,7 +43,6 @@ const CalendarField = (props) => {
       return '0 0 0 1px #fc8181';
     }
   };
-  
 
   return (
     <Controller
@@ -57,11 +56,9 @@ const CalendarField = (props) => {
                 {...field}
                 onFocus={() => setIsFocus(!isFocus)}
                 onBlur={() => setIsFocus(false)}
-                type={type}
                 id={id}
                 placeholder={placeholder}
                 h="3.5rem"
-                fontSize="1.2rem"
                 inputStyle={{
                   borderColor: getBorderColor(),
                   boxShadow: getBoxShadowColor()
@@ -75,6 +72,7 @@ const CalendarField = (props) => {
                   boxShadow: '0 0 0 1px #63b3ed'
                 }}
                 showButtonBar
+                {...passProps}
               />
               {rightIcon && rightIconActive && (
                 <InputRightElement pointerEvents="none" top="50%" right="0.75rem" transform="translateY(-50%)">
@@ -84,7 +82,7 @@ const CalendarField = (props) => {
             </InputGroup>
             {isError && (
               <FormErrorMessage>
-                {errors[name].message} <BsFillExclamationCircleFill/>
+                {errors[name].message} <BsFillExclamationCircleFill />
               </FormErrorMessage>
             )}
           </FormControl>

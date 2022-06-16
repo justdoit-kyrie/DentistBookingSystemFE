@@ -190,11 +190,7 @@
       "sidebar": {
         "overview": "overview",
         "appointment": "appointment",
-        "myPatients": "my patients",
-        "message": "message",
-        "blog": "blog",
-        "profile": "profile",
-        "setting": "setting"
+        "profile": "profile"
       },
       "header": {
         "title": "Welcome, Dr {{name}}",

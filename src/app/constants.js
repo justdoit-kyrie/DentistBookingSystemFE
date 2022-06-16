@@ -93,6 +93,7 @@ export const NAME_REGEX = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
 export const DATE_FORMAT = {
   'yyyy-MM-DD': 'yyyy-MM-DD',
   'DD-MM-YYYY': 'DD-MM-YYYY',
+  'YYYY-MM-DD': 'YYYY-MM-DD',
   'dd/mm/yy': 'dd/mm/yy'
 };
 
@@ -104,7 +105,9 @@ export const API_ROUTES = {
   refreshToken: '/Users/refresh',
   'get-clinics': '/clinics',
   'get-dentists': '/dentists',
-  'get-profile': '/Users/getProfile'
+  'get-profile': '/Users/getProfile',
+  'get-booking-by-dentist-it': '/bookings/dentist/:id',
+  users: '/Users'
 };
 
 // api status code
@@ -193,3 +196,31 @@ export const MONTH = (t) => ({
   10: t('common.month.november'),
   11: t('common.month.december')
 });
+
+export const BOOKING_STATUS = (t) => [
+  {
+    label: t('dashboard.dentist.appointment.table-footer.pending'),
+    value: 'active',
+    color: 'red'
+  },
+  {
+    label: t('dashboard.dentist.appointment.table-footer.pending'),
+    value: 'inactive',
+    color: 'black'
+  },
+  {
+    label: t('dashboard.dentist.appointment.table-footer.pending'),
+    value: 'pending',
+    color: '#ffa901' //yellow.500
+  },
+  {
+    label: t('dashboard.dentist.appointment.table-footer.ongoing'),
+    value: 'ongoing',
+    color: '#7a6efe' //purple.500
+  },
+  {
+    label: t('dashboard.dentist.appointment.table-footer.success'),
+    value: 'success',
+    color: 'green'
+  }
+];

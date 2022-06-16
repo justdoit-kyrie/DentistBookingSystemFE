@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   Box,
   Center,
@@ -20,10 +19,13 @@ import { FiChevronDown } from 'react-icons/fi';
 import { GrLanguage } from 'react-icons/gr';
 import { IoInvertMode } from 'react-icons/io5';
 import { MdDarkMode, MdOutlineLightMode } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import i18n from '~/app/i18next';
 import notFoundBG from '~/assets/images/notFound-bg.png';
 import { Dropdown, Sidebar } from '~/components/common';
 import { ProfileTemplate } from '~/features/Employee/Templates';
+import { logoutFunc } from '~/utils';
 
 const MOCK_DATA = {
   DROPDOWN_ITEMS: [
@@ -67,12 +69,16 @@ const MOCK_DATA = {
 const DashboardLayout = ({ t, children }) => {
   const { DROPDOWN_ITEMS } = MOCK_DATA;
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [searchField, setSearchField] = useState('');
   const { colorMode, toggleColorMode } = useColorMode();
 
   const [isLessThan1279] = useMediaQuery('(max-width: 1279px)');
 
   const tmp = _.get(MOCK_DATA, 'DROPDOWN_ITEMS[0].children.data');
+  _.set(MOCK_DATA, 'DROPDOWN_ITEMS[2].onClick', () => logoutFunc({ dispatch, navigate }));
   tmp.forEach((item, idx) => {
     _.set(
       MOCK_DATA,
@@ -129,7 +135,7 @@ const DashboardLayout = ({ t, children }) => {
                 </Box>
               </Dropdown>
 
-              <Dropdown items={DROPDOWN_ITEMS}>
+              <Dropdown items={DROPDOWN_ITEMS} minW="25rem">
                 <ProfileTemplate icon={FiChevronDown} />
               </Dropdown>
             </Flex>
