@@ -14,6 +14,7 @@ export const theme = extendTheme({
     },
     black: {
       100: 'rgba(255, 255, 255, 0.05)',
+      200: 'rgba(0, 0, 0, 0.05)',
       500: '#191919'
     },
     purple: {
@@ -55,12 +56,10 @@ export const theme = extendTheme({
     linearGradient: {
       100: 'linear-gradient(200deg, #2f89fc 0%, #2cbcbc 100%)'
     },
-    boxShadow: {
-      100: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
-    },
     dark: {
       500: '#2c3650',
       600: '#232b3e',
+      650: '#2d3748',
       700: '#1a202c'
     }
   },
@@ -85,7 +84,7 @@ export const theme = extendTheme({
         fontFamily: `'IBM Plex Sans',ProximaNova,Arial,Tahoma,PingFangSC,sans-serif`
       },
 
-      'button, textarea, input, select, a': {
+      'button, textarea, input, select, a, .p-inputtext': {
         // eslint-disable-next-line quotes
         fontFamily: `'IBM Plex Sans',ProximaNova,Arial,Tahoma,PingFangSC,sans-serif`
       },
@@ -138,6 +137,14 @@ export const theme = extendTheme({
         height: '100%',
         bg: 'rgba(0,0,0,0.17)',
         zIndex: '1'
+      },
+      '.hide-scrollbar': {
+        '-ms-overflow-style': 'none',
+        'scrollbar-width': 'none',
+
+        '&::-webkit-scrollbar': {
+          display: 'none'
+        }
       }
     }
   },
@@ -179,7 +186,11 @@ export const theme = extendTheme({
           color: 'red.200'
         },
         primary: {
-          bg: 'primary.400'
+          bg: 'primary.400',
+          border: '1px solid',
+          borderColor: 'transparent',
+
+          _focus: { boxShadow: 'none', outline: 'none', outlineOffset: 0 }
         },
         ['primary-circle']: {
           bg: 'primary.500',
@@ -225,6 +236,34 @@ export const theme = extendTheme({
         },
         'semi-bold': {
           fontWeight: 600
+        }
+      }
+    },
+    Badge: {
+      // 1. We can update the base styles
+      baseStyle: {
+        fontSize: '1rem',
+        p: '0.5rem 0',
+        borderRadius: '0.6rem',
+        w: '10rem',
+        textAlign: 'center',
+        overflow: 'hidden'
+      },
+      // 2. We can add a new button size or extend existing
+      sizes: {},
+      // 3. We can add a new visual variant
+      variants: {
+        failed: {
+          bg: 'red.200',
+          color: 'white'
+        },
+        success: {
+          bg: 'green',
+          color: 'white'
+        },
+        confirmed: {
+          bg: 'purple.400',
+          color: 'white'
         }
       }
     }

@@ -21,7 +21,7 @@ import { PATH } from './constants';
  * @param {React Element} component
  * @param {React Element} layout - default is DefaultLayout, if null don't use layout, if false, use layout
  * @param {Boolean} isPublic - if true, the route is public and default it is private
- * @param {Number} role -  0: head, 1: dentist, 2: assistant and default is assistant
+ * @param {Number} role -  0: admin, 1: dentist, 2: customer and default is customer
  */
 export const ROUTES = [
   { path: PATH.register, component: RegisterPage, layout: AuthLayout, isPublic: true },
@@ -38,18 +38,17 @@ export const ROUTES = [
     layout: null
   },
   {
-    path: PATH.assistant.home,
-    component: HomePage,
-    isPublic: true
+    path: PATH.customer.home,
+    component: HomePage
   },
   {
-    path: PATH.assistant.dentist,
+    path: PATH.customer.dentist,
     component: DentistPage,
     isPublic: true,
     layout: null
   },
   {
-    path: PATH.assistant.clinic,
+    path: PATH.customer.clinic,
     component: ClinicPage,
     isPublic: true,
     layout: null

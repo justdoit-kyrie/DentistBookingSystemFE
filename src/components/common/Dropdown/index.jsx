@@ -8,7 +8,7 @@ import { LANGUAGE_KEY } from '~/app/constants';
 import { getLocalStorageWithoutParse } from '~/utils';
 import Wrapper from './components/Wrapper';
 
-const DropDown = ({ t, items = [], children, dropdown, placement = 'bottom', bg = 'white' }) => {
+const DropDown = ({ t, items = [], children, dropdown, placement = 'bottom', bg = 'white', offset = [0, 10] }) => {
   const [history, setHistory] = useState([{ data: items }]);
   const { colorMode } = useColorMode();
   const current = history[history.length - 1];
@@ -102,6 +102,7 @@ const DropDown = ({ t, items = [], children, dropdown, placement = 'bottom', bg 
         </Wrapper>
       )}
       onHidden={handleHidden}
+      offset={offset}
     >
       {children}
     </Tippy>

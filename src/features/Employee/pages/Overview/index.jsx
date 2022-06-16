@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   Box,
   Button,
@@ -10,7 +9,7 @@ import {
   Square,
   Text,
   useColorMode,
-  useMediaQuery
+  useDisclosure
 } from '@chakra-ui/react';
 import classNames from 'classnames/bind';
 import { Calendar } from 'primereact/calendar';
@@ -22,7 +21,7 @@ import { AiOutlineCalendar, AiOutlineClose, AiOutlineVideoCamera } from 'react-i
 import { BsBuilding, BsCheck } from 'react-icons/bs';
 import { FiUser } from 'react-icons/fi';
 import { ProfileTemplate } from '../../Templates';
-import { Wrapper } from './components';
+import { CustomModal, Wrapper } from './components';
 import styles from './OverView.module.scss';
 import './Overview.scss';
 
@@ -63,7 +62,7 @@ const MOCK_DATA = (t) => ({
       date: '5/7/21',
       gender: 'male',
       disease: 'teeth',
-      status: 'Out-Patient'
+      status: 'success'
     },
     {
       id: 0,
@@ -71,7 +70,7 @@ const MOCK_DATA = (t) => ({
       date: '5/7/21',
       gender: 'male',
       disease: 'teeth',
-      status: 'Out-Patient'
+      status: 'success'
     },
     {
       id: 0,
@@ -79,7 +78,7 @@ const MOCK_DATA = (t) => ({
       date: '5/7/21',
       gender: 'male',
       disease: 'teeth',
-      status: 'Out-Patient'
+      status: 'success'
     },
     {
       id: 0,
@@ -87,7 +86,7 @@ const MOCK_DATA = (t) => ({
       date: '5/7/21',
       gender: 'male',
       disease: 'teeth',
-      status: 'Out-Patient'
+      status: 'confirmed'
     },
     {
       id: 0,
@@ -95,7 +94,7 @@ const MOCK_DATA = (t) => ({
       date: '5/7/21',
       gender: 'male',
       disease: 'teeth',
-      status: 'Out-Patient'
+      status: 'confirmed'
     },
     {
       id: 0,
@@ -103,7 +102,7 @@ const MOCK_DATA = (t) => ({
       date: '5/7/21',
       gender: 'male',
       disease: 'teeth',
-      status: 'Out-Patient'
+      status: 'confirmed'
     },
     {
       id: 0,
@@ -111,7 +110,7 @@ const MOCK_DATA = (t) => ({
       date: '5/7/21',
       gender: 'male',
       disease: 'teeth',
-      status: 'Out-Patient'
+      status: 'failed'
     },
     {
       id: 0,
@@ -119,7 +118,7 @@ const MOCK_DATA = (t) => ({
       date: '5/7/21',
       gender: 'male',
       disease: 'teeth',
-      status: 'Out-Patient'
+      status: 'failed'
     },
     {
       id: 0,
@@ -127,7 +126,7 @@ const MOCK_DATA = (t) => ({
       date: '5/7/21',
       gender: 'male',
       disease: 'teeth',
-      status: 'Out-Patient'
+      status: 'failed'
     },
     {
       id: 0,
@@ -135,7 +134,7 @@ const MOCK_DATA = (t) => ({
       date: '5/7/21',
       gender: 'male',
       disease: 'teeth',
-      status: 'Out-Patient'
+      status: 'success'
     }
   ]
 });
@@ -150,7 +149,10 @@ const OverViewPage = ({ t }) => {
   const [sortField, setSortField] = useState('');
   const [sortOrder, setSortOrder] = useState(1);
 
+  const [fieldAll, setFieldAll] = useState('');
+
   const { colorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     const day = date.getDate();
@@ -170,12 +172,7 @@ const OverViewPage = ({ t }) => {
     });
   }, [date]);
 
-  const handleSort = (e) => {
-    setSortField(e.sortField);
-    setSortOrder(e.sortOrder);
-  };
-
-  const renderDropdown = () => {};
+  const bodyDataTableTemplate = (value) => <Text color={colorMode === 'light' ? 'grey.300' : 'white'}>{value}</Text>;
 
   const patientNameTemplate = ({
     name,
@@ -193,7 +190,12 @@ const OverViewPage = ({ t }) => {
     );
   };
 
-  const bodyDataTableTemplate = (value) => <Text color={colorMode === 'light' ? 'grey.300' : 'white'}>{value}</Text>;
+  const renderDropdown = () => {};
+
+  const handleSort = (e) => {
+    setSortField(e.sortField);
+    setSortOrder(e.sortOrder);
+  };
 
   return (
     <>
@@ -279,7 +281,14 @@ const OverViewPage = ({ t }) => {
         gap="1.5rem"
         className={cx('grid-template')}
       >
-        <Wrapper label={t('dashboard.dentist.header.subTittle.0')} link={t('dashboard.dentist.header.links.all')}>
+        <Wrapper
+          label={t('dashboard.dentist.header.subTittle.0')}
+          link={t('dashboard.dentist.header.links.all')}
+          onViewAll={() => {
+            onOpen();
+            setFieldAll('request');
+          }}
+        >
           <Flex
             position="absolute"
             inset="0"
@@ -480,6 +489,7 @@ const OverViewPage = ({ t }) => {
                   readOnlyInput
                   value={date}
                   onChange={(e) => setDate(e.value)}
+                  className="overview-calendar"
                   panelClassName={colorMode === 'dark' && 'datePicker-panel dark'}
                   todayButtonClassName={colorMode === 'dark' && 'calendar-today-button dark'}
                   clearButtonClassName={colorMode === 'dark' && 'calendar-clear-button dark'}
@@ -516,19 +526,25 @@ const OverViewPage = ({ t }) => {
           </Flex>
         </Wrapper>
 
-        <Wrapper label={t('dashboard.dentist.header.subTittle.3')} link={t('dashboard.dentist.header.links.all')}>
+        <Wrapper
+          label={t('dashboard.dentist.header.subTittle.3')}
+          link={t('dashboard.dentist.header.links.all')}
+          onViewAll={() => {
+            onOpen();
+            setFieldAll('patient');
+          }}
+        >
           <Box position="relative" h="100%">
             <Flex h="100%" position="absolute" inset="0">
               <DataTable
                 value={dataTable}
                 size="large"
-                className={colorMode === 'dark' && 'dark'}
+                className={colorMode === 'dark' ? 'dataTable-dark overview-dataTable-dark' : 'overview-dataTable-light'}
                 selectionMode="single"
                 selection={selectedPatient}
                 onSelectionChange={(e) => setSelectedPatient(e.value)}
                 scrollable
                 scrollHeight="flex"
-                frozen
                 rowClassName="dataTable-row"
                 sortField={sortField}
                 sortOrder={sortOrder}
@@ -570,6 +586,8 @@ const OverViewPage = ({ t }) => {
           </Box>
         </Wrapper>
       </Grid>
+
+      {isOpen && fieldAll && <CustomModal isOpen={isOpen} onClose={onClose} fieldAll={fieldAll} />}
     </>
   );
 };

@@ -1,0 +1,16 @@
+@import '../../../../app/styles/variables.scss';
+
+.schedule {
+  &-header,
+  &-body {
+    border-bottom: 1px solid $grey-200;
+    border-right: 1px solid $grey-200;
+    border-top: none;
+  }
+
+  &-body {
+    &.disabled {
+      background: $grey-200;
+    }
+  }
+}

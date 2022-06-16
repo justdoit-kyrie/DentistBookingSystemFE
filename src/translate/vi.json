@@ -9,6 +9,20 @@
       "theme": "Chế độ",
       "light": "sáng",
       "dark": "tối"
+    },
+    "month": {
+      "january": "tháng Một",
+      "february": "tháng hai",
+      "march": "tháng ba",
+      "april": "tháng tư",
+      "may": "tháng năm",
+      "june": "tháng sáu",
+      "july": "tháng bảy",
+      "august": "tháng tám",
+      "september": "tháng chín",
+      "octopus": "tháng mười",
+      "november": "tháng mười một",
+      "december": "tháng mười hai"
     }
   },
   "auth": {
@@ -248,6 +262,24 @@
       ],
       "placeholder": {
         "search": "Tìm kiếm cuộc hẹn, bệnh nhân hoặc v.v."
+      },
+      "appointment": {
+        "title": "cuộc hẹn",
+        "subTittle": ["ngày", "tuần", "tháng"],
+        "table-header": {
+          "monday": "thứ hai",
+          "tuesday": "thứ ba",
+          "wednesday": "Thứ tư",
+          "thursday": "thứ năm",
+          "friday": "thứ sáu",
+          "saturday": "thứ bảy",
+          "sunday": "chủ nhật"
+        },
+        "table-footer": {
+          "pending": "chưa giải quyết",
+          "ongoing": "đang diễn ra",
+          "success": "thành công"
+        }
       }
     }
   }

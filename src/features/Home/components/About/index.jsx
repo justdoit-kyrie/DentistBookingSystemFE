@@ -36,8 +36,8 @@ const About = ({ about, effect, children_effect }) => {
     <Flex
       position="relative"
       zIndex="3"
-      minH="68.4rem"
-      maxH={isLargerThan1441 ? '68.4rem' : 'revert'}
+      minH="75rem"
+      maxH={isLargerThan1441 ? '75rem' : 'revert'}
       bg="linear-gradient(200deg, #2f89fc 0%, #2cbcbc 100%)"
       mt="7rem"
       id="about"
@@ -46,7 +46,7 @@ const About = ({ about, effect, children_effect }) => {
       <Box flex={1}>
         <Image objectFit="cover" src={about.image} w="100%" h="100%" alt="image" />
       </Box>
-      <Flex flex={1} align="center" p="5rem 0">
+      <Flex flex={1} align="center" p="5rem 0" overflow="hidden">
         <Box
           sx={{
             '@media screen and (max-width: 1439px)': {
@@ -59,7 +59,7 @@ const About = ({ about, effect, children_effect }) => {
               pl: '3rem'
             }
           }}
-          h="100%"
+          h="fit-content"
           w="80%"
           pl="10rem"
           as={motion.div}

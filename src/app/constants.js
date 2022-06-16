@@ -26,7 +26,7 @@ export const PATH = {
   login: '/login',
   notFound: '*',
   register: '/register',
-  assistant: {
+  customer: {
     home: '/',
     clinic: '/clinic/:id',
     dentist: '/dentist/:id'
@@ -91,7 +91,9 @@ export const NAME_REGEX = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
 
 // regex for date
 export const DATE_FORMAT = {
-  'yyyy-MM-DD': 'yyyy-MM-DD'
+  'yyyy-MM-DD': 'yyyy-MM-DD',
+  'DD-MM-YYYY': 'DD-MM-YYYY',
+  'dd/mm/yy': 'dd/mm/yy'
 };
 
 // api routes
@@ -134,3 +136,60 @@ export const HOME_BLOCK_NAME = {
   dentist: 'dentist',
   clinic: 'clinic'
 };
+
+// system role
+export const ROLE = {
+  0: 'admin',
+  1: 'docter',
+  2: 'user'
+};
+
+// schedule timer
+export const SCHEDULE_TIMER = [
+  '07:00',
+  '07:30',
+  '08:00',
+  '08:30',
+  '09:00',
+  '09:30',
+  '10:00',
+  '10:30',
+  '11:00',
+  '11:30',
+  '12:00',
+  '13:00',
+  '13:30',
+  '14:00',
+  '14:30',
+  '15:00',
+  '15:30',
+  '16:00',
+  '16:30',
+  '17:00'
+];
+
+// week
+export const SCHEDULE_WEEK = (t) => ({
+  0: t('dashboard.dentist.appointment.table-header.sunday'),
+  1: t('dashboard.dentist.appointment.table-header.monday'),
+  2: t('dashboard.dentist.appointment.table-header.tuesday'),
+  3: t('dashboard.dentist.appointment.table-header.wednesday'),
+  4: t('dashboard.dentist.appointment.table-header.thursday'),
+  5: t('dashboard.dentist.appointment.table-header.friday'),
+  6: t('dashboard.dentist.appointment.table-header.saturday')
+});
+
+export const MONTH = (t) => ({
+  0: t('common.month.january'),
+  1: t('common.month.february'),
+  2: t('common.month.march'),
+  3: t('common.month.april'),
+  4: t('common.month.may'),
+  5: t('common.month.june'),
+  6: t('common.month.july'),
+  7: t('common.month.august'),
+  8: t('common.month.september'),
+  9: t('common.month.octopus'),
+  10: t('common.month.november'),
+  11: t('common.month.december')
+});
