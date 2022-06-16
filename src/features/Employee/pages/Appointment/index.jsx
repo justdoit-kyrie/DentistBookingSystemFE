@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable indent */
 import {
   Box,
@@ -22,7 +23,15 @@ import { IoMdTrash } from 'react-icons/io';
 import styles from './Appointment.module.scss';
 import './Appointment.scss';
 import React from 'react';
-import { DATE_FORMAT, MONTH, SCHEDULE_TIMER, SCHEDULE_WEEK } from '~/app/constants';
+import {
+  API_CODE,
+  API_ROUTES,
+  BOOKING_STATUS,
+  DATE_FORMAT,
+  MONTH,
+  SCHEDULE_TIMER,
+  SCHEDULE_WEEK
+} from '~/app/constants';
 import { Dropdown } from '~/components';
 import { ProfileTemplate } from '../../Templates';
 import { motion } from 'framer-motion';
@@ -31,6 +40,10 @@ import { compareDate, getDaysInMonth, getDaysInWeek, isDateInWeek } from '~/util
 import moment from 'moment';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { withTranslation } from 'react-i18next';
+import { axios } from '~/apis';
+import { useSelector } from 'react-redux';
+import { selectLoggedUser } from '~/features/Auth/authSlice';
+import { Navigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -124,11 +137,6 @@ const MOCK_DATA = (t) => ({
     },
     footer: [
       {
-        label: t('dashboard.dentist.appointment.table-footer.pending'),
-        value: 'pending',
-        color: '#ffa901' //yellow.500
-      },
-      {
         label: t('dashboard.dentist.appointment.table-footer.ongoing'),
         value: 'ongoing',
         color: '#7a6efe' //purple.500
@@ -146,120 +154,17 @@ const MOCK_DATA = (t) => ({
       week: 'week',
       month: 'month'
     }
-  },
-  fake_data: _.sortBy(
-    [
-      {
-        id: 1,
-        name: 'drug test',
-        time: '14:30',
-        status: 'success',
-        date: [new Date(2022, 5, 6), new Date(2022, 5, 8)]
-      },
-      {
-        id: 2,
-        name: 'drug test',
-        time: '09:00',
-        status: 'pending',
-        date: [new Date(2022, 5, 8), new Date(2022, 5, 9)]
-      },
-      {
-        id: 3,
-        name: 'drug test',
-        time: '16:00',
-        status: 'ongoing',
-        date: [new Date()]
-      },
-      {
-        id: 4,
-        name: 'drug test',
-        time: '13:30',
-        status: 'pending',
-        date: [new Date(2022, 5, 18)]
-      },
-      {
-        id: 5,
-        name: 'drug test',
-        time: '11:30',
-        status: 'success',
-        date: [new Date(2022, 5, 16), new Date(2022, 5, 17)]
-      },
-      {
-        id: 6,
-        name: 'drug test',
-        time: '12:00',
-        status: 'ongoing',
-        date: [new Date(2022, 5, 17), new Date(2022, 5, 18)]
-      },
-      {
-        id: 7,
-        name: 'drug test',
-        time: '14:00',
-        status: 'success',
-        date: [new Date(2022, 5, 18)]
-      },
-      {
-        id: 8,
-        name: 'drug test',
-        time: '16:00',
-        status: 'success',
-        date: [new Date(2022, 5, 18), new Date(2022, 5, 19)]
-      },
-      {
-        id: 9,
-        name: 'drug test',
-        time: '17:00',
-        status: 'success',
-        date: [new Date(2022, 5, 18)]
-      },
-      {
-        id: 10,
-        name: 'drug test',
-        time: '10:30',
-        day: 'monday',
-        status: 'ongoing',
-        date: [new Date(2022, 5, 29), new Date(2022, 5, 30)]
-      },
-      {
-        id: 11,
-        name: 'drug test',
-        time: '10:30',
-        day: 'monday',
-        status: 'ongoing',
-        date: [new Date(2022, 5, 9), new Date(2022, 5, 10)]
-      },
-      {
-        id: 12,
-        name: 'drug test',
-        time: '10:30',
-        day: 'monday',
-        status: 'ongoing',
-        date: [new Date(2022, 5, 10), new Date(2022, 5, 11)]
-      },
-      {
-        id: 13,
-        name: 'drug test',
-        time: '10:30',
-        day: 'monday',
-        status: 'ongoing',
-        date: [new Date(2022, 5, 10)]
-      }
-    ],
-    [
-      function (o) {
-        return o.date[0];
-      }
-    ]
-  )
+  }
 });
 
 const AppointmentPage = ({ t }) => {
   const {
     navItems,
     calendar,
-    fake_data,
     _constants: { _nav }
   } = MOCK_DATA(t);
+
+  const userInfo = useSelector(selectLoggedUser);
 
   const BG = useColorModeValue('white', 'transparent');
   const disabledBg = useColorModeValue('grey.100', 'navy.500');
@@ -277,36 +182,57 @@ const AppointmentPage = ({ t }) => {
     daysInWeek.current[daysInWeek.current.length - 1]
   ]);
   const [field, setField] = useState('month');
-  const [data, setData] = useState(fake_data);
+  const [data, setData] = useState([]);
   const [rowHeight, setRowHeight] = useState({ value: 200, num: 3 });
+
+  const fetchData = async () => {
+    try {
+      if (userInfo) {
+        const { code, content } = await axios.get(
+          API_ROUTES['get-booking-by-dentist-it'].replace(':id', userInfo.dentistId)
+        );
+
+        if (+code === API_CODE.OK) {
+          const result = content.reduce((initial, current) => [...initial, ...current.detail], []);
+          setData(result.map((item) => ({ ...item, date: [moment(item.date).toDate()] })));
+        }
+      }
+    } catch (error) {
+      // show toast error
+      console.log({ error });
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     switch (field) {
       case _nav.day:
         // call api
-        setData(() =>
-          fake_data.filter(
-            (v) =>
-              moment(v.date[0]).isSame(today.current, 'day') &&
-              moment(v.date[0]).isSame(today.current, 'month') &&
-              moment(v.date[0]).isSame(today.current, 'year')
-          )
-        );
+        // setData(() =>
+        //   fake_data.filter(
+        //     (v) =>
+        //       moment(v.date[0]).isSame(today.current, 'day') &&
+        //       moment(v.date[0]).isSame(today.current, 'month') &&
+        //       moment(v.date[0]).isSame(today.current, 'year')
+        //   )
+        // );
         break;
       case _nav.week: {
-        setData(() => {
-          const daysInWeek = getDaysInWeek(dateOfWeek[0]);
-          return fake_data.filter((v) =>
-            v.date.length > 1
-              ? isDateInWeek(v.date[0], daysInWeek) && isDateInWeek(v.date[1], daysInWeek)
-              : isDateInWeek(v.date[0], daysInWeek)
-          );
-        });
+        const daysInWeek = getDaysInWeek(dateOfWeek[0]);
+        const uniqueList = data.filter((v) =>
+          v.date.length > 1
+            ? isDateInWeek(v.date[0], daysInWeek) && isDateInWeek(v.date[1], daysInWeek)
+            : isDateInWeek(v.date[0], daysInWeek)
+        );
+        setData(uniqueList);
         break;
       }
       default:
         // call api
-        setData(fake_data);
+        // setData(fake_data);
         break;
     }
   }, [field, dateOfWeek, date, dateOfMonth]);
@@ -341,7 +267,7 @@ const AppointmentPage = ({ t }) => {
       return `${line} / ${line + 1}`;
     }
 
-    const line = SCHEDULE_TIMER.findIndex((item) => item === data.time);
+    const line = data.keyTime;
     return `${line + 1} / ${line + 2}`;
   };
 
@@ -403,7 +329,7 @@ const AppointmentPage = ({ t }) => {
     return (
       <Flex direction="column" gap="2rem" p="1rem 2rem" minW="40rem">
         <Flex align="center" justify="space-between">
-          <ProfileTemplate title={{ value: 'Stephen Conley', fontSize: '1.5rem', color: 'black' }} />
+          <ProfileTemplate titleColor="black" user={item.user} />
           <Flex gap="1rem" color="black">
             <Circle
               as={motion.div}
@@ -442,7 +368,7 @@ const AppointmentPage = ({ t }) => {
             {field === 'month' ? (
               <>
                 <BsAlarm fontSize="2.5rem" />
-                <Text>{item.time}</Text>
+                <Text>{SCHEDULE_TIMER[item.keyTime]}</Text>
               </>
             ) : (
               <>
@@ -458,9 +384,9 @@ const AppointmentPage = ({ t }) => {
             )}
           </Flex>
           <Flex align="center" gap="0.5rem">
-            <GoPrimitiveDot fontSize="1.5rem" color={calendar.footer.find((v) => v.value === item.status).color} />
+            <GoPrimitiveDot fontSize="1.5rem" color={BOOKING_STATUS(t)[item.status].color} />
             <Text textTransform="uppercase" fontSize="1.25rem" color="grey.300" fontWeight="700">
-              {t(`dashboard.dentist.appointment.table-footer.${item.status}`)}
+              {BOOKING_STATUS(t)[item.status].label}
             </Text>
           </Flex>
         </Flex>
@@ -468,10 +394,13 @@ const AppointmentPage = ({ t }) => {
     );
   };
 
-  const renderData = () => {
-    return data.map((item, index) => {
+  const renderData = () =>
+    data.map((item, index) => {
       const num = handleGetPositionTransform(item, index, 0);
       const passProps = {};
+      const namePassProps =
+        field === _nav.day ? {} : { maxW: '50%', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' };
+
       if (field === _nav.month) {
         passProps.transform = num > 0 ? `translateY(${num * 120}%)` : 'translateY(0)';
         if (num > rowHeight.num) {
@@ -507,7 +436,7 @@ const AppointmentPage = ({ t }) => {
               w={field === _nav.day ? '95%' : '90%'}
               h={field === _nav.month ? '33px' : '60%'}
               borderRadius="2rem"
-              bg={calendar.footer.find((v) => v.value === item.status).color}
+              bg={BOOKING_STATUS(t)[item.status].color}
               px="1rem"
               color="white"
               fontSize="1.2rem"
@@ -515,14 +444,15 @@ const AppointmentPage = ({ t }) => {
               zIndex={index}
               {...passProps}
             >
-              <Text textTransform="uppercase">{item.name}</Text>
-              <Text>{item.time}</Text>
+              <Text textTransform="uppercase" {...namePassProps}>
+                {item.serviceName}
+              </Text>
+              <Text>{SCHEDULE_TIMER[item.keyTime]}</Text>
             </Flex>
           </Dropdown>
         </Flex>
       );
     });
-  };
 
   const renderContent = () => {
     if (field === _nav.month) {

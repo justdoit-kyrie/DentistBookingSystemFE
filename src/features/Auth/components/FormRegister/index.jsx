@@ -82,7 +82,7 @@ const defaultValues = {
   gender: 0
 };
 
-// Render years 
+// Render years
 
 const FormRegister = ({ t }) => {
   const dispatch = useDispatch();
@@ -97,7 +97,6 @@ const FormRegister = ({ t }) => {
     resolver: yupResolver(schema)
   });
 
-
   const onSubmit = async (data) => {
     dispatch(init());
     try {
@@ -107,11 +106,9 @@ const FormRegister = ({ t }) => {
         dob: moment(data.dob).format(DATE_FORMAT['yyyy-MM-DD'])
       });
       if (+code === API_CODE.OK) {
-        console.log(message);
         dispatch(registerSuccess({ userName: data.username, password: data.password }));
         return navigate(PATH.login);
       } else {
-        console.log(message);
         dispatch(loginFailed());
       }
     } catch (error) {
@@ -122,7 +119,6 @@ const FormRegister = ({ t }) => {
 
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
-
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ position: '' }}>
@@ -197,7 +193,7 @@ const FormRegister = ({ t }) => {
           name="gender"
           control={control}
           render={({ field }) => (
-            <RadioGroup {...field} >
+            <RadioGroup {...field}>
               <Grid templateColumns="repeat(2,1fr)" gap={6}>
                 <Radio value="0" isRequired>
                   Male

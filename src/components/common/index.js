@@ -10,3 +10,4 @@ export { default as Footer } from './Footer';
 export { default as CustomCarousel } from './CustomCarousel';
 export { default as Sidebar } from './Sidebar';
 export { default as Toast } from './Toast';
+export { default as FormFieldWrapper } from './Form-field-wrapper';

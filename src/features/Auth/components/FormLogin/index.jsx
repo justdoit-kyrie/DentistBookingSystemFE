@@ -4,12 +4,12 @@ import classnames from 'classnames/bind';
 import { signInWithPopup } from 'firebase/auth';
 import { motion } from 'framer-motion';
 import _ from 'lodash';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { AiOutlineUser } from 'react-icons/ai';
-import { FaUser } from 'react-icons/fa';
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
+import { FaUser } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -51,8 +51,7 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
   const { colorMode } = useColorMode();
   const registerInfo = useSelector(selectRegisteredUser);
 
-  const [show, setShow] = React.useState(false);
-  const handleClick = () => setShow(!show);
+  const [show, setShow] = useState(false);
 
   //init firebase
   const firebase = new Firebase();
@@ -175,8 +174,8 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
             placeholder={t('auth.login.pwdPlaceholder')}
             type={show ? 'text' : 'password'}
           />
-          <InputRightElement onClick={handleClick} top="5%">
-            {show ? <BsFillEyeFill /> : <BsFillEyeSlashFill />}
+          <InputRightElement onClick={() => setShow((prev) => !prev)} top="5%" right="0.75rem">
+            {show ? <BsFillEyeFill fontSize="1.7rem" /> : <BsFillEyeSlashFill fontSize="1.7rem" />}
           </InputRightElement>
         </InputGroup>
 
