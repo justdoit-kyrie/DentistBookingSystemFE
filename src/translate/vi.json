@@ -183,11 +183,7 @@
       "sidebar": {
         "overview": "tổng quát",
         "appointment": "cuộc hẹn",
-        "myPatients": "bệnh nhân của tôi",
-        "message": "tin nhắn",
-        "blog": "blog",
-        "profile": "Hồ sơ",
-        "setting": "cài đặt"
+        "profile": "Hồ sơ"
       },
       "header": {
         "title": "Chào mừng, Tiến sĩ {{name}}",

@@ -196,3 +196,31 @@ export const MONTH = (t) => ({
   10: t('common.month.november'),
   11: t('common.month.december')
 });
+
+export const BOOKING_STATUS = (t) => [
+  {
+    label: t('dashboard.dentist.appointment.table-footer.pending'),
+    value: 'active',
+    color: 'red'
+  },
+  {
+    label: t('dashboard.dentist.appointment.table-footer.pending'),
+    value: 'inactive',
+    color: 'black'
+  },
+  {
+    label: t('dashboard.dentist.appointment.table-footer.pending'),
+    value: 'pending',
+    color: '#ffa901' //yellow.500
+  },
+  {
+    label: t('dashboard.dentist.appointment.table-footer.ongoing'),
+    value: 'ongoing',
+    color: '#7a6efe' //purple.500
+  },
+  {
+    label: t('dashboard.dentist.appointment.table-footer.success'),
+    value: 'success',
+    color: 'green'
+  }
+];

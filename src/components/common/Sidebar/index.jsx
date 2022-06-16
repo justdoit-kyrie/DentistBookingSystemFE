@@ -31,34 +31,9 @@ const MOCK_DATA = (t) => ({
           to: getDestinationURL('appointment')
         },
         {
-          icon: FiUser,
-          label: t('dashboard.dentist.sidebar.myPatients'),
-          to: getDestinationURL('myPatients')
-        },
-        {
-          icon: BiMessageRounded,
-          label: t('dashboard.dentist.sidebar.message'),
-          to: getDestinationURL('message')
-        },
-        {
-          icon: AiOutlineFileText,
-          label: t('dashboard.dentist.sidebar.blog'),
-          to: getDestinationURL('blog')
-        }
-      ]
-    },
-    {
-      title: 'account pages',
-      list: [
-        {
           icon: AiOutlineSetting,
           label: t('dashboard.dentist.sidebar.profile'),
           to: getDestinationURL('profile')
-        },
-        {
-          icon: CgProfile,
-          label: t('dashboard.dentist.sidebar.setting'),
-          to: getDestinationURL('setting')
         }
       ]
     }
