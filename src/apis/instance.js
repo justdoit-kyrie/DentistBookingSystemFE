@@ -2,10 +2,12 @@
 import axios from 'axios';
 import { API_CODE, API_ROUTES, AUTH_KEY, history } from '~/app/constants';
 import { getLocalStorage, setLocalStorage } from '~/utils';
+import queryString from 'query-string';
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
-  timeout: 1000,
-  headers: { 'content-type': 'application/json' }
+  timeout: 10000,
+  headers: { 'Content-Type': 'application/json' },
+  paramsSerializer: (params) => queryString.stringify(params, { arrayFormat: 'brackets' })
 });
 
 instance.interceptors.request.use(

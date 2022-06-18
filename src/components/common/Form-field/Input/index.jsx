@@ -51,7 +51,7 @@ const InputField = (props) => {
             </InputGroup>
             {isError && (
               <FormErrorMessage>
-                {errors[name].message} <BsFillExclamationCircleFill/>
+                {errors[name].message} <BsFillExclamationCircleFill />
               </FormErrorMessage>
             )}
           </FormControl>

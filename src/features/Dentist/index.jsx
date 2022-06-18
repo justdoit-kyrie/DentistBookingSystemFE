@@ -165,28 +165,38 @@ const DentistPage = ({ t }) => {
           </Flex>
           <Box className="clinic-info-wrapper">
             <Box className="info-container" w="100%" paddingBottom="2rem">
-              <Heading fontSize="2rem">{t('home.dentist.booking.clinicLocation')}</Heading>
-              <Text fontSize="1.7rem" fontweight="600">
-                Phòng Khám Đa Khoa NTKDD
-              </Text>
-              <Text fontSize="1.3rem">243 Chu Văn An, phường 12, quận Bình Thạnh, Tp.HCM</Text>
-            </Box>
-            <Box className="info-container" paddingBottom="2rem" paddingTop="2rem">
-              <HStack>
-                <Heading fontSize="2rem">{t('home.dentist.booking.price')}</Heading>
-                <Text fontSize="1.7rem">250.000đ.</Text>
-                <Link to="/detail" fontSize="1.7rem" color="var(--chakra-colors-blue-500)">
-                  Xem Chi Tiết
-                </Link>
-              </HStack>
-            </Box>
-            <Box paddingBottom="2rem" paddingTop="2rem">
-              <HStack>
-                <Heading fontSize="2rem">{t('home.dentist.booking.insurance')}</Heading>
-                <Link to="/detail" fontSize="1.7rem" color="var(--chakra-colors-blue-500)">
-                  Xem Chi Tiết
-                </Link>
-              </HStack>
+              <Accordion allowToggle className="clinic-location-accordion">
+                <AccordionItem className="clinic-accordion-item">
+                  <h2>
+                    <AccordionButton className="accordion-button">
+                      <Box flex="1" textAlign="left">
+                        <Heading fontSize="2rem">{t('home.dentist.booking.clinicInfo')}</Heading>
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <Box className="info-container" paddingBottom="2rem" paddingTop="1rem">
+                      <Heading fontSize="2rem">{t('home.dentist.booking.clinicLocation')}</Heading>
+                      <Text fontSize="1.7rem" fontweight="600">
+                        Phòng Khám Đa Khoa NTKDD
+                      </Text>
+                      <Text fontSize="1.3rem">243 Chu Văn An, phường 12, quận Bình Thạnh, Tp.HCM</Text>
+                    </Box>
+
+                    <Box className="info-container" paddingBottom="2rem" paddingTop="1rem">
+                      <HStack>
+                        <Heading fontSize="2rem">{t('home.dentist.booking.price')}</Heading>
+                        <Text fontSize="1.7rem">250.000đ.</Text>
+                        <Link to="/detail" fontSize="1.7rem" color="var(--chakra-colors-blue-500)">
+                          Xem Chi Tiết
+                        </Link>
+                      </HStack>
+                    </Box>
+
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
             </Box>
           </Box>
         </Flex>

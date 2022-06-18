@@ -1,19 +1,11 @@
 import { Box, Circle, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import React, { forwardRef } from 'react';
+import { useSelector } from 'react-redux';
+import { selectLoggedUser } from '~/features/Auth/authSlice';
+import DEFAULT_AVATAR from '~/assets/images/default_avatar.jpg';
 
-const ProfileTemplate = (
-  {
-    img = 'https://images.unsplash.com/photo-1654423625700-454987d4b73c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
-    title = { value: 'Stephen Conley', fontSize: '1.5rem' },
-    desc = { value: 'Stephen Conley', fontSize: '1.2rem', color: 'grey.300', mt: '0.5rem' },
-    gap = '1rem',
-    flex,
-    icon
-  },
-  ref
-) => {
-  const { value: titleVal, ...titleProps } = title;
-  const { value: descVal, ...descProps } = desc;
+const ProfileTemplate = ({ gap = '1rem', titleColor, flex, icon, user }, ref) => {
+  const { lastName, firstName, email, imageUrl } = user ? user : useSelector(selectLoggedUser) || {};
 
   let IconComp;
   if (icon) IconComp = icon;
@@ -21,11 +13,13 @@ const ProfileTemplate = (
   return (
     <Flex ref={ref} gap={gap} flex={flex} align="center">
       <Circle size="4rem" overflow="hidden">
-        <Image h="100%" src={img} />
+        <Image h="100%" w="100%" src={imageUrl ? imageUrl : DEFAULT_AVATAR} alt="avatar" objectFit="cover" />
       </Circle>
       <Box>
-        <Heading {...titleProps}>{titleVal}</Heading>
-        <Text {...descProps}>{descVal}</Text>
+        <Heading fontSize="1.5rem" color={titleColor}>{`${lastName} ${firstName}`}</Heading>
+        <Text fontSize="1.2rem" color="grey.300" mt="0.5rem">
+          {email}
+        </Text>
       </Box>
       {IconComp && <IconComp fontSize="1.5rem" />}
     </Flex>

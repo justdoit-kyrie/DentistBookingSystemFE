@@ -103,9 +103,6 @@
   border-left: 1px solid;
   padding-left: 2rem;
   border-color: var(--chakra-colors-grey-300);
-  & .info-container {
-    border-bottom: 1px solid var(--chakra-colors-grey-300);
-  }
 }
 
 .comment-title {
@@ -130,8 +127,8 @@
     padding-bottom: 2rem;
     border-bottom: 1px solid var(--chakra-colors-grey-300);
   }
-  &.clinic-policy{
-    margin-bottom:1rem;
+  &.clinic-policy {
+    margin-bottom: 1rem;
   }
 }
 
@@ -145,6 +142,23 @@
   transition: all 0.2s;
   & .clinic-accordion-item {
     border: none;
+  }
+  &:hover {
+    border-color: var(--chakra-colors-blue-200) !important;
+    border: 1px solid;
+    box-shadow: 0 0 0 0.2rem #c7d2fe !important;
+    transition: all 0.2s;
+  }
+}
+
+.clinic-location-accordion {
+  border-radius: 1rem;
+  transition: all 0.2s;
+  & .clinic-accordion-item {
+    border: none;
+  }
+  & .accordion-button{
+    padding: 1rem;
   }
   &:hover {
     border-color: var(--chakra-colors-blue-200) !important;

@@ -3,7 +3,7 @@ import React from 'react';
 import { MutatingDots } from 'react-loader-spinner';
 import { COLORS } from '~/app/constants';
 
-const Loading = ({ position = 'fixed' }) => {
+const Loading = ({ position = 'fixed', children }) => {
   return (
     <Flex
       justify="center"
@@ -15,8 +15,11 @@ const Loading = ({ position = 'fixed' }) => {
       h="100%"
       zIndex="999"
       borderRadius="inherit"
+      direction="column"
     >
       <MutatingDots ariaLabel="loading-indicator" />
+      
+      {children}
     </Flex>
   );
 };

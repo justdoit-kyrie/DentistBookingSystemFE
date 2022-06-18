@@ -21,6 +21,9 @@ export const authSlice = createSlice({
       state.loggedUser = payload;
       state.loading = false;
     },
+    updateLoggedUser: (state, { payload }) => {
+      state.loggedUser = { ...state.loggedUser, ...payload, phone: payload.phoneNumber };
+    },
     loginFailed: (state) => {
       state.loading = false;
     },
@@ -30,7 +33,7 @@ export const authSlice = createSlice({
   }
 });
 
-export const { init, loginSuccess, loginFailed, logout , registerSuccess } = authSlice.actions;
+export const { init, loginSuccess, loginFailed, logout, registerSuccess, updateLoggedUser } = authSlice.actions;
 
 //#region selectors
 export const selectLoggedUser = (state) => state.auth.loggedUser;

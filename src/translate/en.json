@@ -10,7 +10,21 @@
       "light": "Light",
       "dark": "Dark"
     },
-    "language": "en-US"
+    "language": "en-US",
+    "month": {
+      "january": "january",
+      "february": "february",
+      "march": "march",
+      "april": "april",
+      "may": "may",
+      "june": "june",
+      "july": "july",
+      "august": "august",
+      "september": "september",
+      "octopus": "octopus",
+      "november": "november",
+      "december": "december"
+    }
   },
   "auth": {
     "login": {
@@ -131,9 +145,9 @@
         "bookingNow": "Book Now",
         "daypickerPlaceholder": "Select a day",
         "timepickerPlaceholder": "Select a time",
+        "clinicInfo": "Clinic Information",
         "clinicLocation": "Clinic Location",
         "price": "Price:",
-        "insurance": "Applicable Insurance Type.",
         "doctor": "Doctor",
         "trainingProcess": "Training Process",
         "workingProcess": "Working Process",
@@ -218,11 +232,7 @@
       "sidebar": {
         "overview": "overview",
         "appointment": "appointment",
-        "myPatients": "my patients",
-        "message": "message",
-        "blog": "blog",
-        "profile": "profile",
-        "setting": "setting"
+        "profile": "profile"
       },
       "header": {
         "title": "Welcome, Dr {{name}}",
@@ -256,6 +266,24 @@
       ],
       "placeholder": {
         "search": "Search Appointment, Patient or etc"
+      },
+      "appointment": {
+        "title": "appointment",
+        "subTittle": ["day", "week", "month"],
+        "table-header": {
+          "monday": "monday",
+          "tuesday": "tuesday",
+          "wednesday": "wednesday",
+          "thursday": "thursday",
+          "friday": "friday",
+          "saturday": "saturday",
+          "sunday": "sunday"
+        },
+        "table-footer": {
+          "pending": "pending",
+          "ongoing": "ongoing",
+          "success": "success"
+        }
       }
     }
   }

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Box, Flex, Heading, Image, Text, useColorMode } from '@chakra-ui/react';
+import { Box, Flex, Heading, Image, Text, useColorMode, useMediaQuery } from '@chakra-ui/react';
 import classNames from 'classnames/bind';
 import _ from 'lodash';
 import React, { Fragment } from 'react';
@@ -31,34 +31,9 @@ const MOCK_DATA = (t) => ({
           to: getDestinationURL('appointment')
         },
         {
-          icon: FiUser,
-          label: t('dashboard.dentist.sidebar.myPatients'),
-          to: getDestinationURL('myPatients')
-        },
-        {
-          icon: BiMessageRounded,
-          label: t('dashboard.dentist.sidebar.message'),
-          to: getDestinationURL('message')
-        },
-        {
-          icon: AiOutlineFileText,
-          label: t('dashboard.dentist.sidebar.blog'),
-          to: getDestinationURL('blog')
-        }
-      ]
-    },
-    {
-      title: 'account pages',
-      list: [
-        {
           icon: AiOutlineSetting,
           label: t('dashboard.dentist.sidebar.profile'),
           to: getDestinationURL('profile')
-        },
-        {
-          icon: CgProfile,
-          label: t('dashboard.dentist.sidebar.setting'),
-          to: getDestinationURL('setting')
         }
       ]
     }
@@ -69,10 +44,11 @@ const Sidebar = ({ t }) => {
   const { menu } = MOCK_DATA(t);
 
   const { colorMode } = useColorMode();
+  const [isLessThan1919] = useMediaQuery('(max-width: 1919px)');
 
   return (
     <Flex
-      flex="0.2"
+      flex={isLessThan1919 ? '0.25' : '0.2'}
       boxShadow="rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
       borderRadius="inherit"
       p="2rem"

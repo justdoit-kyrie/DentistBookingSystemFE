@@ -21,7 +21,7 @@ import { PATH } from './constants';
  * @param {React Element} component
  * @param {React Element} layout - default is DefaultLayout, if null don't use layout, if false, use layout
  * @param {Boolean} isPublic - if true, the route is public and default it is private
- * @param {Number} role -  0: head, 1: dentist, 2: assistant and default is assistant
+ * @param {Number} role -  0: admin, 1: dentist, 2: customer and default is customer
  */
 export const ROUTES = [
   { path: PATH.register, component: RegisterPage, layout: AuthLayout, isPublic: true },
@@ -38,28 +38,27 @@ export const ROUTES = [
     layout: null
   },
   {
-    path: PATH.assistant.home,
-    component: HomePage,
-    isPublic: true
+    path: PATH.customer.home,
+    component: HomePage
   },
   {
-    path: PATH.assistant.dentist,
+    path: PATH.customer.dentist,
     component: DentistPage,
     isPublic: true,
     layout: null
   },
   {
-    path: PATH.assistant.clinic,
+    path: PATH.customer.clinic,
     component: ClinicPage,
     isPublic: true,
     layout: null
   },
-  { path: PATH.dentist.home, component: OverViewPage, layout: DashboardLayout, role: 1, isPublic: true },
-  { path: PATH.dentist.appointment, component: AppointmentPage, layout: DashboardLayout, role: 1, isPublic: true },
+  { path: PATH.dentist.home, component: OverViewPage, layout: DashboardLayout, role: 1 },
+  { path: PATH.dentist.appointment, component: AppointmentPage, layout: DashboardLayout, role: 1 },
   { path: PATH.dentist.blog, component: BlogPage, layout: DashboardLayout, role: 1, isPublic: true },
   { path: PATH.dentist.message, component: MessagePage, layout: DashboardLayout, role: 1, isPublic: true },
   { path: PATH.dentist.myPatients, component: MyPatientsPage, layout: DashboardLayout, role: 1, isPublic: true },
-  { path: PATH.dentist.profile, component: ProfilePage, layout: DashboardLayout, role: 1, isPublic: true },
+  { path: PATH.dentist.profile, component: ProfilePage, layout: DashboardLayout, role: 1 },
   { path: PATH.dentist.setting, component: SettingPage, layout: DashboardLayout, role: 1, isPublic: true }
 ];
 //#endregion
