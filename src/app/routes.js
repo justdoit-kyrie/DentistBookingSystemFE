@@ -13,8 +13,7 @@ import {
   RegisterPage,
   SettingPage
 } from '~/features';
-import { ClinicsPage, ServicesPage, UsersPage } from '~/features/Admin';
-import Overview from '~/features/Admin/pages/Overview';
+import { ClinicsPage, Overview, ServicesPage, UsersPage } from '~/features/Admin/pages';
 import { PATH } from './constants';
 
 //#region routes

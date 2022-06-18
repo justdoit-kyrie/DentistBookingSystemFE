@@ -29,10 +29,11 @@ import {
   BOOKING_STATUS,
   DATE_FORMAT,
   MONTH,
+  MONTH_VALUE,
   SCHEDULE_TIMER,
   SCHEDULE_WEEK
 } from '~/app/constants';
-import { Dropdown } from '~/components';
+import { Dropdown, Loading } from '~/components';
 import { ProfileTemplate } from '../../Templates';
 import { motion } from 'framer-motion';
 import _ from 'lodash';
@@ -44,6 +45,8 @@ import { axios } from '~/apis';
 import { useSelector } from 'react-redux';
 import { selectLoggedUser } from '~/features/Auth/authSlice';
 import { Navigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useLayoutEffect } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -175,6 +178,7 @@ const AppointmentPage = ({ t }) => {
   const dayCount = useRef(SCHEDULE_TIMER.length);
   const daysInWeek = useRef(getDaysInWeek());
 
+  const [loading, setLoading] = useState(false);
   const [date, setDate] = useState(today.current);
   const [dateOfMonth, setDateOfMonth] = useState(today.current);
   const [dateOfWeek, setDateOfWeek] = useState([
@@ -187,54 +191,67 @@ const AppointmentPage = ({ t }) => {
 
   const fetchData = async () => {
     try {
-      if (userInfo) {
-        const { code, content } = await axios.get(
-          API_ROUTES['get-booking-by-dentist-it'].replace(':id', userInfo.dentistId)
-        );
+      switch (field) {
+        case _nav.day: {
+          const { code, content } = await axios.get(
+            API_ROUTES['get-booking-by-dentist-it'].replace(':id', userInfo.dentistId),
+            { params: { where: `day.${date.getDate()}.${MONTH_VALUE[date.getMonth()]}.${date.getFullYear()}` } }
+          );
 
-        if (+code === API_CODE.OK) {
-          const result = content.reduce((initial, current) => [...initial, ...current.detail], []);
-          setData(result.map((item) => ({ ...item, date: [moment(item.date).toDate()] })));
+          if (+code === API_CODE.OK) {
+            const result = content.reduce((initial, current) => [...initial, ...current.detail], []);
+            setData(result.map((item) => ({ ...item, date: [moment(item.date).toDate()] })));
+            setLoading(false);
+          }
+          break;
+        }
+        case _nav.week: {
+          const { code, content } = await axios.get(
+            API_ROUTES['get-booking-by-dentist-it'].replace(':id', userInfo.dentistId),
+            {
+              params: {
+                where: `between.${dateOfWeek[0].getFullYear()}-${
+                  MONTH_VALUE[dateOfWeek[0].getMonth()]
+                }-${dateOfWeek[0].getDate()}.${dateOfWeek[1].getFullYear()}-${
+                  MONTH_VALUE[dateOfWeek[1].getMonth()]
+                }-${dateOfWeek[1].getDate()}`
+              }
+            }
+          );
+
+          if (+code === API_CODE.OK) {
+            const result = content.reduce((initial, current) => [...initial, ...current.detail], []);
+            setData(result.map((item) => ({ ...item, date: [moment(item.date).toDate()] })));
+            setLoading(false);
+          }
+          break;
+        }
+        default: {
+          const { code, content } = await axios.get(
+            API_ROUTES['get-booking-by-dentist-it'].replace(':id', userInfo.dentistId),
+            {
+              params: {
+                where: `month.${MONTH_VALUE[dateOfMonth.getMonth()]}.${dateOfMonth.getFullYear()}`
+              }
+            }
+          );
+
+          if (+code === API_CODE.OK) {
+            const result = content.reduce((initial, current) => [...initial, ...current.detail], []);
+            setData(result.map((item) => ({ ...item, date: [moment(item.date).toDate()] })));
+            setLoading(false);
+          }
+          break;
         }
       }
     } catch (error) {
-      // show toast error
-      console.log({ error });
+      toast.error(error.message);
     }
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    switch (field) {
-      case _nav.day:
-        // call api
-        // setData(() =>
-        //   fake_data.filter(
-        //     (v) =>
-        //       moment(v.date[0]).isSame(today.current, 'day') &&
-        //       moment(v.date[0]).isSame(today.current, 'month') &&
-        //       moment(v.date[0]).isSame(today.current, 'year')
-        //   )
-        // );
-        break;
-      case _nav.week: {
-        const daysInWeek = getDaysInWeek(dateOfWeek[0]);
-        const uniqueList = data.filter((v) =>
-          v.date.length > 1
-            ? isDateInWeek(v.date[0], daysInWeek) && isDateInWeek(v.date[1], daysInWeek)
-            : isDateInWeek(v.date[0], daysInWeek)
-        );
-        setData(uniqueList);
-        break;
-      }
-      default:
-        // call api
-        // setData(fake_data);
-        break;
-    }
   }, [field, dateOfWeek, date, dateOfMonth]);
 
   const handleGetPositionTransform = (item, index, num) => {
@@ -506,7 +523,7 @@ const AppointmentPage = ({ t }) => {
                 </Flex>
               ))}
 
-              {renderData()}
+              {loading ? <Loading position="absolute" /> : renderData()}
             </Grid>
           </Box>
         </>
@@ -590,7 +607,7 @@ const AppointmentPage = ({ t }) => {
               <Box key={`${index}`} className={cx('schedule-body')} />
             ))}
 
-            {renderData()}
+            {loading ? <Loading position="absolute" /> : renderData()}
           </Grid>
         </Box>
       </>

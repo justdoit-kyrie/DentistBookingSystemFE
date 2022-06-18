@@ -202,6 +202,21 @@ export const MONTH = (t) => ({
   11: t('common.month.december')
 });
 
+export const MONTH_VALUE = {
+  0: '1',
+  1: '2',
+  2: '3',
+  3: '4',
+  4: '5',
+  5: '6',
+  6: '7',
+  7: '8',
+  8: '9',
+  9: '10',
+  10: '11',
+  11: '12'
+};
+
 export const STATUS_CODE = {
   0: 'active',
   1: 'inActive',
