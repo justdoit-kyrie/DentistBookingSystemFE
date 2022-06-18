@@ -258,6 +258,14 @@ export const theme = extendTheme({
       sizes: {},
       // 3. We can add a new visual variant
       variants: {
+        inActive: {
+          bg: 'red.200',
+          color: 'white'
+        },
+        active: {
+          bg: 'green',
+          color: 'white'
+        },
         failed: {
           bg: 'red.200',
           color: 'white'

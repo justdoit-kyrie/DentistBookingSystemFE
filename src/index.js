@@ -17,7 +17,7 @@ import App from './App';
 import { history } from './app/constants';
 import i18n from './app/i18next';
 import { persistor, store } from './app/store';
-import { Loading, Toast } from './components';
+import { Loading, ScrollToTop, Toast } from './components';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -32,6 +32,7 @@ root.render(
             <Suspense fallback={<Loading />}>
               <ColorModeScript initialColorMode={theme.config.initialColorMode} />
               <Toast />
+              <ScrollToTop />
               <App />
             </Suspense>
           </HistoryRouter>

@@ -13,6 +13,8 @@ import {
   RegisterPage,
   SettingPage
 } from '~/features';
+import { ClinicsPage, ServicesPage, UsersPage } from '~/features/Admin';
+import Overview from '~/features/Admin/pages/Overview';
 import { PATH } from './constants';
 
 //#region routes
@@ -59,6 +61,13 @@ export const ROUTES = [
   { path: PATH.dentist.message, component: MessagePage, layout: DashboardLayout, role: 1, isPublic: true },
   { path: PATH.dentist.myPatients, component: MyPatientsPage, layout: DashboardLayout, role: 1, isPublic: true },
   { path: PATH.dentist.profile, component: ProfilePage, layout: DashboardLayout, role: 1 },
-  { path: PATH.dentist.setting, component: SettingPage, layout: DashboardLayout, role: 1, isPublic: true }
+  { path: PATH.dentist.setting, component: SettingPage, layout: DashboardLayout, role: 1, isPublic: true },
+
+  { path: PATH.admin.home, component: Overview, layout: DashboardLayout, role: 0, isPublic: true },
+  { path: PATH.admin.user, component: UsersPage, layout: DashboardLayout, role: 0, isPublic: true },
+  { path: PATH.admin.dentist, component: UsersPage, layout: DashboardLayout, role: 0, isPublic: true },
+  { path: PATH.admin.clinic, component: ClinicsPage, layout: DashboardLayout, role: 0, isPublic: true },
+  { path: PATH.admin.service, component: ServicesPage, layout: DashboardLayout, role: 0, isPublic: true },
+  { path: PATH.admin.profile, component: ProfilePage, layout: DashboardLayout, role: 0, isPublic: true }
 ];
 //#endregion
