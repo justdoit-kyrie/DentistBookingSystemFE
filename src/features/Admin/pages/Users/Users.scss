@@ -1,43 +1,5 @@
 @import '../../../../app/styles/variables.scss';
 
-.p-calendar.overview-calendar {
-  flex-shrink: 0;
-  & > .p-inputtext {
-    font-size: 1.5rem;
-    font-weight: 700;
-    border-color: transparent;
-
-    &:hover {
-      border-color: transparent;
-    }
-
-    &:focus {
-      border-color: transparent !important;
-      box-shadow: none !important;
-    }
-  }
-}
-
-.datePicker-panel {
-  &.dark {
-    background: $dark-mode-color-700 !important;
-    color: white;
-  }
-
-  & .p-datepicker-title > *,
-  & .p-datepicker-prev,
-  * .p-datepicker-next {
-    color: white !important;
-  }
-}
-
-.calendar-today-button,
-.calendar-clear-button {
-  &.dark {
-    color: white;
-  }
-}
-
 .p-datatable {
   font-size: 1.4rem;
   width: 100% !important;
@@ -66,59 +28,92 @@
     border-color: $primary-500 !important;
   }
 
-  &.overview-dataTable-light {
+  &.users-dataTable {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
 
     .p-datatable-table {
-      background: white;
+      background: transparent;
     }
 
     .dataTable-row {
       box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
       border-radius: 0.8rem;
     }
-  }
 
-  &.dataTable-dark {
-    & .p-datatable-thead > tr > th .p-sortable-column-icon,
-    & .p-datatable-thead > tr > th .p-column-title {
-      color: white;
+    .users-footer {
+      background: transparent;
     }
 
-    & .p-sortable-column {
-      &.p-highlight .p-sortable-column-icon {
-        color: $primary-500;
+    &.dark {
+      .p-datatable-header,
+      .p-datatable-footer,
+      .p-datatable-thead > tr > th,
+      .users-footer {
+        background: $dark-mode-color-600;
       }
 
-      &:focus {
-        box-shadow: none;
+      & .p-datatable-thead > tr > th .p-sortable-column-icon,
+      & .p-datatable-thead > tr > th .p-column-title,
+      .users-footer * {
+        color: white;
       }
-    }
 
-    & .p-datatable-tbody > tr {
-      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 2px 0px;
-    }
+      .p-inputtext {
+        color: white;
+      }
 
-    & .p-datatable-tbody > tr.p-selectable-row:not(.p-highlight):not(.p-datatable-emptymessage):hover {
-      background: $dark-mode-color-600;
-    }
+      .p-column-filter-element {
+        color: white;
+      }
 
-    & .p-sortable-column:not(.p-sortable-disabled):hover {
-      background: $navy-100;
-      & .p-sortable-column-icon {
-        color: $primary-500;
+      .users-footer {
+        .p-highlight {
+          background: $dark-mode-color-500;
+        }
+
+        .p-paginator-page:not(.p-highlight):hover {
+          background: $desc-200;
+          color: white;
+        }
+      }
+
+      & .p-sortable-column {
+        &.p-highlight .p-sortable-column-icon {
+          color: $primary-500;
+        }
+
+        &:focus {
+          box-shadow: none;
+        }
+      }
+
+      & .p-datatable-tbody > tr {
+        background: $dark-mode-color-600;
+      }
+
+      & .p-datatable-tbody > tr.p-selectable-row:not(.p-highlight):not(.p-datatable-emptymessage):hover {
+        background: $dark-mode-color-600;
+      }
+
+      & .p-sortable-column:not(.p-sortable-disabled):hover {
+        background: $navy-100;
+        & .p-sortable-column-icon {
+          color: $primary-500;
+        }
       }
     }
   }
+}
 
-  &.overview-dataTable-dark {
-    & .p-datatable-table,
-    & .p-datatable-thead > tr > th,
-    & .p-datatable-tbody > tr {
-      background: $dark-mode-color-700;
-    }
+.dataTable-dark {
+  .p-dropdown-item.p-highlight {
+    background: $dark-mode-color-500 !important;
   }
+}
+
+.users-calendar {
+  font-size: 1.3rem !important;
 }

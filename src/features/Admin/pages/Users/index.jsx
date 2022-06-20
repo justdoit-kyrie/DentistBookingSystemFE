@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   Badge,
   Box,
@@ -11,8 +10,10 @@ import {
   InputGroup,
   InputLeftElement,
   Text,
-  useColorMode
+  useColorMode,
+  useDisclosure
 } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import _ from 'lodash';
 import moment from 'moment';
 import { FilterMatchMode } from 'primereact/api';
@@ -20,14 +21,18 @@ import { Calendar } from 'primereact/calendar';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Dropdown } from 'primereact/dropdown';
-import React, { useEffect, useState } from 'react';
+import { Paginator } from 'primereact/paginator';
+import React, { Fragment, useEffect, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { AiFillLock } from 'react-icons/ai';
-import { BiSearch } from 'react-icons/bi';
+import { BiSearch, BiTrash } from 'react-icons/bi';
 import { BsFillUnlockFill } from 'react-icons/bs';
+import { MdModeEditOutline } from 'react-icons/md';
+import { RiFilterOffLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, DATE_FORMAT, STATUS_CODE, USER_SEXUAL } from '~/app/constants';
+import { CustomModal } from '../Dentists/components';
 import './Users.scss';
 
 const MOCK_DATA = {
@@ -35,102 +40,16 @@ const MOCK_DATA = {
     request: 'request',
     patient: 'patient'
   },
-  statusOpt: [0, 1],
-  dataTable: [
-    {
-      id: 0,
-      name: 'John Doe',
-      date: '5/7/21',
-      gender: 'male',
-      disease: 'teeth',
-      status: 'success'
-    },
-    {
-      id: 1,
-      name: 'John Doe',
-      date: '5/7/21',
-      gender: 'male',
-      disease: 'teeth',
-      status: 'success'
-    },
-    {
-      id: 2,
-      name: 'John Doe',
-      date: '5/7/21',
-      gender: 'male',
-      disease: 'teeth',
-      status: 'success'
-    },
-    {
-      id: 3,
-      name: 'John Doe',
-      date: '5/7/21',
-      gender: 'male',
-      disease: 'teeth',
-      status: 'confirmed'
-    },
-    {
-      id: 4,
-      name: 'John Doe',
-      date: '5/7/21',
-      gender: 'male',
-      disease: 'teeth',
-      status: 'confirmed'
-    },
-    {
-      id: 5,
-      name: 'John Doe',
-      date: '5/7/21',
-      gender: 'male',
-      disease: 'teeth',
-      status: 'confirmed'
-    },
-    {
-      id: 6,
-      name: 'John Doe',
-      date: '5/7/21',
-      gender: 'male',
-      disease: 'teeth',
-      status: 'failed'
-    },
-    {
-      id: 7,
-      name: 'John Doe',
-      date: '5/7/21',
-      gender: 'male',
-      disease: 'teeth',
-      status: 'failed'
-    },
-    {
-      id: 8,
-      name: 'John Doe',
-      date: '5/7/21',
-      gender: 'male',
-      disease: 'teeth',
-      status: 'failed'
-    },
-    {
-      id: 9,
-      name: 'John Doe',
-      date: '5/7/21',
-      gender: 'male',
-      disease: 'teeth',
-      status: 'success'
-    },
-    {
-      id: 10,
-      name: 'John Doe',
-      date: '5/7/21',
-      gender: 'male',
-      disease: 'teeth',
-      status: 'success'
-    }
-  ]
+  statusOpt: [0, 1]
 };
 
 const Users = ({ t }) => {
-  const { dataTable, statusOpt } = MOCK_DATA;
+  const { statusOpt } = MOCK_DATA;
 
+  const [paginationInfo, setPaginationInfo] = useState();
+  const [dataTableFirst, setDataTableFirst] = useState(0);
+  const [dataTablePage, setDataTablePage] = useState(0);
+  const [editCustomer, setEditCustomer] = useState();
   const [selectedPatient, setSelectedPatient] = useState();
   const [unlockedCustomers, setUnlockedCustomers] = useState([]);
   const [lockedCustomers, setLockedCustomers] = useState([]);
@@ -139,22 +58,29 @@ const Users = ({ t }) => {
   const [globalFilterValue, setGlobalFilterValue] = useState('');
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    lastName: { value: null, matchMode: FilterMatchMode.CONTAINS },
     id: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    date: { value: null, matchMode: FilterMatchMode.DATE_IS },
-    disease: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    dob: {
+      value: null,
+      matchMode: FilterMatchMode.DATE_IS
+    },
+    phone: { value: null, matchMode: FilterMatchMode.CONTAINS },
     gender: { value: null, matchMode: FilterMatchMode.EQUALS },
-    status: { value: null, matchMode: FilterMatchMode.EQUALS }
+    status: { value: null, matchMode: FilterMatchMode.EQUALS },
+    email: { value: null, matchMode: FilterMatchMode.CONTAINS }
   });
 
   const { colorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const fetchData = async () => {
     try {
-      const { code, content } = await axios.get(API_ROUTES.users);
+      const { code, content, pagination } = await axios.get(API_ROUTES.users, {
+        params: { pageNumber: dataTablePage + 1 }
+      });
       if (+code === API_CODE.OK) {
-        console.log({ content });
-        setUnlockedCustomers(content);
+        setUnlockedCustomers(handleMapDate(content));
+        setPaginationInfo(pagination);
       }
     } catch (error) {
       toast.error(error.message);
@@ -163,7 +89,28 @@ const Users = ({ t }) => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [dataTablePage]);
+
+  const initFilter = () => {
+    setFilters({
+      global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      lastName: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      id: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      dob: {
+        value: null,
+        matchMode: FilterMatchMode.DATE_IS
+      },
+      phone: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      gender: { value: null, matchMode: FilterMatchMode.EQUALS },
+      status: { value: null, matchMode: FilterMatchMode.EQUALS },
+      email: { value: null, matchMode: FilterMatchMode.CONTAINS }
+    });
+    setGlobalFilterValue('');
+  };
+
+  const handleMapDate = (list) => list.map((item) => ({ ...item, dob: moment(item.dob).toDate() }));
+
+  const handleDeleteRow = async (id) => console.log({ id });
 
   const statusItemTemplate = (option, props) =>
     option || option === 0 ? <Badge variant={STATUS_CODE[option]}>{STATUS_CODE[option]}</Badge> : props?.placeholder;
@@ -174,17 +121,18 @@ const Users = ({ t }) => {
     return (
       <Calendar
         value={options.value}
-        onChange={(e) => options.filterCallback(e.value)}
-        dateFormat="d/m/y"
+        onChange={(e) => {
+          options.filterApplyCallback(e.value);
+        }}
+        dateFormat="dd/mm/yy"
         placeholder="dd/mm/yy"
-        className="modal-calendar"
+        className="users-calendar"
         panelClassName={colorMode === 'dark' && 'calendar-dark'}
       />
     );
   };
 
   const patientNameTemplate = ({ firstName, lastName, imageUrl }) => {
-    console.log({ firstName, lastName, imageUrl });
     return (
       <Flex gap="1rem" align="center">
         <Circle size="3rem" overflow="hidden">
@@ -228,14 +176,47 @@ const Users = ({ t }) => {
     const disabled = options.frozenRow ? false : lockedCustomers.length >= 3;
 
     return (
-      <Button
-        variant="outline"
-        disabled={disabled}
-        className="p-button-sm p-button-text"
-        onClick={() => toggleLock(rowData, options.frozenRow, options.rowIndex)}
-      >
-        <IconComp fontSize="1.6rem" />
-      </Button>
+      <Flex gap="1rem" align="center">
+        <Circle
+          as={motion.div}
+          whileHover={{ scale: 0.9 }}
+          whileTap={{ scale: 1.1 }}
+          size="4rem"
+          bg="white.200"
+          _hover={{ bg: 'yellow.500', color: 'white' }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpen();
+            setEditCustomer(rowData);
+          }}
+        >
+          <MdModeEditOutline fontSize="2rem" />
+        </Circle>
+
+        <Circle
+          as={motion.div}
+          whileHover={{ scale: 0.9 }}
+          whileTap={{ scale: 1.1 }}
+          size="4rem"
+          bg="white.200"
+          _hover={{ bg: 'red.200', color: 'white' }}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDeleteRow(rowData.id);
+          }}
+        >
+          <BiTrash fontSize="2rem" />
+        </Circle>
+
+        <Button
+          variant="outline"
+          disabled={disabled}
+          className="p-button-sm p-button-text"
+          onClick={() => toggleLock(rowData, options.frozenRow, options.rowIndex)}
+        >
+          <IconComp fontSize="1.6rem" />
+        </Button>
+      </Flex>
     );
   };
 
@@ -243,8 +224,10 @@ const Users = ({ t }) => {
     return (
       <Dropdown
         value={options.value}
-        options={_.values(USER_SEXUAL)}
+        options={_.keys(USER_SEXUAL)}
         onChange={(e) => options.filterApplyCallback(e.value)}
+        itemTemplate={(option, props) => (option ? <span>{USER_SEXUAL[option]}</span> : props?.placeholder)}
+        valueTemplate={(option, props) => (option ? <span>{USER_SEXUAL[option]}</span> : props?.placeholder)}
         placeholder="Select a Gender"
         panelClassName={colorMode === 'dark' && 'dataTable-dark modal-dataTable-dark'}
         showClear
@@ -282,34 +265,71 @@ const Users = ({ t }) => {
   };
 
   const renderDataTableHeader = () => {
+    let passProps = {};
+    if (colorMode === 'light')
+      passProps = { borderColor: 'primary.500', color: 'primary.500', _hover: { color: 'white', bg: 'primary.500' } };
+
     return (
-      <InputGroup
-        p="1rem"
-        ml="auto"
-        border="1px solid"
-        borderColor={colorMode === 'light' ? 'grey' : 'white'}
-        borderRadius="0.6rem"
-        width="fit-content"
-      >
-        <InputLeftElement pointerEvents="none" position="absolute" top="50%" left="1rem" transform="translateY(-50%)">
-          <BiSearch color="#5F5D5B" fontSize="2rem" />
-        </InputLeftElement>
-        <Input
-          h="100%"
-          placeholder="Enter name"
-          fontSize="1.6rem"
-          border="none"
-          color={colorMode === 'light' ? 'black' : 'white'}
-          _focus={{ boxShadow: 'none' }}
-          value={globalFilterValue}
-          onChange={handleGlobalFilterChange}
-        />
-      </InputGroup>
+      <Flex justify="space-between" align="center">
+        <Button
+          size="lg"
+          variant="outline"
+          fontSize="1.5rem"
+          h="auto"
+          leftIcon={<RiFilterOffLine />}
+          onClick={initFilter}
+          {...passProps}
+        >
+          Clear
+        </Button>
+
+        <InputGroup
+          p="1rem"
+          border="1px solid"
+          borderColor={colorMode === 'light' ? 'grey' : 'white'}
+          borderRadius="0.6rem"
+          width="fit-content"
+        >
+          <InputLeftElement pointerEvents="none" position="absolute" top="50%" left="1rem" transform="translateY(-50%)">
+            <BiSearch color="#5F5D5B" fontSize="2rem" />
+          </InputLeftElement>
+          <Input
+            h="100%"
+            placeholder="Enter keyword"
+            fontSize="1.6rem"
+            border="none"
+            color={colorMode === 'light' ? 'black' : 'white'}
+            _focus={{ boxShadow: 'none' }}
+            value={globalFilterValue}
+            onChange={handleGlobalFilterChange}
+          />
+        </InputGroup>
+      </Flex>
+    );
+  };
+
+  const renderDataTableFooter = () => {
+    return (
+      paginationInfo && (
+        <Paginator
+          className="users-footer"
+          first={dataTableFirst}
+          rows={paginationInfo.pageSize}
+          totalRecords={paginationInfo.totalRecords}
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+          onPageChange={(e) => {
+            setDataTablePage(e.page);
+            setDataTableFirst(e.first);
+          }}
+        ></Paginator>
+      )
     );
   };
 
   return (
     <>
+      {isOpen && <CustomModal isOpen={isOpen} onClose={onClose} customer={editCustomer} />}
+
       <Heading mb="2rem" color="primary.500" textTransform="uppercase" letterSpacing="0.25rem">
         Users management
       </Heading>
@@ -318,7 +338,7 @@ const Users = ({ t }) => {
         <DataTable
           value={unlockedCustomers}
           size="large"
-          className={colorMode === 'dark' ? 'modal-dataTable-dark' : 'overview-dataTable-light'}
+          className={colorMode === 'dark' ? 'users-dataTable dark' : 'users-dataTable'}
           selectionMode="single"
           selection={selectedPatient}
           onSelectionChange={(e) => setSelectedPatient(e.value)}
@@ -329,23 +349,23 @@ const Users = ({ t }) => {
           sortField={sortField}
           sortOrder={sortOrder}
           onSort={handleSort}
-          paginator
           frozenValue={lockedCustomers}
-          rows={10}
           filters={filters}
           filterDisplay="row"
-          globalFilterFields={['name', 'gender', 'disease', 'status']}
+          globalFilterFields={['firstName', 'lastName', 'phone', 'email']}
           emptyMessage="No customers found."
           header={renderDataTableHeader}
+          footer={renderDataTableFooter}
         >
           <Column
-            field="name"
             header={t('dashboard.dentist.header.table-header.name')}
             body={patientNameTemplate}
+            sortField="firstName"
+            filterField="lastName"
             sortable
             filter
             filterPlaceholder="Search by name"
-            style={{ minWidth: '25rem' }}
+            style={{ minWidth: '30rem' }}
           ></Column>
           <Column
             field="email"
@@ -354,18 +374,18 @@ const Users = ({ t }) => {
             sortable
             filter
             filterPlaceholder="Search by email"
-            style={{ minWidth: '22rem' }}
+            style={{ minWidth: '30rem' }}
           ></Column>
           <Column
             field="dob"
             header="date of birth"
             body={(rowData) => bodyDataTableTemplate(moment(rowData.dob).format(DATE_FORMAT['DD/MM/YYYY']))}
             sortable
-            filterField="date"
-            dataType="date"
             filter
+            filterField="dob"
+            dataType="date"
             filterElement={dateFilterTemplate}
-            style={{ minWidth: '15rem' }}
+            style={{ minWidth: '25rem' }}
           ></Column>
           <Column
             field="gender"
@@ -375,7 +395,7 @@ const Users = ({ t }) => {
             filter
             filterElement={genderFilterTemplate}
             showFilterMenu={false}
-            style={{ minWidth: '22rem' }}
+            style={{ minWidth: '25rem' }}
           ></Column>
           <Column
             field="phone"
@@ -384,7 +404,7 @@ const Users = ({ t }) => {
             sortable
             filter
             filterPlaceholder="Search by phone"
-            style={{ minWidth: '20rem' }}
+            style={{ minWidth: '25rem' }}
           ></Column>
           <Column
             field="status"
@@ -400,7 +420,7 @@ const Users = ({ t }) => {
             header="action"
             body={lockTemplate}
             style={{
-              maxWidth: '7rem'
+              flex: '1'
             }}
           />
         </DataTable>

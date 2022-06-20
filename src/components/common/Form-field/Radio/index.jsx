@@ -15,6 +15,7 @@ const RadioField = (props) => {
       name={name}
       control={control}
       render={({ field }) => {
+        field.value = field.value.toString();
         return (
           <FormControl isInvalid={isError}>
             <RadioGroup {...field}>

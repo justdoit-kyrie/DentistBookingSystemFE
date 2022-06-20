@@ -13,7 +13,7 @@ import {
   RegisterPage,
   SettingPage
 } from '~/features';
-import { ClinicsPage, Overview, ServicesPage, UsersPage } from '~/features/Admin/pages';
+import { ClinicsPage, DentistsPage, Overview, ServicesPage, UsersPage } from '~/features/Admin/pages';
 import { PATH } from './constants';
 
 //#region routes
@@ -64,7 +64,7 @@ export const ROUTES = [
 
   { path: PATH.admin.home, component: Overview, layout: DashboardLayout, role: 0, isPublic: true },
   { path: PATH.admin.user, component: UsersPage, layout: DashboardLayout, role: 0, isPublic: true },
-  { path: PATH.admin.dentist, component: UsersPage, layout: DashboardLayout, role: 0, isPublic: true },
+  { path: PATH.admin.dentist, component: DentistsPage, layout: DashboardLayout, role: 0, isPublic: true },
   { path: PATH.admin.clinic, component: ClinicsPage, layout: DashboardLayout, role: 0, isPublic: true },
   { path: PATH.admin.service, component: ServicesPage, layout: DashboardLayout, role: 0, isPublic: true },
   { path: PATH.admin.profile, component: ProfilePage, layout: DashboardLayout, role: 0, isPublic: true }

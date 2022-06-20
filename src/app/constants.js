@@ -109,10 +109,10 @@ export const API_ROUTES = {
   logout: '/logout',
   refreshToken: '/Users/refresh',
   'get-clinics': '/clinics',
-  'get-dentists': '/dentists',
   'get-profile': '/Users/getProfile',
   'get-booking-by-dentist-it': '/bookings/dentist/:id',
-  users: '/Users'
+  users: '/Users',
+  dentists: '/dentists'
 };
 
 // api status code
