@@ -62,9 +62,9 @@ export const ROUTES = [
   { path: PATH.dentist.profile, component: ProfilePage, layout: DashboardLayout, role: 1 },
   { path: PATH.dentist.setting, component: SettingPage, layout: DashboardLayout, role: 1, isPublic: true },
 
-  { path: PATH.admin.home, component: Overview, layout: DashboardLayout, role: 0, isPublic: true },
-  { path: PATH.admin.user, component: UsersPage, layout: DashboardLayout, role: 0, isPublic: true },
-  { path: PATH.admin.dentist, component: DentistsPage, layout: DashboardLayout, role: 0, isPublic: true },
+  { path: PATH.admin.home, component: Overview, layout: DashboardLayout, role: 0 },
+  { path: PATH.admin.user, component: UsersPage, layout: DashboardLayout, role: 0 },
+  { path: PATH.admin.dentist, component: DentistsPage, layout: DashboardLayout, role: 0 },
   { path: PATH.admin.clinic, component: ClinicsPage, layout: DashboardLayout, role: 0, isPublic: true },
   { path: PATH.admin.service, component: ServicesPage, layout: DashboardLayout, role: 0, isPublic: true },
   { path: PATH.admin.profile, component: ProfilePage, layout: DashboardLayout, role: 0, isPublic: true }

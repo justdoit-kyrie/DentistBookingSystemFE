@@ -1,0 +1,72 @@
+@import '../../../../../app/styles/variables.scss';
+
+.select-field {
+  transform: none;
+  padding-left: revert;
+  width: 100%;
+  border-color: $grey-300;
+
+  & > * {
+    font-size: 1.5rem !important;
+  }
+
+  &:not(.p-disabled):hover {
+    border-color: $focus-text-field;
+  }
+
+  &:not(.p-disabled).p-focus {
+    box-shadow: 0 0 0 1px $focus-text-field;
+  }
+
+  &.is-invalid {
+    border-color: $invalid-text-field-color;
+    border-width: 2px;
+
+    &:not(.p-disabled) {
+      box-shadow: none;
+      &.p-focus {
+        &:hover {
+          border-color: $focus-text-field;
+          box-shadow: none;
+        }
+      }
+
+      &:hover {
+        border-color: $invalid-text-field-color;
+      }
+    }
+  }
+}
+
+.multi-select-field {
+  &-panel * {
+    font-size: 1.5rem;
+  }
+
+  .p-multiselect-items-label {
+    padding: 1rem 0 1rem 1.2rem !important;
+  }
+
+  .p-multiselect-token {
+    background: $primary-200 !important;
+    color: white !important;
+  }
+
+  &.is-invalid {
+    border-color: $invalid-text-field-color;
+    border-width: 2px;
+
+    &:not(.p-disabled) {
+      border-color: $invalid-text-field-color;
+      &.p-focus {
+        &:hover {
+          border-color: $focus-text-field;
+        }
+      }
+
+      &:hover {
+        border-color: $invalid-text-field-color;
+      }
+    }
+  }
+}

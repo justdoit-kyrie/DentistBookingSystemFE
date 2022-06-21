@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   Badge,
   Box,
@@ -11,8 +10,10 @@ import {
   InputGroup,
   InputLeftElement,
   Text,
-  useColorMode
+  useColorMode,
+  useDisclosure
 } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import _ from 'lodash';
 import moment from 'moment';
 import { FilterMatchMode } from 'primereact/api';
@@ -24,13 +25,14 @@ import { Paginator } from 'primereact/paginator';
 import React, { useEffect, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { AiFillLock } from 'react-icons/ai';
-import { BiSearch } from 'react-icons/bi';
+import { BiSearch, BiTrash } from 'react-icons/bi';
 import { BsFillUnlockFill } from 'react-icons/bs';
+import { MdModeEditOutline } from 'react-icons/md';
 import { RiFilterOffLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, DATE_FORMAT, STATUS_CODE, USER_POSITION, USER_SEXUAL } from '~/app/constants';
-import './Dentists.scss';
+import { CustomModal } from '../Components';
 
 const MOCK_DATA = {
   _fieldConstants: {
@@ -44,6 +46,7 @@ const Dentists = ({ t }) => {
   const { statusOpt } = MOCK_DATA;
 
   const [paginationInfo, setPaginationInfo] = useState();
+  const [editDentist, setEditDentist] = useState();
   const [dataTableFirst, setDataTableFirst] = useState(0);
   const [dataTablePage, setDataTablePage] = useState(0);
   const [selectedDentist, setSelectedDentist] = useState();
@@ -68,6 +71,7 @@ const Dentists = ({ t }) => {
   });
 
   const { colorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const fetchData = async () => {
     try {
@@ -105,6 +109,18 @@ const Dentists = ({ t }) => {
   };
 
   const handleMapDate = (list) => list.map((item) => ({ ...item, dob: moment(item.dob).toDate() }));
+
+  const handleDeleteRow = async (id) => {
+    try {
+      const { code, message } = await axios.delete(API_ROUTES.dentists + `/${id}`);
+      if (+code === API_CODE.OK) {
+        toast.success(message);
+        fetchData();
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   const statusItemTemplate = (option, props) =>
     option || option === 0 ? <Badge variant={STATUS_CODE[option]}>{STATUS_CODE[option]}</Badge> : props?.placeholder;
@@ -170,14 +186,50 @@ const Dentists = ({ t }) => {
     const disabled = options.frozenRow ? false : lockedDentists.length >= 3;
 
     return (
-      <Button
-        variant="outline"
-        disabled={disabled}
-        className="p-button-sm p-button-text"
-        onClick={() => toggleLock(rowData, options.frozenRow, options.rowIndex)}
-      >
-        <IconComp fontSize="1.6rem" />
-      </Button>
+      <Flex gap="1rem" align="center">
+        <Circle
+          as={motion.div}
+          whileHover={{ scale: 0.9 }}
+          whileTap={{ scale: 1.1 }}
+          size="4rem"
+          bg="white.200"
+          _hover={{ bg: 'yellow.500', color: 'white' }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpen();
+            setEditDentist({
+              ...rowData,
+              serviceId: rowData.services.map((item) => item.id)
+            });
+          }}
+        >
+          <MdModeEditOutline fontSize="2rem" />
+        </Circle>
+
+        <Circle
+          as={motion.div}
+          whileHover={{ scale: 0.9 }}
+          whileTap={{ scale: 1.1 }}
+          size="4rem"
+          bg="white.200"
+          _hover={{ bg: 'red.200', color: 'white' }}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDeleteRow(rowData.dentistID);
+          }}
+        >
+          <BiTrash fontSize="2rem" />
+        </Circle>
+
+        <Button
+          variant="outline"
+          disabled={disabled}
+          className="p-button-sm p-button-text"
+          onClick={() => toggleLock(rowData, options.frozenRow, options.rowIndex)}
+        >
+          <IconComp fontSize="1.6rem" />
+        </Button>
+      </Flex>
     );
   };
 
@@ -298,9 +350,31 @@ const Dentists = ({ t }) => {
 
   return (
     <>
+      {isOpen && (
+        <CustomModal label="dentists" isOpen={isOpen} onClose={onClose} data={editDentist} callback={fetchData} />
+      )}
+
       <Heading mb="2rem" color="primary.500" textTransform="uppercase" letterSpacing="0.25rem">
         Dentists management
       </Heading>
+
+      <Box mb="2rem">
+        <Button
+          variant="outline"
+          textTransform="capitalize"
+          w="10rem"
+          py="2rem"
+          borderColor="primary.300"
+          color="primary.300"
+          _hover={{ bg: 'primary.300', color: 'white' }}
+          onClick={() => {
+            onOpen();
+            setEditDentist(null);
+          }}
+        >
+          Add
+        </Button>
+      </Box>
 
       <Box position="relative" flex="1">
         <DataTable

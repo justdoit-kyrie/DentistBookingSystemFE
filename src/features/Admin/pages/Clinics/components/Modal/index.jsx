@@ -35,7 +35,7 @@ const CustomModal = ({ customer, isOpen, onClose }) => {
       <ModalOverlay zIndex="1" />
       <ModalContent minW="40vw" minH="85vh" borderRadius="2rem" pt="4rem">
         <ModalHeader fontSize="3rem" textTransform="capitalize" fontWeight="800" px="3rem">
-          edit dentist profile
+          edit clinic profile
         </ModalHeader>
         <ModalCloseButton top="2rem" right="2rem" />
         <ModalBody position="relative">

@@ -32,7 +32,7 @@ import { RiFilterOffLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, DATE_FORMAT, STATUS_CODE, USER_SEXUAL } from '~/app/constants';
-import { CustomModal } from '../Dentists/components';
+import { CustomModal } from '../Components';
 import './Users.scss';
 
 const MOCK_DATA = {
@@ -110,7 +110,17 @@ const Users = ({ t }) => {
 
   const handleMapDate = (list) => list.map((item) => ({ ...item, dob: moment(item.dob).toDate() }));
 
-  const handleDeleteRow = async (id) => console.log({ id });
+  const handleDeleteRow = async (id) => {
+    try {
+      const { code, message } = await axios.delete(API_ROUTES.users + `/${id}`);
+      if (+code === API_CODE.OK) {
+        toast.success(message);
+        fetchData();
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   const statusItemTemplate = (option, props) =>
     option || option === 0 ? <Badge variant={STATUS_CODE[option]}>{STATUS_CODE[option]}</Badge> : props?.placeholder;
@@ -187,7 +197,16 @@ const Users = ({ t }) => {
           onClick={(e) => {
             e.stopPropagation();
             onOpen();
-            setEditCustomer(rowData);
+            const { id: userId, email, firstName, lastName, phone, dob, gender } = rowData;
+            setEditCustomer({
+              userId,
+              email,
+              firstName,
+              lastName,
+              phone,
+              dob,
+              gender
+            });
           }}
         >
           <MdModeEditOutline fontSize="2rem" />
@@ -328,7 +347,9 @@ const Users = ({ t }) => {
 
   return (
     <>
-      {isOpen && <CustomModal isOpen={isOpen} onClose={onClose} customer={editCustomer} />}
+      {isOpen && (
+        <CustomModal label="users" isOpen={isOpen} onClose={onClose} data={editCustomer} callback={fetchData} />
+      )}
 
       <Heading mb="2rem" color="primary.500" textTransform="uppercase" letterSpacing="0.25rem">
         Users management

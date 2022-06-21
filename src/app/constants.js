@@ -112,7 +112,9 @@ export const API_ROUTES = {
   'get-profile': '/Users/getProfile',
   'get-booking-by-dentist-it': '/bookings/dentist/:id',
   users: '/Users',
-  dentists: '/dentists'
+  dentists: '/dentists',
+  clinics: '/clinics/all',
+  services: '/services'
 };
 
 // api status code

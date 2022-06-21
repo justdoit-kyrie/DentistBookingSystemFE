@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable indent */
 import {
   Box,
   Button,
@@ -14,15 +12,20 @@ import {
   useMediaQuery
 } from '@chakra-ui/react';
 import classNames from 'classnames/bind';
+import { motion } from 'framer-motion';
+import _ from 'lodash';
+import moment from 'moment';
 import { Calendar } from 'primereact/calendar';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { withTranslation } from 'react-i18next';
+import { AiOutlineCalendar } from 'react-icons/ai';
 import { BsAlarm } from 'react-icons/bs';
 import { GoPrimitiveDot } from 'react-icons/go';
-import { MdModeEditOutline } from 'react-icons/md';
 import { IoMdTrash } from 'react-icons/io';
-import styles from './Appointment.module.scss';
-import './Appointment.scss';
-import React from 'react';
+import { MdModeEditOutline } from 'react-icons/md';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { axios } from '~/apis';
 import {
   API_CODE,
   API_ROUTES,
@@ -34,19 +37,11 @@ import {
   SCHEDULE_WEEK
 } from '~/app/constants';
 import { Dropdown, Loading } from '~/components';
-import { ProfileTemplate } from '../../Templates';
-import { motion } from 'framer-motion';
-import _ from 'lodash';
-import { compareDate, getDaysInMonth, getDaysInWeek, isDateInWeek } from '~/utils';
-import moment from 'moment';
-import { AiOutlineCalendar } from 'react-icons/ai';
-import { withTranslation } from 'react-i18next';
-import { axios } from '~/apis';
-import { useSelector } from 'react-redux';
 import { selectLoggedUser } from '~/features/Auth/authSlice';
-import { Navigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useLayoutEffect } from 'react';
+import { compareDate, getDaysInMonth, getDaysInWeek } from '~/utils';
+import { ProfileTemplate } from '../../Templates';
+import styles from './Appointment.module.scss';
+import './Appointment.scss';
 
 const cx = classNames.bind(styles);
 
