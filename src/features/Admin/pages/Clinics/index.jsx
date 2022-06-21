@@ -28,7 +28,7 @@ import { RiFilterOffLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, STATUS_CODE } from '~/app/constants';
-import { CustomModal } from '../Components';
+import { CustomModal } from '../components';
 
 const MOCK_DATA = {
   _fieldConstants: {
@@ -69,8 +69,6 @@ const Clinics = ({ t }) => {
         params: { pageNumber: dataTablePage + 1 }
       });
       if (+code === API_CODE.OK) {
-        console.log({ content });
-
         setUnlockedDentists(content);
         setPaginationInfo(pagination);
       }

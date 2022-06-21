@@ -22,7 +22,7 @@ import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Dropdown } from 'primereact/dropdown';
 import { Paginator } from 'primereact/paginator';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { AiFillLock } from 'react-icons/ai';
 import { BiSearch, BiTrash } from 'react-icons/bi';
@@ -32,8 +32,8 @@ import { RiFilterOffLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, DATE_FORMAT, STATUS_CODE, USER_SEXUAL } from '~/app/constants';
-import { CustomModal } from '../Components';
-import './Users.scss';
+import { CustomModal } from '../components';
+import '~/features/Admin/styles/common.scss';
 
 const MOCK_DATA = {
   _fieldConstants: {

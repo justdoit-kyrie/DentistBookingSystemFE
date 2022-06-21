@@ -32,7 +32,7 @@ import { RiFilterOffLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, DATE_FORMAT, STATUS_CODE, USER_POSITION, USER_SEXUAL } from '~/app/constants';
-import { CustomModal } from '../Components';
+import { CustomModal } from '../components';
 
 const MOCK_DATA = {
   _fieldConstants: {
