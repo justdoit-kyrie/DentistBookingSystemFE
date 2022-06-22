@@ -1,0 +1,170 @@
+.date-dropdown {
+  background-color: inherit !important;
+  color: inherit !important;
+  border: 1px solid;
+  width: 33%;
+  height: 4rem;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    border: 1px solid;
+  }
+
+  &.p-dropdown .p-dropdown-label {
+    font-size: 1.5rem !important;
+    color: inherit !important;
+    width: fit-content;
+  }
+
+  &.p-dropdown:not(.p-disabled):hover {
+    border: 1px solid;
+  }
+
+  .p-dropdown-items-wrapper {
+    background-color: inherit !important;
+    border: 1px solid white;
+    border-radius: 1rem;
+  }
+
+  .p-dropdown-item {
+    border-radius: 0.5rem !important;
+    color: inherit !important;
+    font-size: 1.5rem !important;
+    &.p-highlight {
+      background-color: var(--chakra-colors-gray-400) !important;
+    }
+  }
+}
+
+.date-dropdown-list {
+  background-color: inherit !important;
+  border-radius: 2rem;
+  color: inherit;
+  &.p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
+    background-color: var(--chakra-colors-gray-500);
+  }
+}
+
+.time-select-button {
+  background: inherit !important;
+}
+
+.primereact-time-picker {
+  align-items: center;
+  justify-content: center;
+  width: 23%;
+  height: 4rem;
+  & .p-inputtext.p-component {
+    border: 1px solid;
+    background-color: inherit !important;
+    color: inherit !important;
+    align-items: flex-start;
+    justify-content: flex-start;
+    font-size: 1.5rem !important;
+    border-radius: 6px;
+    font-weight: 400;
+    &:focus {
+      border-color: var(--chakra-colors-blue-200) !important;
+      border: 1px solid;
+      box-shadow: 0 0 0 0.2rem #c7d2fe !important;
+    }
+  }
+
+  & .p-calendar > .p-inputtext:focus {
+    border-color: inherit !important;
+  }
+}
+
+.p-calendar > .p-inputtext:focus {
+  border-color: inherit !important;
+}
+
+.primereact-time-picker-panel {
+  &.p-datepicker:not(.p-datepicker-inline) {
+    background-color: inherit !important;
+    border-color: var(--chakra-colors-blue-200) !important;
+    border: 1px solid;
+    box-shadow: 0 0 0 0.2rem #c7d2fe !important;
+    color: inherit !important;
+  }
+
+  & .p-time-picker {
+    font-size: 1.5rem;
+  }
+}
+
+.booking-btn {
+  margin-left: 2rem;
+  height: 3.9rem !important;
+}
+
+.clinic-info-wrapper {
+  margin-left: 10rem;
+  border-left: 1px solid;
+  padding-left: 2rem;
+  border-color: var(--chakra-colors-grey-300);
+}
+
+.comment-title {
+  padding-bottom: 1rem;
+}
+
+.doctor-profile-wrapper {
+  margin-bottom: 1rem;
+}
+
+.comment-wrapper {
+  margin: 1rem 0 1rem 0;
+  border-top: 0.5px solid;
+  border-color: var(--chakra-colors-grey-300);
+  padding: 1rem 0 1rem 0;
+}
+
+.container {
+  &.doctor-intro,
+  &.user-comment,
+  &.doctor-profile {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--chakra-colors-grey-300);
+  }
+  &.clinic-policy {
+    margin-bottom: 1rem;
+  }
+}
+
+.accordion-button {
+  &:focus {
+    box-shadow: none !important;
+  }
+}
+
+.clinic-accordion {
+  border-radius: 1rem;
+  transition: all 0.2s;
+  & .clinic-accordion-item {
+    border: none;
+  }
+  &:hover {
+    border-color: var(--chakra-colors-blue-200) !important;
+    border: 1px solid;
+    box-shadow: 0 0 0 0.2rem #c7d2fe !important;
+    transition: all 0.2s;
+  }
+}
+
+.clinic-location-accordion {
+  border-radius: 1rem;
+  transition: all 0.2s;
+  & .clinic-accordion-item {
+    border: none;
+  }
+  & .accordion-button {
+    padding: 1rem;
+  }
+  &:hover {
+    border-color: var(--chakra-colors-blue-200) !important;
+    border: 1px solid;
+    box-shadow: 0 0 0 0.2rem #c7d2fe !important;
+    transition: all 0.2s;
+  }
+}

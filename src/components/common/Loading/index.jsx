@@ -18,7 +18,7 @@ const Loading = ({ position = 'fixed', children }) => {
       direction="column"
     >
       <MutatingDots ariaLabel="loading-indicator" />
-      
+
       {children}
     </Flex>
   );

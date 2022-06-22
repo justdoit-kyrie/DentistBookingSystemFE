@@ -25,7 +25,7 @@ export const theme = extendTheme({
     yellow: {
       500: '#ffa901'
     },
-    red: {
+    F: {
       100: '#feeeee',
       200: '#ff5363'
     },
@@ -258,6 +258,14 @@ export const theme = extendTheme({
       sizes: {},
       // 3. We can add a new visual variant
       variants: {
+        inActive: {
+          bg: 'red.200',
+          color: 'white'
+        },
+        active: {
+          bg: 'green',
+          color: 'white'
+        },
         failed: {
           bg: 'red.200',
           color: 'white'

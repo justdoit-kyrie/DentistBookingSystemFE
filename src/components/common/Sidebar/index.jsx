@@ -1,23 +1,23 @@
-/* eslint-disable no-unused-vars */
 import { Box, Flex, Heading, Image, Text, useColorMode, useMediaQuery } from '@chakra-ui/react';
 import classNames from 'classnames/bind';
-import _ from 'lodash';
 import React, { Fragment } from 'react';
 import { withTranslation } from 'react-i18next';
-import { AiOutlineCalendar, AiOutlineFileText, AiOutlineSetting } from 'react-icons/ai';
-import { BiMessageRounded } from 'react-icons/bi';
+import { AiOutlineCalendar, AiOutlineSetting } from 'react-icons/ai';
 import { BsGrid } from 'react-icons/bs';
-import { CgProfile } from 'react-icons/cg';
-import { FiUser } from 'react-icons/fi';
+import { FiUsers } from 'react-icons/fi';
+import { RiBuilding2Line } from 'react-icons/ri';
+import { MdOutlineMedicalServices } from 'react-icons/md';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import LOGO from '~/assets/images/logo.png';
+import { selectLoggedUser } from '~/features/Auth/authSlice';
 import { getDestinationURL } from '~/utils';
 import styles from './Sidebar.module.scss';
 
 const cx = classNames.bind(styles);
 
 const MOCK_DATA = (t) => ({
-  menu: [
+  docter: [
     {
       list: [
         {
@@ -37,11 +37,53 @@ const MOCK_DATA = (t) => ({
         }
       ]
     }
+  ],
+  admin: [
+    {
+      list: [
+        {
+          icon: BsGrid,
+          label: 'overview',
+          to: getDestinationURL('overview')
+        },
+        {
+          icon: FiUsers,
+          label: 'users',
+          to: getDestinationURL('users')
+        },
+        {
+          icon: FiUsers,
+          label: 'dentists',
+          to: getDestinationURL('dentists')
+        },
+        {
+          icon: RiBuilding2Line,
+          label: 'clinics',
+          to: getDestinationURL('clinics')
+        },
+        {
+          icon: MdOutlineMedicalServices,
+          label: 'services',
+          to: getDestinationURL('services')
+        }
+      ]
+    },
+    {
+      title: 'Account page',
+      list: [
+        {
+          icon: AiOutlineSetting,
+          label: 'profile',
+          to: getDestinationURL('profile')
+        }
+      ]
+    }
   ]
 });
 
 const Sidebar = ({ t }) => {
-  const { menu } = MOCK_DATA(t);
+  const userInfo = useSelector(selectLoggedUser) || { role: 'admin' };
+  const menu = MOCK_DATA(t)[userInfo.role.toLowerCase()];
 
   const { colorMode } = useColorMode();
   const [isLessThan1919] = useMediaQuery('(max-width: 1919px)');

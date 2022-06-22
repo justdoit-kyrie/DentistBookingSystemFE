@@ -5,7 +5,7 @@ import { getLocalStorage, setLocalStorage } from '~/utils';
 import queryString from 'query-string';
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
-  timeout: 10000,
+  timeout: 50000,
   headers: { 'Content-Type': 'application/json' },
   paramsSerializer: (params) => queryString.stringify(params, { arrayFormat: 'brackets' })
 });

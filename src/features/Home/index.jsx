@@ -300,8 +300,8 @@ const HomePage = ({ t }) => {
         { code: clinicCode, content: clinicContent },
         { code: clinicOptCode, content: clinicOptContent }
       ] = await Promise.all([
-        axios.get(API_ROUTES['get-dentists']),
-        axios.get(API_ROUTES['get-dentists'], {
+        axios.get(API_ROUTES.dentists),
+        axios.get(API_ROUTES.dentists, {
           params: {
             _all: true
           }
