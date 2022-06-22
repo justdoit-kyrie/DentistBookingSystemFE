@@ -1,4 +1,16 @@
-import { Box, Button, Circle, Flex, Grid, Heading, Image, Progress, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Circle,
+  Flex,
+  Grid,
+  Heading,
+  Image,
+  InputGroup,
+  InputRightElement,
+  Progress,
+  Text
+} from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import classNames from 'classnames/bind';
 import React, { useEffect, useRef, useState } from 'react';
@@ -12,7 +24,9 @@ import {
   EMAIL_REGEX,
   NAME_REGEX,
   PHONE_REGEX,
-  USER_POSITION
+  PWD_REGEX,
+  USER_POSITION,
+  USER_REGEX
 } from '~/app/constants';
 import DEFAULT_AVATAR from '~/assets/images/default_avatar.jpg';
 import { CalendarField, InputField, Loading, RadioField, SelectField } from '~/components';
@@ -26,6 +40,7 @@ import { axios } from '~/apis';
 import { Firebase } from '~/app/firebase';
 import styles from './FormDentist.module.scss';
 import './FormDentist.scss';
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 const cx = classNames.bind(styles);
 
 // initial validation rules
@@ -35,6 +50,24 @@ const schema = yup
     position: yup.number().required('position is required'),
     clinicID: yup.number().required('clinic is required'),
     serviceId: yup.array().min(1, 'service is required'),
+    username: yup
+      .string()
+      .required('User name is required')
+      .min(5, 'User name must have at least 5 characters')
+      .max(30, 'User name must have less than 30 characters')
+      .matches(USER_REGEX, 'Please enter a valid user name'),
+    password: yup
+      .string()
+      .required('Password is required')
+      .min(8, 'Password is longer than 8 characters')
+      .matches(
+        PWD_REGEX,
+        'Password is at least one uppercase letter, one lowercase letter, one number and one special character'
+      ),
+    confirmPassword: yup
+      .string()
+      .required('Confirm password is required')
+      .oneOf([yup.ref('password'), null], 'Passwords must match'),
     email: yup.string().required('Email is required').matches(EMAIL_REGEX, 'Please enter a valid email address'),
     phone: yup.string().required('Phone number is required').matches(PHONE_REGEX, 'Please enter a valid phone number'),
     firstName: yup.string().required('First name is required').matches(NAME_REGEX, 'Please enter a valid first name'),
@@ -56,6 +89,7 @@ const FormDentist = ({ t, defaultValues, BtnRef, loading, setLoading, callback, 
   const [imageUrl, setImageUrl] = useState(defaultValues.imageUrl || DEFAULT_AVATAR);
   const [clinicsOpt, setClinicsOpt] = useState([]);
   const [servicesOpt, setServicesOpt] = useState([]);
+  const [show, setShow] = useState(false);
 
   const file = useRef();
 
@@ -276,6 +310,50 @@ const FormDentist = ({ t, defaultValues, BtnRef, loading, setLoading, callback, 
             py="2rem"
             fontSize="1.5rem"
           />
+        </Flex>
+
+        <Flex direction="column" gap="1rem">
+          <Heading fontSize="1.3rem" textTransform="capitalize">
+            username
+          </Heading>
+          <InputField
+            errors={errors}
+            control={control}
+            name="username"
+            placeholder="Enter username"
+            py="2rem"
+            fontSize="1.5rem"
+          />
+        </Flex>
+
+        <Flex direction="column" gap="1rem">
+          <InputGroup size="lg">
+            <InputField
+              errors={errors}
+              control={control}
+              name="password"
+              placeholder={t('auth.register.pwdPlaceholder')}
+              type={show ? 'text' : 'password'}
+            />
+            <InputRightElement onClick={() => setShow(!show)} top="5%">
+              {show ? <BsFillEyeFill /> : <BsFillEyeSlashFill />}
+            </InputRightElement>
+          </InputGroup>
+        </Flex>
+
+        <Flex direction="column" gap="1rem">
+          <InputGroup size="lg">
+            <InputField
+              errors={errors}
+              control={control}
+              name="confirmPassword"
+              placeholder={t('auth.register.confirmPwdPlaceholder')}
+              type={show ? 'text' : 'password'}
+            />
+            <InputRightElement onClick={() => setShow(!show)} top="5%">
+              {show ? <BsFillEyeFill /> : <BsFillEyeSlashFill />}
+            </InputRightElement>
+          </InputGroup>
         </Flex>
 
         <Flex direction="column" gap="1rem">
