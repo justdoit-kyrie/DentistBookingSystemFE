@@ -12,13 +12,14 @@ import {
   useColorMode,
   useDisclosure
 } from '@chakra-ui/react';
+import classNames from 'classnames/bind';
 import { motion } from 'framer-motion';
 import { FilterMatchMode } from 'primereact/api';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Dropdown } from 'primereact/dropdown';
 import { Paginator } from 'primereact/paginator';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { AiFillLock } from 'react-icons/ai';
 import { BiSearch, BiTrash } from 'react-icons/bi';
@@ -28,7 +29,11 @@ import { RiFilterOffLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, STATUS_CODE } from '~/app/constants';
+import styles from '~/features/Admin/styles/common.module.scss';
+import { DataTableWrapper } from '../../styles';
 import { CustomModal } from '../components';
+
+const cx = classNames.bind(styles);
 
 const MOCK_DATA = {
   _fieldConstants: {
@@ -63,9 +68,11 @@ const Clinics = ({ t }) => {
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const DataTableComp = colorMode === 'dark' ? DataTableWrapper : Fragment;
+
   const fetchData = async () => {
     try {
-      const { code, content, pagination } = await axios.get(API_ROUTES.clinics, {
+      const { code, content, pagination } = await axios.get(API_ROUTES['get-clinics'], {
         params: { pageNumber: dataTablePage + 1 }
       });
       if (+code === API_CODE.OK) {
@@ -98,7 +105,19 @@ const Clinics = ({ t }) => {
     setGlobalFilterValue('');
   };
 
-  const handleDeleteRow = (id) => console.log({ id });
+  const handleDeleteRow = async (id) => {
+    try {
+      const { code, message } = await axios.delete(API_ROUTES.clinics, {
+        params: { clinicId: id }
+      });
+      if (+code === API_CODE.OK) {
+        toast.success(message);
+        fetchData();
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   const statusItemTemplate = (option, props) =>
     option || option === 0 ? <Badge variant={STATUS_CODE[option]}>{STATUS_CODE[option]}</Badge> : props?.placeholder;
@@ -164,7 +183,6 @@ const Clinics = ({ t }) => {
         <Button
           variant="outline"
           disabled={disabled}
-          className="p-button-sm p-button-text"
           onClick={() => toggleLock(rowData, options.frozenRow, options.rowIndex)}
         >
           <IconComp fontSize="1.6rem" />
@@ -182,7 +200,7 @@ const Clinics = ({ t }) => {
         itemTemplate={statusItemTemplate}
         valueTemplate={statusItemTemplate}
         placeholder="Select a Status"
-        panelClassName={colorMode === 'dark' && 'modal-dataTable-dark'}
+        panelClassName={colorMode === 'dark' && cx('modal-dataTable-dark')}
         showClear
       />
     );
@@ -250,7 +268,7 @@ const Clinics = ({ t }) => {
     return (
       paginationInfo && (
         <Paginator
-          className="users-footer"
+          className={cx('users-footer')}
           first={dataTableFirst}
           rows={paginationInfo.pageSize}
           totalRecords={paginationInfo.totalRecords}
@@ -273,95 +291,97 @@ const Clinics = ({ t }) => {
       </Heading>
 
       <Box position="relative" flex="1">
-        <DataTable
-          value={unlockedDentists}
-          size="large"
-          className={colorMode === 'dark' ? 'users-dataTable dark' : 'users-dataTable'}
-          selectionMode="single"
-          selection={selectedDentist}
-          onSelectionChange={(e) => setSelectedDentist(e.value)}
-          scrollable
-          scrollDirection="both"
-          scrollHeight="flex"
-          rowClassName="dataTable-row"
-          sortField={sortField}
-          sortOrder={sortOrder}
-          onSort={handleSort}
-          frozenValue={lockedDentists}
-          filters={filters}
-          filterDisplay="row"
-          globalFilterFields={['name', 'address', 'phone']}
-          emptyMessage="No clinics found."
-          header={renderDataTableHeader}
-          footer={renderDataTableFooter}
-        >
-          <Column
-            header="ID"
-            body={(rowData) => bodyDataTableTemplate(rowData.id)}
-            field="id"
-            sortable
-            filter
-            filterPlaceholder="Search by id"
-            style={{ minWidth: '30rem' }}
-          ></Column>
-          <Column
-            header={t('dashboard.dentist.header.table-header.name')}
-            body={(rowData) => bodyDataTableTemplate(rowData.name)}
-            field="name"
-            sortable
-            filter
-            filterPlaceholder="Search by name"
-            style={{ minWidth: '30rem' }}
-          ></Column>
-          <Column
-            field="address"
-            header="Address"
-            body={(rowData) => bodyDataTableTemplate(rowData.address)}
-            sortable
-            filter
-            filterPlaceholder="Search by address"
-            style={{ minWidth: '30rem' }}
-          ></Column>
-          <Column
-            field="phone"
-            header="Phone"
-            body={(rowData) => bodyDataTableTemplate(rowData.phone)}
-            sortable
-            filter
-            filterPlaceholder="Search by phone"
-            style={{ minWidth: '25rem' }}
-          ></Column>
-          <Column
-            field="status"
-            header={t('dashboard.dentist.header.table-header.status')}
-            body={(rowData) => statusItemTemplate(rowData.status)}
-            sortable
-            filter
-            filterElement={statusFilterTemplate}
-            showFilterMenu={false}
-            style={{ minWidth: '22rem' }}
-          ></Column>
-          <Column
-            field="description"
-            header="Description"
-            body={(rowData) => bodyDataTableTemplate(rowData.description)}
-            sortable
-            style={{
-              minWidth: '30rem',
-              maxWidth: '29rem',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis'
-            }}
-          ></Column>
-          <Column
-            header="action"
-            body={lockTemplate}
-            style={{
-              flex: '1'
-            }}
-          />
-        </DataTable>
+        <DataTableComp>
+          <DataTable
+            value={unlockedDentists}
+            size="large"
+            className={cx('common-dataTable', 'users-dataTable')}
+            selectionMode="single"
+            selection={selectedDentist}
+            onSelectionChange={(e) => setSelectedDentist(e.value)}
+            scrollable
+            scrollDirection="both"
+            scrollHeight="flex"
+            rowClassName={cx('dataTable-row')}
+            sortField={sortField}
+            sortOrder={sortOrder}
+            onSort={handleSort}
+            frozenValue={lockedDentists}
+            filters={filters}
+            filterDisplay="row"
+            globalFilterFields={['name', 'address', 'phone']}
+            emptyMessage="No clinics found."
+            header={renderDataTableHeader}
+            footer={renderDataTableFooter}
+          >
+            <Column
+              header="ID"
+              body={(rowData) => bodyDataTableTemplate(rowData.id)}
+              field="id"
+              sortable
+              filter
+              filterPlaceholder="Search by id"
+              style={{ minWidth: '30rem' }}
+            ></Column>
+            <Column
+              header={t('dashboard.dentist.header.table-header.name')}
+              body={(rowData) => bodyDataTableTemplate(rowData.name)}
+              field="name"
+              sortable
+              filter
+              filterPlaceholder="Search by name"
+              style={{ minWidth: '30rem' }}
+            ></Column>
+            <Column
+              field="address"
+              header="Address"
+              body={(rowData) => bodyDataTableTemplate(rowData.address)}
+              sortable
+              filter
+              filterPlaceholder="Search by address"
+              style={{ minWidth: '30rem' }}
+            ></Column>
+            <Column
+              field="phone"
+              header="Phone"
+              body={(rowData) => bodyDataTableTemplate(rowData.phone)}
+              sortable
+              filter
+              filterPlaceholder="Search by phone"
+              style={{ minWidth: '25rem' }}
+            ></Column>
+            <Column
+              field="status"
+              header={t('dashboard.dentist.header.table-header.status')}
+              body={(rowData) => statusItemTemplate(rowData.status)}
+              sortable
+              filter
+              filterElement={statusFilterTemplate}
+              showFilterMenu={false}
+              style={{ minWidth: '22rem' }}
+            ></Column>
+            <Column
+              field="description"
+              header="Description"
+              body={(rowData) => bodyDataTableTemplate(rowData.description)}
+              sortable
+              style={{
+                minWidth: '30rem',
+                maxWidth: '29rem',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+              }}
+            ></Column>
+            <Column
+              header="action"
+              body={lockTemplate}
+              style={{
+                flex: '1'
+              }}
+            />
+          </DataTable>
+        </DataTableComp>
       </Box>
     </>
   );

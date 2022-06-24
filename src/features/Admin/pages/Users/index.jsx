@@ -13,6 +13,7 @@ import {
   useColorMode,
   useDisclosure
 } from '@chakra-ui/react';
+import classNames from 'classnames/bind';
 import { motion } from 'framer-motion';
 import _ from 'lodash';
 import moment from 'moment';
@@ -22,7 +23,7 @@ import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Dropdown } from 'primereact/dropdown';
 import { Paginator } from 'primereact/paginator';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { AiFillLock } from 'react-icons/ai';
 import { BiSearch, BiTrash } from 'react-icons/bi';
@@ -32,8 +33,11 @@ import { RiFilterOffLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, DATE_FORMAT, STATUS_CODE, USER_SEXUAL } from '~/app/constants';
+import styles from '~/features/Admin/styles/common.module.scss';
+import { DataTableWrapper } from '../../styles';
 import { CustomModal } from '../components';
-import '~/features/Admin/styles/common.scss';
+
+const cx = classNames.bind(styles);
 
 const MOCK_DATA = {
   _fieldConstants: {
@@ -72,6 +76,8 @@ const Users = ({ t }) => {
 
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const DataTableComp = colorMode === 'dark' ? DataTableWrapper : Fragment;
 
   const fetchData = async () => {
     try {
@@ -136,8 +142,8 @@ const Users = ({ t }) => {
         }}
         dateFormat="dd/mm/yy"
         placeholder="dd/mm/yy"
-        className="users-calendar"
-        panelClassName={colorMode === 'dark' && 'calendar-dark'}
+        className={cx('users-calendar')}
+        panelClassName={colorMode === 'dark' && cx('calendar-dark')}
       />
     );
   };
@@ -230,7 +236,6 @@ const Users = ({ t }) => {
         <Button
           variant="outline"
           disabled={disabled}
-          className="p-button-sm p-button-text"
           onClick={() => toggleLock(rowData, options.frozenRow, options.rowIndex)}
         >
           <IconComp fontSize="1.6rem" />
@@ -248,7 +253,7 @@ const Users = ({ t }) => {
         itemTemplate={(option, props) => (option ? <span>{USER_SEXUAL[option]}</span> : props?.placeholder)}
         valueTemplate={(option, props) => (option ? <span>{USER_SEXUAL[option]}</span> : props?.placeholder)}
         placeholder="Select a Gender"
-        panelClassName={colorMode === 'dark' && 'dataTable-dark modal-dataTable-dark'}
+        panelClassName={colorMode === 'dark' && cx('dataTable-dark', 'modal-dataTable-dark')}
         showClear
       />
     );
@@ -263,7 +268,7 @@ const Users = ({ t }) => {
         itemTemplate={statusItemTemplate}
         valueTemplate={statusItemTemplate}
         placeholder="Select a Status"
-        panelClassName={colorMode === 'dark' && 'modal-dataTable-dark'}
+        panelClassName={colorMode === 'dark' && cx('modal-dataTable-dark')}
         showClear
       />
     );
@@ -331,7 +336,7 @@ const Users = ({ t }) => {
     return (
       paginationInfo && (
         <Paginator
-          className="users-footer"
+          className={cx('users-footer')}
           first={dataTableFirst}
           rows={paginationInfo.pageSize}
           totalRecords={paginationInfo.totalRecords}
@@ -356,95 +361,97 @@ const Users = ({ t }) => {
       </Heading>
 
       <Box position="relative" flex="1">
-        <DataTable
-          value={unlockedCustomers}
-          size="large"
-          className={colorMode === 'dark' ? 'users-dataTable dark' : 'users-dataTable'}
-          selectionMode="single"
-          selection={selectedPatient}
-          onSelectionChange={(e) => setSelectedPatient(e.value)}
-          scrollable
-          scrollDirection="both"
-          scrollHeight="flex"
-          rowClassName="dataTable-row"
-          sortField={sortField}
-          sortOrder={sortOrder}
-          onSort={handleSort}
-          frozenValue={lockedCustomers}
-          filters={filters}
-          filterDisplay="row"
-          globalFilterFields={['firstName', 'lastName', 'phone', 'email']}
-          emptyMessage="No customers found."
-          header={renderDataTableHeader}
-          footer={renderDataTableFooter}
-        >
-          <Column
-            header={t('dashboard.dentist.header.table-header.name')}
-            body={patientNameTemplate}
-            sortField="firstName"
-            filterField="lastName"
-            sortable
-            filter
-            filterPlaceholder="Search by name"
-            style={{ minWidth: '30rem' }}
-          ></Column>
-          <Column
-            field="email"
-            header="Email"
-            body={(rowData) => bodyDataTableTemplate(rowData.email)}
-            sortable
-            filter
-            filterPlaceholder="Search by email"
-            style={{ minWidth: '30rem' }}
-          ></Column>
-          <Column
-            field="dob"
-            header="date of birth"
-            body={(rowData) => bodyDataTableTemplate(moment(rowData.dob).format(DATE_FORMAT['DD/MM/YYYY']))}
-            sortable
-            filter
-            filterField="dob"
-            dataType="date"
-            filterElement={dateFilterTemplate}
-            style={{ minWidth: '25rem' }}
-          ></Column>
-          <Column
-            field="gender"
-            header={t('dashboard.dentist.header.table-header.gender')}
-            body={(rowData) => bodyDataTableTemplate(USER_SEXUAL[rowData.gender])}
-            sortable
-            filter
-            filterElement={genderFilterTemplate}
-            showFilterMenu={false}
-            style={{ minWidth: '25rem' }}
-          ></Column>
-          <Column
-            field="phone"
-            header="phone"
-            body={(rowData) => bodyDataTableTemplate(rowData.phone)}
-            sortable
-            filter
-            filterPlaceholder="Search by phone"
-            style={{ minWidth: '25rem' }}
-          ></Column>
-          <Column
-            field="status"
-            header={t('dashboard.dentist.header.table-header.status')}
-            body={(rowData) => statusItemTemplate(rowData.status)}
-            sortable
-            filter
-            filterElement={statusFilterTemplate}
-            showFilterMenu={false}
-            style={{ minWidth: '22rem' }}
-          ></Column>
-          <Column
-            header="action"
-            body={lockTemplate}
-            style={{
-              flex: '1'
-            }}
-          />
-        </DataTable>
+        <DataTableComp>
+          <DataTable
+            value={unlockedCustomers}
+            size="large"
+            className={cx('common-dataTable', 'users-dataTable')}
+            selectionMode="single"
+            selection={selectedPatient}
+            onSelectionChange={(e) => setSelectedPatient(e.value)}
+            scrollable
+            scrollDirection="both"
+            scrollHeight="flex"
+            rowClassName={cx('dataTable-row')}
+            sortField={sortField}
+            sortOrder={sortOrder}
+            onSort={handleSort}
+            frozenValue={lockedCustomers}
+            filters={filters}
+            filterDisplay="row"
+            globalFilterFields={['firstName', 'lastName', 'phone', 'email']}
+            emptyMessage="No customers found."
+            header={renderDataTableHeader}
+            footer={renderDataTableFooter}
+          >
+            <Column
+              header={t('dashboard.dentist.header.table-header.name')}
+              body={patientNameTemplate}
+              sortField="firstName"
+              filterField="lastName"
+              sortable
+              filter
+              filterPlaceholder="Search by name"
+              style={{ minWidth: '30rem' }}
+            ></Column>
+            <Column
+              field="email"
+              header="Email"
+              body={(rowData) => bodyDataTableTemplate(rowData.email)}
+              sortable
+              filter
+              filterPlaceholder="Search by email"
+              style={{ minWidth: '30rem' }}
+            ></Column>
+            <Column
+              field="dob"
+              header="date of birth"
+              body={(rowData) => bodyDataTableTemplate(moment(rowData.dob).format(DATE_FORMAT['DD/MM/YYYY']))}
+              sortable
+              filter
+              filterField="dob"
+              dataType="date"
+              filterElement={dateFilterTemplate}
+              style={{ minWidth: '25rem' }}
+            ></Column>
+            <Column
+              field="gender"
+              header={t('dashboard.dentist.header.table-header.gender')}
+              body={(rowData) => bodyDataTableTemplate(USER_SEXUAL[rowData.gender])}
+              sortable
+              filter
+              filterElement={genderFilterTemplate}
+              showFilterMenu={false}
+              style={{ minWidth: '25rem' }}
+            ></Column>
+            <Column
+              field="phone"
+              header="phone"
+              body={(rowData) => bodyDataTableTemplate(rowData.phone)}
+              sortable
+              filter
+              filterPlaceholder="Search by phone"
+              style={{ minWidth: '25rem' }}
+            ></Column>
+            <Column
+              field="status"
+              header={t('dashboard.dentist.header.table-header.status')}
+              body={(rowData) => statusItemTemplate(rowData.status)}
+              sortable
+              filter
+              filterElement={statusFilterTemplate}
+              showFilterMenu={false}
+              style={{ minWidth: '22rem' }}
+            ></Column>
+            <Column
+              header="action"
+              body={lockTemplate}
+              style={{
+                flex: '1'
+              }}
+            />
+          </DataTable>
+        </DataTableComp>
       </Box>
     </>
   );

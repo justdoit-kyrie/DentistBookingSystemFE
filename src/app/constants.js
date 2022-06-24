@@ -37,7 +37,7 @@ export const PATH = {
     profile: '/dashboard/:id/profile'
   },
   admin: {
-    home: '/dashboard/:id/overview',
+    home: '/dashboard/:id/statistics',
     user: '/dashboard/:id/users',
     dentist: '/dashboard/:id/dentists',
     clinic: '/dashboard/:id/clinics',
@@ -108,12 +108,12 @@ export const API_ROUTES = {
   register: '/Users/register',
   logout: '/logout',
   refreshToken: '/Users/refresh',
-  'get-clinics': '/clinics',
   'get-profile': '/Users/getProfile',
   'get-booking-by-dentist-it': '/bookings/dentist/:id',
   users: '/Users',
   dentists: '/dentists',
-  clinics: '/clinics/all',
+  'get-clinics': '/clinics/all',
+  clinics: '/clinics',
   services: '/services'
 };
 

@@ -14,7 +14,7 @@ import { API_CODE, API_ROUTES, DATE_FORMAT, EMAIL_REGEX, NAME_REGEX, PHONE_REGEX
 import { Firebase } from '~/app/firebase';
 import DEFAULT_AVATAR from '~/assets/images/default_avatar.jpg';
 import { CalendarField, InputField, Loading, RadioField } from '~/components';
-import styles from './FormEdit.module.scss';
+import styles from '../styles/common.module.scss';
 const cx = classNames.bind(styles);
 
 // initial validation rules
@@ -35,9 +35,8 @@ const schema = yup
 const firebase = new Firebase();
 const storage = firebase.getStorage();
 
-const FormUser = ({ t, BtnRef, defaultValues, callback }) => {
+const FormUser = ({ t, BtnRef, defaultValues, callback, loading, setLoading }) => {
   const [hover, setHover] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [prevImage, setPrevImage] = useState('');
   const [imageUrl, setImageUrl] = useState(defaultValues.imageUrl || DEFAULT_AVATAR);

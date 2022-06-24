@@ -19,13 +19,15 @@ export const theme = extendTheme({
       500: '#191919'
     },
     purple: {
+      300: '#5256AD',
       400: '#a399f6',
       500: '#7a6efe'
     },
     yellow: {
+      400: '#ffd400',
       500: '#ffa901'
     },
-    F: {
+    red: {
       100: '#feeeee',
       200: '#ff5363'
     },
@@ -187,8 +189,7 @@ export const theme = extendTheme({
       // 3. We can add a new visual variant
       variants: {
         danger: {
-          bg: 'red.100',
-          color: 'red.200'
+          bg: 'red.200'
         },
         primary: {
           bg: 'primary.400',
