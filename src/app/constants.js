@@ -103,10 +103,12 @@ export const API_ROUTES = {
   register: '/Users/register',
   logout: '/logout',
   refreshToken: '/Users/refresh',
-  'get-clinics': '/clinics',
-  'get-dentists': '/dentists',
+  'get-clinics': '/clinics/all',
+  'get-dentists': '/dentists/user',
   'get-profile': '/Users/getProfile',
   'get-booking-by-dentist-it': '/bookings/dentist/:id',
+  'get-dentist-profile': '/dentists/:id',
+  'get-available-bookings': '/bookings/available',
   users: '/Users'
 };
 

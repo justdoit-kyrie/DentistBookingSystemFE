@@ -100,7 +100,7 @@ const FormRegister = ({ t }) => {
   const onSubmit = async (data) => {
     dispatch(init());
     try {
-      const { code, message } = await axios.post(`${API_ROUTES.register}`, {
+      const { code } = await axios.post(`${API_ROUTES.register}`, {
         ...data,
         gender: +data.gender,
         dob: moment(data.dob).format(DATE_FORMAT['yyyy-MM-DD'])

@@ -1,7 +1,7 @@
 @import '../../../../../../app/styles/variables.scss';
 
 .chakra-modal__content-container {
-  z-index: 2 !important;
+  z-index: 999 !important;
 }
 
 .p-column-filter-element .p-inputtext {

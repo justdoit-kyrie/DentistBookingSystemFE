@@ -5,6 +5,7 @@ import {
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Avatar,
   Box,
   Breadcrumb,
   BreadcrumbItem,
@@ -13,48 +14,127 @@ import {
   Flex,
   Heading,
   HStack,
-  Image,
-  Link,
   List,
   ListIcon,
   ListItem,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
-  useColorMode
+  useColorMode,
+  useDisclosure
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import HeaderOnlyLayout from '~/components/layouts/HeaderOnlyLayout';
-import { BsHouseFill, BsChevronRight, BsFillCheckCircleFill } from 'react-icons/bs';
+import { BsHouseFill, BsChevronRight } from 'react-icons/bs';
 import { Dropdown } from 'primereact/dropdown';
 import './Dentist.scss';
-import { Calendar } from 'primereact/calendar';
 import { withTranslation } from 'react-i18next';
 import { MdCheckCircle } from 'react-icons/md';
 import styles from './Dentist.module.scss';
 import classNames from 'classnames/bind';
 import { useRef } from 'react';
-import { Footer } from '~/components';
+import { Footer, InputField } from '~/components';
+import { API_CODE, API_ROUTES, DATE_FORMAT, SCHEDULE_TIMER } from '~/app/constants';
+import { useParams } from 'react-router-dom';
+import { axios } from '~/apis';
+import moment from 'moment';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useDispatch } from 'react-redux';
+import { init } from '../Auth/authSlice';
+import * as yup from 'yup';
 
 const cx = classNames.bind(styles);
 
 const DentistPage = ({ t }) => {
+  const dispatch = useDispatch();
   const [selectedDate, setSelectedDate] = useState(null);
-
+  const dentistID = useParams();
   const ref = useRef();
   const { colorMode } = useColorMode();
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [profile, setProfile] = useState();
+  const [clinicProfile, setClinicProfile] = useState();
+  const [dayList, setDayList] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [timeSelect, setTimeSelect] = useState();
+
+  const schema = yup.object({}).required();
+
+  const datetest = new Date();
+
+  const onTimeChange = (e) => {
+    setSelectedTime(e.value);
+  };
 
   const onDateChange = (e) => {
     setSelectedDate(e.value);
   };
-  const date = [
-    { day: 'Monday - 10/6' },
-    { day: 'Tuesday - 11/6' },
-    { day: 'Wednesday - 12/6' },
-    { day: 'Thursday - 13/6' }
-  ];
 
-  const [date1, setDate1] = useState(null);
+  const dentist = async () => {
+    const data = await axios.get(API_ROUTES['get-dentist-profile'].replace(':id', dentistID.id));
+    setProfile({ ...data.dentistDTO });
+    console.log(data.dentistDTO);
+    setClinicProfile({ ...data.clinicDTO });
+    console.log(data.clinicDTO);
+  };
+
+  const timeList = async () => {
+    var momentVariable = moment(selectedDate, 'dddd DD/MM');
+    var stringValue = momentVariable.format('YYYY-MM-DD');
+    const data = await axios.get(API_ROUTES['get-available-bookings'], {
+      params: {
+        dentistId: profile.dentistID,
+        date: stringValue
+      }
+    });
+    console.log(data);
+    const timeList = data.map(function(element){
+      return SCHEDULE_TIMER[element];
+    });
+    // setSelectedDate(datechoose);
+    setTimeSelect(timeList);
+  };
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    resolver: yupResolver(schema)
+  });
+
+  const onSubmit = async (data) => {
+    dispatch(init());
+    try {
+      const { code } = await axios.post(`${API_ROUTES.register}`, {
+        ...data,
+        gender: +data.gender,
+        dob: moment(data.dob).format(DATE_FORMAT['yyyy-MM-DD'])
+      });
+      if (+code === API_CODE.OK) {
+        console.log(code);
+      } else {
+        console.log(code);
+      }
+    } catch (error) {
+      // show toast
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
+    
+    timeList();
+  }, [selectedDate]);
+
+  useEffect(() => {
+    dentist();
     const handler = () => {
       const innerEle = ref.current;
       const scrollPos = window.pageYOffset;
@@ -89,8 +169,45 @@ const DentistPage = ({ t }) => {
       document.removeEventListener('scroll', handler);
     };
   }, []);
+
+  useEffect(() => {
+    const today = datetest.getDate();
+    const dayOfWeek = datetest.getDay();
+    const dayList = [];
+    if (dayOfWeek === 6) {
+      let tmp = 1;
+      let count = 2;
+      while (tmp < 6) {
+        let addDay = datetest.setDate(today + count);
+        dayList.push(moment(addDay).format('dddd DD/MM'));
+        count++;
+        tmp++;
+      }
+      setDayList(dayList);
+    } else if (dayOfWeek === 0) {
+      let tmp = 1;
+      let count = 1;
+      while (tmp < 6) {
+        let addDay = datetest.setDate(today + count);
+        dayList.push(moment(addDay).format('dddd DD/MM'));
+        count++;
+        tmp++;
+      }
+      setDayList(dayList);
+    } else {
+      let tmp = dayOfWeek;
+      let count = 1;
+      while (tmp < 6) {
+        let addDay = datetest.setDate(today + count);
+        dayList.push(moment(addDay).format('dddd DD/MM'));
+        count++;
+        tmp++;
+      }
+      setDayList(dayList);
+    }
+  }, []);
   return (
-    <Box>
+    <Box className="booking-page-container">
       <div ref={ref} className={cx('header-wrapper', colorMode === 'light' ? '' : 'dark')}>
         <HeaderOnlyLayout />
       </div>
@@ -112,28 +229,21 @@ const DentistPage = ({ t }) => {
             </BreadcrumbItem>
           </Breadcrumb>
         </Box>
-        <Flex p="2rem 0 0 0" className="bs-avatar">
-          <Image
-            borderRadius="full"
-            boxSize="150px"
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Vladimir_Putin_17-11-2021_%28cropped%29.jpg/220px-Vladimir_Putin_17-11-2021_%28cropped%29.jpg"
-            alt="bac si"
-          />
-          <Box p="0 0 0 3rem" maxW="60%">
-            <Flex className="bs-info">
-              <Heading fontSize="5rem">{t('home.dentist.booking.doctor')}</Heading>
-              <Heading fontSize="5rem" marginLeft="1.5rem">
-                Vladimir Putin
-              </Heading>
-            </Flex>
-            <Text fontSize="1.5rem">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorum, facere. Blanditiis vitae consequuntur
-              facere recusandae eum temporibus itaque autem velit. Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Tenetur nihil consequuntur quos beatae commodi, repellendus cupiditate. Excepturi ratione officiis
-              aperiam totam ab nulla nemo, dignissimos quaerat omnis placeat. Minima, dignissimos.
-            </Text>
-          </Box>
-        </Flex>
+
+        {profile && (
+          <Flex p="2rem 0 0 0" className="bs-avatar">
+            <Avatar className="doctor-avatar" src={profile.imageUrl} />
+            <Box p="0 0 0 3rem" maxW="60%">
+              <Flex className="bs-info">
+                <Heading fontSize="5rem">{t('home.dentist.booking.doctor')}</Heading>
+                <Heading fontSize="5rem" marginLeft="1.5rem">
+                  {profile.lastName + ' ' + profile.firstName}
+                </Heading>
+              </Flex>
+              <Box fontSize="1.5rem" dangerouslySetInnerHTML={{ __html: profile.description }} />
+            </Box>
+          </Flex>
+        )}
 
         <Flex marginTop="2rem" className="bs-detail-info">
           <Flex w="40%">
@@ -142,63 +252,79 @@ const DentistPage = ({ t }) => {
               panelClassName="date-dropdown-list"
               placeholder={t('home.dentist.booking.daypickerPlaceholder')}
               value={selectedDate}
-              options={date}
+              options={dayList}
               onChange={onDateChange}
-              optionLabel="day"
             />
-            <Calendar
-              id="time12"
-              className="primereact-time-picker"
-              panelClassName="primereact-time-picker-panel"
-              placeholder={t('home.dentist.booking.timepickerPlaceholder')}
-              value={date1}
-              onChange={(e) => setDate1(e.value)}
-              timeOnly
-              hourFormat="12"
-              style={{
-                marginLeft: '2rem'
-              }}
+            <Dropdown
+              className="date-dropdown"
+              panelClassName="date-dropdown-list"
+              placeholder={t('home.dentist.booking.daypickerPlaceholder')}
+              value={selectedTime}
+              options={timeSelect}
+              onChange={onTimeChange}
             />
-            <Button colorScheme="blue" className="booking-btn" size="lg">
+            <Button colorScheme="blue" className="booking-btn" size="lg" onClick={onOpen}>
               {t('home.dentist.booking.bookingNow')}
             </Button>
+            <Modal isOpen={isOpen} onClose={onClose} isCentered>
+              <ModalOverlay />
+              <ModalContent id="booking-modal-form">
+                <ModalHeader>Booking Information</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <form onSubmit={handleSubmit(onSubmit)} style={{ position: '' }}>
+                    <InputField errors={errors} control={control} name="firstName" placeholder="Enter your full name" />
+                    <InputField errors={errors} control={control} name="phoneNumber" placeholder="Enter your phone" />
+                  </form>
+                </ModalBody>
+                <ModalFooter>
+                  <Button colorScheme="blue" mr={3} onClick={onClose}>
+                    Close
+                  </Button>
+                  <Button variant="ghost" type="submit">
+                    Submit
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
           </Flex>
-          <Box className="clinic-info-wrapper">
-            <Box className="info-container" w="100%" paddingBottom="2rem">
-              <Accordion allowToggle className="clinic-location-accordion">
-                <AccordionItem className="clinic-accordion-item">
-                  <h2>
-                    <AccordionButton className="accordion-button">
-                      <Box flex="1" textAlign="left">
-                        <Heading fontSize="2rem">{t('home.dentist.booking.clinicInfo')}</Heading>
+          {clinicProfile && (
+            <Box className="clinic-info-wrapper">
+              <Box className="info-container" w="100%" paddingBottom="2rem">
+                <Accordion allowToggle className="clinic-location-accordion">
+                  <AccordionItem className="clinic-accordion-item">
+                    <h2>
+                      <AccordionButton className="accordion-button">
+                        <Box flex="1" textAlign="left">
+                          <Heading fontSize="2rem">{t('home.dentist.booking.clinicInfo')}</Heading>
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                      <Box className="info-container" paddingBottom="2rem" paddingTop="1rem">
+                        <Heading fontSize="2rem">{t('home.dentist.booking.clinicLocation')}</Heading>
+                        <Text fontSize="1.7rem" fontweight="600">
+                          {clinicProfile.name}
+                        </Text>
+                        <Text fontSize="1.3rem">{clinicProfile.address}</Text>
                       </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-                  </h2>
-                  <AccordionPanel pb={4}>
-                    <Box className="info-container" paddingBottom="2rem" paddingTop="1rem">
-                      <Heading fontSize="2rem">{t('home.dentist.booking.clinicLocation')}</Heading>
-                      <Text fontSize="1.7rem" fontweight="600">
-                        Phòng Khám Đa Khoa NTKDD
-                      </Text>
-                      <Text fontSize="1.3rem">243 Chu Văn An, phường 12, quận Bình Thạnh, Tp.HCM</Text>
-                    </Box>
 
-                    <Box className="info-container" paddingBottom="2rem" paddingTop="1rem">
-                      <HStack>
-                        <Heading fontSize="2rem">{t('home.dentist.booking.price')}</Heading>
-                        <Text fontSize="1.7rem">250.000đ.</Text>
-                        <Link to="/detail" fontSize="1.7rem" color="var(--chakra-colors-blue-500)">
-                          Xem Chi Tiết
-                        </Link>
-                      </HStack>
-                    </Box>
-
-                  </AccordionPanel>
-                </AccordionItem>
-              </Accordion>
+                      <Box className="info-container" paddingBottom="2rem" paddingTop="1rem">
+                        <HStack>
+                          <Heading fontSize="2rem">{t('home.dentist.booking.phone')}</Heading>
+                          <Text fontSize="1.7rem">{clinicProfile.phone}</Text>
+                          {/* <Link to="/detail" fontSize="1.7rem" color="var(--chakra-colors-blue-500)">
+                            Xem Chi Tiết
+                          </Link> */}
+                        </HStack>
+                      </Box>
+                    </AccordionPanel>
+                  </AccordionItem>
+                </Accordion>
+              </Box>
             </Box>
-          </Box>
+          )}
         </Flex>
       </Box>
       <Box className="container doctor-profile" w="100%" h="100%" mt="2rem">
@@ -284,67 +410,7 @@ const DentistPage = ({ t }) => {
           </List>
         </Box>
       </Box>
-      <Box className="container user-comment" w="100%" h="100%" mt="2rem">
-        <Box className="comment-title">
-          <Heading fontSize="3rem">{t('home.dentist.booking.commentTitles')}</Heading>
-        </Box>
-        <Box className="comment-wrapper">
-          <Flex className="comment-user-name">
-            <HStack>
-              <Text fontSize="2rem" marginRight="0.5rem" fontWeight="bold">
-                Bùi Đức Uy Dũng
-              </Text>
-              <BsFillCheckCircleFill fontSize="1.5rem" color="var(--chakra-colors-green-300)" />
-              <Text fontSize="1.6rem" marginLeft="0.5rem" color="var(--chakra-colors-green-300)">
-                Đã khám ngày 06/08/2021
-              </Text>
-            </HStack>
-          </Flex>
-          <Text fontSize="1.5rem">Dịch vụ tốt!</Text>
-        </Box>
-        <Box className="comment-wrapper">
-          <Flex className="comment-user-name">
-            <HStack>
-              <Text fontSize="2rem" marginRight="0.5rem" fontWeight="bold">
-                Bùi Đức Uy Dũng
-              </Text>
-              <BsFillCheckCircleFill fontSize="1.5rem" color="var(--chakra-colors-green-300)" />
-              <Text fontSize="1.6rem" marginLeft="0.5rem" color="var(--chakra-colors-green-300)">
-                Đã khám ngày 06/08/2021
-              </Text>
-            </HStack>
-          </Flex>
-          <Text fontSize="1.5rem">Dịch vụ tốt!</Text>
-        </Box>
-        <Box className="comment-wrapper">
-          <Flex className="comment-user-name">
-            <HStack>
-              <Text fontSize="2rem" marginRight="0.5rem" fontWeight="bold">
-                Bùi Đức Uy Dũng
-              </Text>
-              <BsFillCheckCircleFill fontSize="1.5rem" color="var(--chakra-colors-green-300)" />
-              <Text fontSize="1.6rem" marginLeft="0.5rem" color="var(--chakra-colors-green-300)">
-                Đã khám ngày 06/08/2021
-              </Text>
-            </HStack>
-          </Flex>
-          <Text fontSize="1.5rem">Dịch vụ tốt!</Text>
-        </Box>
-        <Box className="comment-wrapper">
-          <Flex className="comment-user-name">
-            <HStack>
-              <Text fontSize="2rem" marginRight="0.5rem" fontWeight="bold">
-                Bùi Đức Uy Dũng
-              </Text>
-              <BsFillCheckCircleFill fontSize="1.5rem" color="var(--chakra-colors-green-300)" />
-              <Text fontSize="1.6rem" marginLeft="0.5rem" color="var(--chakra-colors-green-300)">
-                Đã khám ngày 06/08/2021
-              </Text>
-            </HStack>
-          </Flex>
-          <Text fontSize="1.5rem">Dịch vụ tốt!</Text>
-        </Box>
-      </Box>
+
       <Box className="container clinic-policy" w="100%" h="100%" mt="2rem">
         <Accordion allowToggle className="clinic-accordion">
           <AccordionItem className="clinic-accordion-item">

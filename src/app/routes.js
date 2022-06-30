@@ -53,7 +53,7 @@ export const ROUTES = [
     isPublic: true,
     layout: null
   },
-  { path: PATH.dentist.home, component: OverViewPage, layout: DashboardLayout, role: 1 },
+  { path: PATH.dentist.home, component: OverViewPage, layout: DashboardLayout, role: 1,isPublic: true },
   { path: PATH.dentist.appointment, component: AppointmentPage, layout: DashboardLayout, role: 1 },
   { path: PATH.dentist.blog, component: BlogPage, layout: DashboardLayout, role: 1, isPublic: true },
   { path: PATH.dentist.message, component: MessagePage, layout: DashboardLayout, role: 1, isPublic: true },
