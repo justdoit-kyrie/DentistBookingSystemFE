@@ -127,9 +127,7 @@ const DropArea = ({
           },
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              console.log({ idx });
               if (idx === files.length - 1) {
-                console.log({ files });
                 setLoading(false);
               }
               idx++;
