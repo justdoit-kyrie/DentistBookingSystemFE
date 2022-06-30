@@ -290,6 +290,24 @@ const Clinics = ({ t }) => {
         Clinics management
       </Heading>
 
+      <Box mb="2rem">
+        <Button
+          variant="outline"
+          textTransform="capitalize"
+          w="10rem"
+          py="2rem"
+          borderColor="primary.300"
+          color="primary.300"
+          _hover={{ bg: 'primary.300', color: 'white' }}
+          onClick={() => {
+            onOpen();
+            setEditClinic(null);
+          }}
+        >
+          Add
+        </Button>
+      </Box>
+
       <Box position="relative" flex="1">
         <DataTableComp>
           <DataTable

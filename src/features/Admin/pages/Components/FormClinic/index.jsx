@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Box, Button, Flex, Heading, Image, Square, Text, useDisclosure } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
@@ -17,6 +18,7 @@ import { API_CODE, API_ROUTES, PHONE_REGEX } from '~/app/constants';
 import { Firebase } from '~/app/firebase';
 import { AlertDialog, InputField, Loading, TextareaField } from '~/components';
 import { selectLoggedUser } from '~/features/Auth/authSlice';
+import { DropArea } from './components';
 
 // initial validation rules
 const schema = yup
@@ -57,33 +59,6 @@ const effect = {
   }
 };
 
-// [
-//   {
-//     url: 'https://images.unsplash.com/photo-1655915382353-8f89f9bbdb03?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60',
-//     id: 1
-//   },
-//   {
-//     url: 'https://images.unsplash.com/photo-1655949595981-f1d8e8739cdf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyN3x8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60',
-//     id: 2
-//   },
-//   {
-//     url: 'https://images.unsplash.com/photo-1655939270516-42b8fbd258c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyNHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60',
-//     id: 3
-//   },
-//   {
-//     url: 'https://images.unsplash.com/photo-1655839799605-7dae9640735a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzNHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60',
-//     id: 4
-//   },
-//   {
-//     url: 'https://images.unsplash.com/photo-1655917218336-538bc2ab1775?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60',
-//     id: 5
-//   },
-//   {
-//     url: 'https://images.unsplash.com/photo-1655666002284-096ecc672528?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1N3x8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60',
-//     id: 6
-//   }
-// ]
-
 const firebase = new Firebase();
 const storage = firebase.getStorage();
 const NOW = moment().toISOString();
@@ -116,6 +91,7 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
   const itemId = useRef();
   const totalFileUrls = useRef();
 
+  const [activeIndex, setActiveIndex] = useState();
   const [files, setFiles] = useState([]);
   const [filesPreview, setFilesPreview] = useState([]);
   const [fileUrls, setFileUrls] = useState([]);
@@ -133,6 +109,8 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
     defaultValues,
     resolver: yupResolver(schema)
   });
+
+  console.log({ itemHoverId });
 
   useEffect(() => {
     setImages(defaultValues.imageUrl?.map((item, idx) => ({ url: item, id: idx + 1 })));
@@ -178,8 +156,6 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
     setImages((prev) => prev.filter((item) => item.id !== image.id));
   };
 
-  console.log({ images });
-
   const handleEditImage = async () => {
     try {
       files.forEach(async (item, idx) => {
@@ -221,6 +197,8 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
       toast.error(error.message);
     }
   };
+
+  console.log({ images, totalFileUrls, itemId, editingImage });
 
   const itemTemplate = (item) => {
     return (
@@ -285,7 +263,10 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
                   },
                   color: 'white'
                 }}
-                onClick={() => setEditingImage(true)}
+                onClick={() => {
+                  setEditingImage(true);
+                  itemId.current = item.id;
+                }}
               >
                 <Text as="span" textTransform="capitalize" zIndex="2">
                   Edit
@@ -330,7 +311,20 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
           </Flex>
         )}
 
-        {hover && editingImage && (
+        {editingImage && (
+          <DropArea
+            setLoading={setLoading}
+            item={item}
+            setEditingImage={setEditingImage}
+            setImages={setImages}
+            images={images}
+            totalFileUrls={totalFileUrls}
+            NOW={NOW}
+            itemId={itemId}
+          />
+        )}
+
+        {/* {hover && editingImage && (
           <Flex
             as={motion.div}
             variants={btnEffect.root}
@@ -461,7 +455,7 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
               </Flex>
             </Flex>
           </Flex>
-        )}
+        )} */}
       </Box>
     );
   };
@@ -507,7 +501,17 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
         />
       )}
       <Flex direction="column" gap="3rem" h="auto" pt="2rem" pb="5rem">
-        <Galleria value={images} numVisible={5} item={itemTemplate} thumbnail={thumbnailTemplate} />
+        <Galleria
+          value={images}
+          numVisible={5}
+          item={itemTemplate}
+          thumbnail={thumbnailTemplate}
+          activeIndex={activeIndex}
+          onItemChange={(e) => {
+            setEditingImage(false);
+            setActiveIndex(e.index);
+          }}
+        />
 
         <Flex direction="column" gap="1rem">
           <Heading fontSize="1.3rem" textTransform="capitalize">
@@ -517,7 +521,7 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
             errors={errors}
             control={control}
             name="name"
-            placeholder={t('auth.register.firstNamePlaceholder')}
+            placeholder="Enter Name"
             py="2rem"
             fontSize="1.5rem"
           />
@@ -531,7 +535,7 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
             errors={errors}
             control={control}
             name="address"
-            placeholder={t('auth.register.userNamePlaceholder')}
+            placeholder="Enter Address"
             py="2rem"
             fontSize="1.5rem"
           />
@@ -545,7 +549,7 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
             errors={errors}
             control={control}
             name="phone"
-            placeholder={t('auth.register.emailPlaceholder')}
+            placeholder="Enter Phone Number"
             py="2rem"
             fontSize="1.5rem"
           />
@@ -559,7 +563,7 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
             errors={errors}
             control={control}
             name="description"
-            placeholder={t('auth.register.phoneNumberPlaceholder')}
+            placeholder="Enter Description"
             py="1rem"
             fontSize="1.5rem"
             borderColor="grey.300"
