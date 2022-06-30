@@ -44,7 +44,7 @@ const MOCK_DATA = (t) => ({
         {
           icon: BsGrid,
           label: 'overview',
-          to: getDestinationURL('overview')
+          to: getDestinationURL('statistics')
         },
         {
           icon: FiUsers,

@@ -234,7 +234,7 @@ const CustomModal = ({ t, isOpen, onClose, fieldAll }) => {
         options={_.values(USER_SEXUAL)}
         onChange={(e) => options.filterApplyCallback(e.value)}
         placeholder="Select a Gender"
-        panelClassName={colorMode === 'dark' && 'dataTable-dark modal-dataTable-dark'}
+        panelClassName={colorMode === 'dark' && 'modal-dataTable-dropdown-dark'}
         showClear
       />
     );
@@ -249,7 +249,7 @@ const CustomModal = ({ t, isOpen, onClose, fieldAll }) => {
         itemTemplate={statusItemTemplate}
         valueTemplate={statusItemTemplate}
         placeholder="Select a Status"
-        panelClassName={colorMode === 'dark' && 'modal-dataTable-dark'}
+        panelClassName={colorMode === 'dark' && 'modal-dataTable-dropdown-dark'}
         showClear
       />
     );
@@ -468,7 +468,9 @@ const CustomModal = ({ t, isOpen, onClose, fieldAll }) => {
           <DataTable
             value={unlockedCustomers}
             size="large"
-            className={colorMode === 'dark' ? 'modal-dataTable-dark' : 'overview-dataTable-light'}
+            className={
+              colorMode === 'dark' ? 'modal-dataTable modal-dataTable-dark' : 'modal-dataTable overview-dataTable-light'
+            }
             selectionMode="single"
             selection={selectedPatient}
             onSelectionChange={(e) => setSelectedPatient(e.value)}

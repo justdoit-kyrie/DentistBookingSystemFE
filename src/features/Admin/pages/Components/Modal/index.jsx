@@ -10,61 +10,87 @@ import {
   ModalHeader,
   ModalOverlay
 } from '@chakra-ui/react';
-import { withTranslation } from 'react-i18next';
-import './Modal.scss';
-import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import FormClinic from '../FormClinic';
+import React, { useRef, useState } from 'react';
+import { withTranslation } from 'react-i18next';
 import { FormDentist, FormUser } from '..';
+import FormClinic from '../FormClinic';
 
-// initial values
-const defaultClinicValues = {
-  description: '',
-  name: '',
-  address: '',
-  phone: ''
-};
-
-const defaultDentistValues = {
-  email: '',
-  firstName: '',
-  lastName: '',
-  username: '',
-  password: '',
-  confirmPassword: '',
-  phone: '',
-  dob: '',
-  gender: '',
-  position: '',
-  description: '',
-  clinicId: '',
-  serviceId: []
-};
-
-const defaultUserValues = {
-  email: '',
-  firstName: '',
-  lastName: '',
-  phone: '',
-  dob: '',
-  gender: 0
+const MOCK_DATA = {
+  clinic: {
+    value: 'clinics',
+    defaultValues: {
+      description: '',
+      name: '',
+      address: '',
+      phone: ''
+    }
+  },
+  user: {
+    value: 'users',
+    defaultValues: {
+      email: '',
+      firstName: '',
+      lastName: '',
+      phone: '',
+      dob: '',
+      gender: 0
+    }
+  },
+  dentist: {
+    value: 'dentists',
+    defaultValues: {
+      email: '',
+      firstName: '',
+      lastName: '',
+      username: '',
+      password: '',
+      confirmPassword: '',
+      phone: '',
+      dob: '',
+      gender: '',
+      position: '',
+      description: '',
+      clinicId: '',
+      serviceId: []
+    }
+  }
 };
 
 const CustomModal = ({ label, data, isOpen, onClose, callback }) => {
+  const { user, clinic, dentist } = MOCK_DATA;
+
   const BtnRef = useRef();
   const [loading, setLoading] = useState(false);
 
   const renderFormEdit = () => {
     switch (label) {
-      case 'clinics':
-        return <FormClinic BtnRef={BtnRef} defaultValues={data ? data : defaultClinicValues} />;
-      case 'users':
-        return <FormUser BtnRef={BtnRef} defaultValues={data ? data : defaultUserValues} callback={callback} />;
-      case 'dentists':
+      case clinic.value:
+        return (
+          <FormClinic
+            BtnRef={BtnRef}
+            defaultValues={data ? data : clinic.defaultValues}
+            callback={callback}
+            isEdit={data ? true : false}
+            loading={loading}
+            setLoading={setLoading}
+          />
+        );
+      case user.value:
+        return (
+          <FormUser
+            BtnRef={BtnRef}
+            loading={loading}
+            setLoading={setLoading}
+            defaultValues={data ? data : user.defaultValues}
+            callback={callback}
+          />
+        );
+      case dentist.value:
         return (
           <FormDentist
             BtnRef={BtnRef}
-            defaultValues={data ? data : defaultDentistValues}
+            defaultValues={data ? data : dentist.defaultValues}
             loading={loading}
             setLoading={setLoading}
             callback={callback}
@@ -120,6 +146,7 @@ const CustomModal = ({ label, data, isOpen, onClose, callback }) => {
             isDisabled={loading}
             textTransform="capitalize"
             variant="primary"
+            bg="primary.500"
             color="white"
             py="2rem"
             borderRadius="0.8rem"

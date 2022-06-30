@@ -38,10 +38,10 @@ import { MdPhotoCamera } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { axios } from '~/apis';
 import { Firebase } from '~/app/firebase';
-import styles from './FormDentist.module.scss';
-import './FormDentist.scss';
+import styles from '../styles/common.module.scss';
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
-const cx = classNames.bind(styles);
+
+const commonCx = classNames.bind(styles);
 
 // initial validation rules
 const schema = yup
@@ -327,6 +327,9 @@ const FormDentist = ({ t, defaultValues, BtnRef, loading, setLoading, callback, 
         </Flex>
 
         <Flex direction="column" gap="1rem">
+          <Heading fontSize="1.3rem" textTransform="capitalize">
+            password
+          </Heading>
           <InputGroup size="lg">
             <InputField
               errors={errors}
@@ -342,6 +345,9 @@ const FormDentist = ({ t, defaultValues, BtnRef, loading, setLoading, callback, 
         </Flex>
 
         <Flex direction="column" gap="1rem">
+          <Heading fontSize="1.3rem" textTransform="capitalize">
+            confirm password
+          </Heading>
           <InputGroup size="lg">
             <InputField
               errors={errors}
@@ -414,10 +420,10 @@ const FormDentist = ({ t, defaultValues, BtnRef, loading, setLoading, callback, 
             name="serviceId"
             placeholder="Enter services"
             className="select-field multi-select-field"
+            panelClassName="multi-select-field-panel"
             optionLabel="serviceName"
             optionValue="id"
             multiple
-            panelClassName="multi-select-field-panel"
             selectedItemTemplate={selectedServicesTemplate}
           />
         </Flex>
@@ -430,8 +436,8 @@ const FormDentist = ({ t, defaultValues, BtnRef, loading, setLoading, callback, 
             name="dob"
             errors={errors}
             control={control}
-            panelClassName={cx('user-edit-calendar-panel')}
-            inputClassName={cx('user-edit-calendar-input')}
+            panelClassName={commonCx('user-edit-calendar-panel')}
+            inputClassName={commonCx('user-edit-calendar-input')}
             placeholder={t('auth.register.dobPlaceholder')}
           />
         </Flex>
