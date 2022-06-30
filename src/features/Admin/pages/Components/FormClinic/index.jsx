@@ -1,22 +1,19 @@
-/* eslint-disable no-unused-vars */
-import { Box, Button, Flex, Heading, Image, Square, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Image, Text, useDisclosure } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { deleteObject, ref } from 'firebase/storage';
 import { motion } from 'framer-motion';
 import moment from 'moment';
 import { Galleria } from 'primereact/galleria';
 import React, { useEffect, useRef, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
 import { useForm } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
-import { FaCloudUploadAlt } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
 import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, PHONE_REGEX } from '~/app/constants';
 import { Firebase } from '~/app/firebase';
-import { AlertDialog, InputField, Loading, TextareaField } from '~/components';
+import { AlertDialog, InputField, TextareaField } from '~/components';
 import { selectLoggedUser } from '~/features/Auth/authSlice';
 import { DropArea } from './components';
 
@@ -87,8 +84,6 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
     defaultValues,
     resolver: yupResolver(schema)
   });
-
-  console.log({ defaultValues });
 
   useEffect(() => {
     return () =>
