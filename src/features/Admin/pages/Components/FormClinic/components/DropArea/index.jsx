@@ -8,6 +8,7 @@ import { FaCloudUploadAlt } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Firebase } from '~/app/firebase';
+import { Loading } from '~/components';
 import { selectLoggedUser } from '~/features/Auth/authSlice';
 
 const effect = {
@@ -41,7 +42,18 @@ const effect = {
 const firebase = new Firebase();
 const storage = firebase.getStorage();
 
-const DropArea = ({ setLoading, item, setEditingImage, setImages, images, totalFileUrls, NOW, itemId }) => {
+const DropArea = ({
+  loading,
+  setLoading,
+  item,
+  setEditingImage,
+  setImages,
+  images,
+  totalFileUrls,
+  NOW,
+  itemId,
+  position = 'absolute'
+}) => {
   const userInfo = useSelector(selectLoggedUser);
   const { getRootProps, getInputProps, fileRejections, open, isFocused, isDragAccept, isDragReject } = useDropzone({
     noClick: true,
@@ -76,7 +88,7 @@ const DropArea = ({ setLoading, item, setEditingImage, setImages, images, totalF
 
   useEffect(() => {
     if (fileUrls.length === files.length && fileUrls.length !== 0) {
-      const lastIdx = [...images].pop().id;
+      const lastIdx = [...images].pop()?.id || 0;
       const unique = fileUrls.map((url, idx) => ({ url, id: lastIdx + idx + 1 }));
       setFiles([]);
       setImages((prev) => [...prev.filter((v) => v.id !== itemHoverId), ...unique]);
@@ -92,7 +104,8 @@ const DropArea = ({ setLoading, item, setEditingImage, setImages, images, totalF
 
   const handleEditImage = async () => {
     try {
-      files.forEach(async (item, idx) => {
+      let idx = 0;
+      files.forEach(async (item) => {
         URL.revokeObjectURL(item.preview);
         const storageRef = ref(storage, `${NOW}_${userInfo.id}/${moment(item.lastModifiedDate).toJSON()}_${item.name}`);
         const uploadTask = uploadBytesResumable(storageRef, item);
@@ -114,9 +127,12 @@ const DropArea = ({ setLoading, item, setEditingImage, setImages, images, totalF
           },
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              console.log({ idx });
               if (idx === files.length - 1) {
+                console.log({ files });
                 setLoading(false);
               }
+              idx++;
               setFileUrls((prev) => [...prev, downloadURL]);
             });
           }
@@ -137,7 +153,7 @@ const DropArea = ({ setLoading, item, setEditingImage, setImages, images, totalF
       initial="hidden"
       animate="animate"
       bg="rgba(0,0,0,0.5)"
-      position="absolute"
+      position={position}
       inset="0"
       w="100%"
       h="100%"
@@ -145,6 +161,7 @@ const DropArea = ({ setLoading, item, setEditingImage, setImages, images, totalF
       justify="center"
       align="center"
     >
+      {loading && <Loading position="absolute" />}
       <Flex
         direction="column"
         w="100%"
@@ -155,6 +172,7 @@ const DropArea = ({ setLoading, item, setEditingImage, setImages, images, totalF
         pb="1rem"
         gap="1rem"
         bg="purple.300"
+        minH="45rem"
       >
         <Flex
           flex="1"

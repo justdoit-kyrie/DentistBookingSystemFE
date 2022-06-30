@@ -69,37 +69,15 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
   const userInfo = useSelector(selectLoggedUser);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { getRootProps, getInputProps, fileRejections, open, isFocused, isDragAccept, isDragReject } = useDropzone({
-    noClick: true,
-    noKeyboard: true,
-    accept: {
-      'image/*': []
-    },
-    onDrop: (acceptedFiles) => {
-      const previews = acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file)
-        })
-      );
-      setItemHoverId(itemId.current);
-      setFiles([...previews]);
-      setFilesPreview([...previews]);
-      setFileUrls([]);
-    }
-  });
 
   const itemId = useRef();
   const totalFileUrls = useRef();
 
   const [activeIndex, setActiveIndex] = useState();
-  const [files, setFiles] = useState([]);
-  const [filesPreview, setFilesPreview] = useState([]);
-  const [fileUrls, setFileUrls] = useState([]);
   const [deletedImage, setDeletedImage] = useState();
-  const [itemHoverId, setItemHoverId] = useState();
   const [hover, setHover] = useState(false);
   const [editingImage, setEditingImage] = useState(false);
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(defaultValues.imageUrl?.map((item, idx) => ({ url: item, id: idx + 1 })) || []);
 
   const {
     control,
@@ -110,11 +88,9 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
     resolver: yupResolver(schema)
   });
 
-  console.log({ itemHoverId });
+  console.log({ defaultValues });
 
   useEffect(() => {
-    setImages(defaultValues.imageUrl?.map((item, idx) => ({ url: item, id: idx + 1 })));
-
     return () =>
       totalFileUrls.current?.length > 0 &&
       totalFileUrls.current.forEach(async (item) => {
@@ -130,75 +106,9 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
       });
   }, []);
 
-  useEffect(() => {
-    return () =>
-      filesPreview.forEach((file) => {
-        URL.revokeObjectURL(file.preview);
-      });
-  }, [filesPreview]);
-
-  useEffect(() => {
-    if (fileUrls.length === files.length && fileUrls.length !== 0) {
-      const lastIdx = [...images].pop().id;
-      const unique = fileUrls.map((url, idx) => ({ url, id: lastIdx + idx + 1 }));
-      setFiles([]);
-      setImages((prev) => [...prev.filter((v) => v.id !== itemHoverId), ...unique]);
-    }
-  }, [fileUrls]);
-
-  const getBorderColor = () => {
-    if (isFocused || isDragAccept) return 'primary.500';
-    if (isDragReject) return 'red.200';
-    return 'primary.200';
-  };
-
   const handleDeleteImage = (image) => {
     setImages((prev) => prev.filter((item) => item.id !== image.id));
   };
-
-  const handleEditImage = async () => {
-    try {
-      files.forEach(async (item, idx) => {
-        URL.revokeObjectURL(item.preview);
-        const storageRef = ref(storage, `${NOW}_${userInfo.id}/${moment(item.lastModifiedDate).toJSON()}_${item.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, item);
-
-        uploadTask.on(
-          'state_changed',
-          (snapshot) => {
-            switch (snapshot.state) {
-              case 'paused':
-                toast.warning('Upload is paused');
-                break;
-              case 'running':
-                setLoading(true);
-                break;
-            }
-          },
-          (error) => {
-            toast.error(error.message);
-          },
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              if (idx === files.length - 1) {
-                setLoading(false);
-                setHover(false);
-              }
-              setFileUrls((prev) => [...prev, downloadURL]);
-            });
-          }
-        );
-      });
-
-      totalFileUrls.current =
-        typeof totalFileUrls.current === 'undefined' ? [...files] : [...totalFileUrls.current, ...files];
-      setEditingImage(false);
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-
-  console.log({ images, totalFileUrls, itemId, editingImage });
 
   const itemTemplate = (item) => {
     return (
@@ -216,8 +126,6 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
           maxH="45rem"
           objectFit="cover"
         />
-
-        {loading && <Loading position="absolute" />}
 
         {hover && !editingImage && (
           <Flex
@@ -313,6 +221,7 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
 
         {editingImage && (
           <DropArea
+            loading={loading}
             setLoading={setLoading}
             item={item}
             setEditingImage={setEditingImage}
@@ -323,139 +232,6 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
             itemId={itemId}
           />
         )}
-
-        {/* {hover && editingImage && (
-          <Flex
-            as={motion.div}
-            variants={btnEffect.root}
-            initial="hidden"
-            animate="animate"
-            bg="rgba(0,0,0,0.5)"
-            position="absolute"
-            inset="0"
-            w="100%"
-            h="100%"
-            zIndex="2"
-            justify="center"
-            align="center"
-          >
-            <Flex
-              direction="column"
-              w="100%"
-              h="100%"
-              align="center"
-              justify="center"
-              pt="2rem"
-              pb="1rem"
-              gap="1rem"
-              bg="purple.300"
-            >
-              <Flex
-                flex="1"
-                direction="column"
-                align="center"
-                justify="center"
-                gap="2rem"
-                border={isDragAccept || isDragReject || isFocused ? '2px solid' : '2px dashed'}
-                borderColor={getBorderColor()}
-                borderRadius="1.2rem"
-                w="100%"
-                h="100%"
-                maxW="90%"
-                maxH="90%"
-                {...getRootProps()}
-              >
-                <input {...getInputProps()} />
-                {fileRejections.length > 0 && (
-                  <Text color="yellow.400" textAlign="center" fontSize="1.5rem" maxW="80%">
-                    <Text as="span" fontWeight="400">
-                      Only files with the following extensions are allowed:{' '}
-                    </Text>
-                    <Text as="span" fontWeight="650">
-                      png, jpg, jpeg, gif, tiff,...
-                    </Text>
-                  </Text>
-                )}
-                <Flex direction="column" align="center" justify="center">
-                  <FaCloudUploadAlt color="white" fontSize="10rem" />
-                  <Text color="white" fontSize="2.5rem" lineHeight="1" mt="1.5rem">
-                    {isDragAccept ? 'Release to Upload File' : 'Drag & Drop to Upload File'}
-                  </Text>
-                  <Text color="white" fontSize="1.5rem" lineHeight="1" textTransform="uppercase" mt="1rem">
-                    or
-                  </Text>
-                </Flex>
-                {files.length > 0 && item.id === itemHoverId ? (
-                  <Flex gap="2rem">
-                    <Button
-                      as={motion.div}
-                      whileHover={{ scale: 0.9 }}
-                      whileTap={{ scale: 1.1 }}
-                      fontSize="1.6rem"
-                      bg="primary.500"
-                      color="white"
-                      p="2rem 0"
-                      w="10rem"
-                      onClick={handleEditImage}
-                      _hover={{}}
-                      _active={{}}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      as={motion.div}
-                      whileHover={{ scale: 0.9 }}
-                      whileTap={{ scale: 1.1 }}
-                      fontSize="1.6rem"
-                      bg="red.200"
-                      color="white"
-                      p="2rem 0"
-                      w="10rem"
-                      onClick={() => {
-                        files.forEach((file) => URL.revokeObjectURL(file.preview));
-                        setFiles([]);
-                        setEditingImage(false);
-                      }}
-                      _hover={{}}
-                      _active={{}}
-                    >
-                      Cancel
-                    </Button>
-                  </Flex>
-                ) : (
-                  <Button
-                    fontSize="1.6rem"
-                    bg="white"
-                    p="2rem 0"
-                    w="10rem"
-                    onClick={() => {
-                      open();
-                      itemId.current = item.id;
-                    }}
-                  >
-                    Browse
-                  </Button>
-                )}
-              </Flex>
-
-              <Flex gap="1rem" overflowX="auto" maxW="90%" className="hide-scrollbar">
-                {item.id === itemHoverId &&
-                  files.map((file, index) => (
-                    <Square
-                      size="10rem"
-                      key={`${index}`}
-                      border="2px solid"
-                      borderColor="white"
-                      borderRadius="1.2rem"
-                      overflow="hidden"
-                    >
-                      <Image w="100%" h="100%" objectFit="cover" src={file.preview} />
-                    </Square>
-                  ))}
-              </Flex>
-            </Flex>
-          </Flex>
-        )} */}
       </Box>
     );
   };
@@ -500,18 +276,34 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
           handleDelete={() => handleDeleteImage(deletedImage)}
         />
       )}
+
       <Flex direction="column" gap="3rem" h="auto" pt="2rem" pb="5rem">
-        <Galleria
-          value={images}
-          numVisible={5}
-          item={itemTemplate}
-          thumbnail={thumbnailTemplate}
-          activeIndex={activeIndex}
-          onItemChange={(e) => {
-            setEditingImage(false);
-            setActiveIndex(e.index);
-          }}
-        />
+        {images.length === 0 ? (
+          <DropArea
+            loading={loading}
+            setLoading={setLoading}
+            item={0}
+            setEditingImage={setEditingImage}
+            setImages={setImages}
+            images={images}
+            totalFileUrls={totalFileUrls}
+            NOW={NOW}
+            itemId={itemId}
+            position="relative"
+          />
+        ) : (
+          <Galleria
+            value={images}
+            numVisible={5}
+            item={itemTemplate}
+            thumbnail={thumbnailTemplate}
+            activeIndex={activeIndex}
+            onItemChange={(e) => {
+              setEditingImage(false);
+              setActiveIndex(e.index);
+            }}
+          />
+        )}
 
         <Flex direction="column" gap="1rem">
           <Heading fontSize="1.3rem" textTransform="capitalize">
