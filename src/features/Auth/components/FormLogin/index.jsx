@@ -91,7 +91,7 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
         const { role, id } = user;
         switch (role.toLowerCase()) {
           case ROLE[0]:
-            break;
+            return navigate(_.replace(PATH.admin.home, ':id', id));
           case ROLE[1]:
             return navigate(_.replace(PATH.dentist.home, ':id', id));
           default:

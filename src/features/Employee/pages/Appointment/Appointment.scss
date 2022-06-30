@@ -12,6 +12,10 @@
 .appointment-calendar-panel {
   font-size: 1.5rem;
 
+  .p-datepicker-header .p-datepicker-title .p-datepicker-year:hover {
+    cursor: pointer;
+  }
+
   &.dark {
     background: $dark-mode-color-700 !important;
     color: white;
@@ -22,6 +26,10 @@
 
     table td > span.p-highlight {
       font-weight: 800;
+    }
+
+    .p-datepicker-header .p-datepicker-title .p-datepicker-year {
+      background: transparent;
     }
 
     .p-datepicker-header .p-datepicker-title .p-datepicker-year,

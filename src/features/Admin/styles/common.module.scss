@@ -1,0 +1,60 @@
+@import '../../../app/styles/variables.scss';
+
+.common-dataTable {
+  font-size: 1.4rem;
+  width: 100% !important;
+
+  .dataTable-row {
+    &:not(:last-child),
+    &:not(:last-child) {
+      margin: 1.5rem 0;
+    }
+
+    & > td {
+      border: none !important;
+    }
+  }
+
+  .p-inputtext {
+    border-color: #ced4da;
+
+    &:not(.p-disabled):hover {
+      border-color: $primary-500 !important;
+    }
+  }
+
+  .p-dropdown:not(.p-disabled):hover,
+  .p-calendar :not(.p-disabled):hover {
+    border-color: $primary-500 !important;
+  }
+
+  &.users-dataTable {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+
+    .p-datatable-table {
+      background: transparent;
+    }
+
+    .dataTable-row {
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      border-radius: 0.8rem;
+    }
+
+    .users-footer {
+      background: transparent;
+    }
+  }
+}
+
+.dataTable-dark {
+  .p-dropdown-item.p-highlight {
+    background: $dark-mode-color-500 !important;
+  }
+}
+
+.users-calendar {
+  font-size: 1.3rem !important;
+}
