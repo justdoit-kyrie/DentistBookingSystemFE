@@ -43,8 +43,8 @@ const MOCK_DATA = (t) => ({
       list: [
         {
           icon: BsGrid,
-          label: 'overview',
-          to: getDestinationURL('statistics')
+          label: 'appointment',
+          to: getDestinationURL('appointments')
         },
         {
           icon: FiUsers,

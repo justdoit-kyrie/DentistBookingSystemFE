@@ -86,6 +86,7 @@ const Users = ({ t }) => {
       });
       if (+code === API_CODE.OK) {
         setUnlockedCustomers(handleMapDate(content));
+        setLockedCustomers([]);
         setPaginationInfo(pagination);
       }
     } catch (error) {
