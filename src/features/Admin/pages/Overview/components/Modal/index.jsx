@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   Avatar,
   Badge,
@@ -152,7 +153,7 @@ const DetailModal = ({ isOpen, onClose, data }) => {
   const renderStatus = (keyTime, date, status) => {
     let label = '';
     let color = '';
-    const time = SCHEDULE_TIMER[keyTime + 1];
+    const time = SCHEDULE_TIMER[keyTime];
 
     if (STATUS_CODE[status] !== 'done')
       return (
@@ -161,19 +162,18 @@ const DetailModal = ({ isOpen, onClose, data }) => {
         </Text>
       );
 
-    if (moment(time, 'h:mm').isSameOrAfter(moment(`${NOW.hour()}:${NOW.minute()}`, 'h:mm')) && compareDate(NOW, date)) {
-      label = 'on-going';
-      color = 'purple.300';
-    } else if (
-      NOW.isBefore(moment(date)) &&
-      moment(time, 'h:mm').isSameOrBefore(moment(`${NOW.hour()}:${NOW.minute()}`, 'h:mm'))
-    ) {
+    if (compareDate(NOW, date)) {
+      if (moment(time, 'h:mm').isSameOrAfter(moment(`${NOW.hour()}:${NOW.minute()}`, 'h:mm'))) {
+        label = 'pending';
+        color = 'yellow.500';
+      } else {
+        label = 'on-going';
+        color = 'purple.300';
+      }
+    } else if (NOW.isBefore(moment(date))) {
       label = 'pending';
       color = 'yellow.500';
-    } else if (
-      NOW.isAfter(moment(date)) &&
-      moment(time, 'h:mm').isSameOrBefore(moment(`${NOW.hour()}:${NOW.minute()}`, 'h:mm'))
-    ) {
+    } else if (NOW.isAfter(moment(date))) {
       label = 'completed';
       color = 'green';
     }
