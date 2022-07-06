@@ -317,7 +317,9 @@ const OverView = ({ t }) => {
         />
       )}
 
-      {isOpen && isSelected.current && <DetailModal isOpen={isOpen} onClose={onClose} data={selectedAppointment} />}
+      {isOpen && isSelected.current && (
+        <DetailModal isOpen={isOpen} onClose={onClose} data={{ ...selectedAppointment, date: moment('7/7/2022') }} />
+      )}
 
       <Heading mb="2rem" color="primary.500" textTransform="uppercase" letterSpacing="0.25rem">
         Appointment management
