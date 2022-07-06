@@ -23,6 +23,9 @@ export const theme = extendTheme({
       400: '#a399f6',
       500: '#7a6efe'
     },
+    green: {
+      400: '#4AC497'
+    },
     yellow: {
       400: '#ffd400',
       500: '#ffa901'
@@ -41,6 +44,8 @@ export const theme = extendTheme({
       500: '#3C3C3C'
     },
     primary: {
+      20: '#E7ECF5',
+      50: '#DEE5F2',
       100: '#F5F2EA',
       200: '#2cafcb',
       250: '#e9f6fe',
@@ -267,12 +272,24 @@ export const theme = extendTheme({
           bg: 'green',
           color: 'white'
         },
+        pending: {
+          bg: 'yellow.500',
+          color: 'white'
+        },
         failed: {
           bg: 'red.200',
           color: 'white'
         },
         success: {
           bg: 'green',
+          color: 'white'
+        },
+        done: {
+          bg: 'green',
+          color: 'white'
+        },
+        declined: {
+          bg: 'red.200',
           color: 'white'
         },
         confirmed: {
@@ -293,6 +310,25 @@ export const theme = extendTheme({
         lg: {
           label: {
             fontSize: '1.2rem'
+          }
+        }
+      },
+      // 3. We can add a new visual variant
+      variants: {}
+    },
+    Checkbox: {
+      // 1. We can update the base styles
+      baseStyle: {
+        label: {
+          fontWeight: 500,
+          textTransform: 'capitalize'
+        }
+      },
+      // 2. We can add a new button size or extend existing
+      sizes: {
+        lg: {
+          label: {
+            fontSize: '1.5rem'
           }
         }
       },

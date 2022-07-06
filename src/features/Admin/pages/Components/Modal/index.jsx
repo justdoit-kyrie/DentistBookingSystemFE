@@ -13,8 +13,7 @@ import {
 import { motion } from 'framer-motion';
 import React, { useRef, useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { FormDentist, FormUser } from '..';
-import FormClinic from '../FormClinic';
+import { FormAppointment, FormClinic, FormDentist, FormDiscount, FormService, FormUser } from '..';
 
 const MOCK_DATA = {
   clinic: {
@@ -54,17 +53,79 @@ const MOCK_DATA = {
       clinicId: '',
       serviceId: []
     }
+  },
+  service: {
+    value: 'services',
+    defaultValues: {
+      serviceName: '',
+      procedure: '',
+      status: 0,
+      price: 0,
+      discountId: null
+    }
+  },
+  discount: {
+    value: 'discounts',
+    defaultValues: {
+      title: '',
+      startDate: null,
+      endDate: null,
+      description: '',
+      percent: 0,
+      amount: 0,
+      applyForAll: false
+    }
+  },
+  appointment: {
+    value: 'appointments',
+    defaultValues: {
+      date: null,
+      total: 0
+    }
   }
 };
 
-const CustomModal = ({ label, data, isOpen, onClose, callback }) => {
-  const { user, clinic, dentist } = MOCK_DATA;
+const CustomModal = ({ label, data, isOpen, onClose, callback, minW = '40vw', minH = '85vh' }) => {
+  const { user, clinic, dentist, service, discount, appointment } = MOCK_DATA;
 
   const BtnRef = useRef();
   const [loading, setLoading] = useState(false);
 
   const renderFormEdit = () => {
     switch (label) {
+      case appointment.value:
+        return (
+          <FormAppointment
+            BtnRef={BtnRef}
+            defaultValues={data ? data : appointment.defaultValues}
+            callback={callback}
+            isEdit={data ? true : false}
+            loading={loading}
+            setLoading={setLoading}
+          />
+        );
+      case discount.value:
+        return (
+          <FormDiscount
+            BtnRef={BtnRef}
+            defaultValues={data ? data : discount.defaultValues}
+            callback={callback}
+            isEdit={data ? true : false}
+            loading={loading}
+            setLoading={setLoading}
+          />
+        );
+      case service.value:
+        return (
+          <FormService
+            BtnRef={BtnRef}
+            defaultValues={data ? data : service.defaultValues}
+            callback={callback}
+            isEdit={data ? true : false}
+            loading={loading}
+            setLoading={setLoading}
+          />
+        );
       case clinic.value:
         return (
           <FormClinic
@@ -111,7 +172,7 @@ const CustomModal = ({ label, data, isOpen, onClose, callback }) => {
   return (
     <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay zIndex="1" />
-      <ModalContent minW="40vw" minH="85vh" borderRadius="2rem" pt="4rem">
+      <ModalContent minW={minW} minH={minH} borderRadius="2rem" pt="4rem">
         <ModalHeader fontSize="3rem" textTransform="capitalize" fontWeight="800" px="3rem">
           {data ? 'edit' : 'create'} {label} profile
         </ModalHeader>
