@@ -140,7 +140,7 @@ const DentistPage = ({ t }) => {
         keyTimes: [SCHEDULE_TIMER.indexOf(selectedTime)],
         serviceIds: [selectedService.id],
         total: serviceDetail.service.price
-      });
+      }); 
       if (+code === API_CODE.OK) {
         console.log(code);
       } else {

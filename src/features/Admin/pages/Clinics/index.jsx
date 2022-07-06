@@ -36,10 +36,6 @@ import { CustomModal } from '../Components';
 const cx = classNames.bind(styles);
 
 const MOCK_DATA = {
-  _fieldConstants: {
-    request: 'request',
-    patient: 'patient'
-  },
   statusOpt: [0, 1]
 };
 
@@ -77,6 +73,7 @@ const Clinics = ({ t }) => {
       });
       if (+code === API_CODE.OK) {
         setUnlockedDentists(content);
+        setLockedDentists([]);
         setPaginationInfo(pagination);
       }
     } catch (error) {
@@ -284,7 +281,9 @@ const Clinics = ({ t }) => {
 
   return (
     <>
-      {isOpen && <CustomModal label="clinics" isOpen={isOpen} onClose={onClose} data={editClinic} />}
+      {isOpen && (
+        <CustomModal label="clinics" isOpen={isOpen} onClose={onClose} data={editClinic} callback={fetchData} />
+      )}
 
       <Heading mb="2rem" color="primary.500" textTransform="uppercase" letterSpacing="0.25rem">
         Clinics management

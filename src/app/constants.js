@@ -37,7 +37,7 @@ export const PATH = {
     profile: '/dashboard/:id/profile'
   },
   admin: {
-    home: '/dashboard/:id/statistics',
+    home: '/dashboard/:id/appointments',
     user: '/dashboard/:id/users',
     dentist: '/dashboard/:id/dentists',
     clinic: '/dashboard/:id/clinics',
@@ -99,7 +99,8 @@ export const DATE_FORMAT = {
   'DD-MM-YYYY': 'DD-MM-YYYY',
   'YYYY-MM-DD': 'YYYY-MM-DD',
   'dd/mm/yy': 'dd/mm/yy',
-  'DD/MM/YYYY': 'DD/MM/YYYY'
+  'DD/MM/YYYY': 'DD/MM/YYYY',
+  'dddd, DD MMMM YYYY': 'dddd, DD MMMM YYYY'
 };
 
 // api routes
@@ -115,12 +116,14 @@ export const API_ROUTES = {
   'get-available-bookings': '/bookings/available',
   'bookings':'/bookings',
   'get-service-by-id': '/services/:id',
+  'get-booking-all': '/bookings/getallbooking',
+  bookingDetails: '/bookings/detail',
   users: '/Users',
   dentists: '/dentists',
   'get-clinics': '/clinics/all',
   clinics: '/clinics',
-  services: '/services'
-  
+  services: '/services',
+  discounts: '/discounts'
 };
 
 // api status code

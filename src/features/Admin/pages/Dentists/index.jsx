@@ -86,6 +86,7 @@ const Dentists = ({ t }) => {
       });
       if (+code === API_CODE.OK) {
         setUnlockedDentists(handleMapDate(content));
+        setLockedDentists([]);
         setPaginationInfo(pagination);
       }
     } catch (error) {

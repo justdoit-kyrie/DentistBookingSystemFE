@@ -61,7 +61,7 @@ const storage = firebase.getStorage();
 const NOW = moment().toISOString();
 
 // eslint-disable-next-line no-unused-vars
-const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) => {
+const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit, callback }) => {
   const { btnEffect } = effect;
   const userInfo = useSelector(selectLoggedUser);
 
@@ -86,19 +86,20 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
   });
 
   useEffect(() => {
-    return () =>
+    return () => {
       totalFileUrls.current?.length > 0 &&
-      totalFileUrls.current.forEach(async (item) => {
-        try {
-          const storageRef = ref(
-            storage,
-            `${NOW}_${userInfo.id}/${moment(item.lastModifiedDate).toJSON()}_${item.name}`
-          );
-          await deleteObject(storageRef);
-        } catch (error) {
-          toast.error(error.message);
-        }
-      });
+        totalFileUrls.current.forEach(async (item) => {
+          try {
+            const storageRef = ref(
+              storage,
+              `${NOW}_${userInfo.id}/${moment(item.lastModifiedDate).toJSON()}_${item.name}`
+            );
+            await deleteObject(storageRef);
+          } catch (error) {
+            toast.error(error.message);
+          }
+        });
+    };
   }, []);
 
   const handleDeleteImage = (image) => {
@@ -252,6 +253,8 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit }) =
         });
 
         if (+code === API_CODE.OK) {
+          totalFileUrls.current = [];
+          if (typeof callback === 'function') callback();
           toast.success('update successfully');
         }
       }
