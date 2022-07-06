@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // eslint-disable-next-line no-unused-vars
 import {
   Accordion,
@@ -17,16 +18,9 @@ import {
   List,
   ListIcon,
   ListItem,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Text,
-  useColorMode,
-  useDisclosure
+  Textarea,
+  useColorMode
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import HeaderOnlyLayout from '~/components/layouts/HeaderOnlyLayout';
@@ -38,21 +32,23 @@ import { MdCheckCircle } from 'react-icons/md';
 import styles from './Dentist.module.scss';
 import classNames from 'classnames/bind';
 import { useRef } from 'react';
-import { Footer, InputField } from '~/components';
-import { API_CODE, API_ROUTES, DATE_FORMAT, SCHEDULE_TIMER } from '~/app/constants';
-import { useParams } from 'react-router-dom';
+import { Footer } from '~/components';
+import { API_CODE, API_ROUTES, SCHEDULE_TIMER } from '~/app/constants';
+import { useNavigate, useParams } from 'react-router-dom';
 import { axios } from '~/apis';
 import moment from 'moment';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useDispatch } from 'react-redux';
-import { init } from '../Auth/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { init, selectLoggedUser } from '../Auth/authSlice';
 import * as yup from 'yup';
 
 const cx = classNames.bind(styles);
 
 const DentistPage = ({ t }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userInfo = useSelector(selectLoggedUser);
   const [selectedDate, setSelectedDate] = useState(null);
   const dentistID = useParams();
   const ref = useRef();
@@ -61,10 +57,13 @@ const DentistPage = ({ t }) => {
   const [profile, setProfile] = useState();
   const [clinicProfile, setClinicProfile] = useState();
   const [dayList, setDayList] = useState([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [timeSelect, setTimeSelect] = useState();
+  const [servicesList, setServicesList] = useState();
+  const [selectedService, setSelectedService] = useState();
 
   const schema = yup.object({}).required();
+
+  console.log(userInfo);
 
   const datetest = new Date();
 
@@ -76,28 +75,45 @@ const DentistPage = ({ t }) => {
     setSelectedDate(e.value);
   };
 
+  const onServiceChange = (e) => {
+    setSelectedService(e.value);
+  };
+
+  const defaultValues = {
+    userId: '',
+    dentistIds: [],
+    serviceIds: [],
+    keyTimes: [],
+    total: 0,
+    date: '',
+    note: ''
+  };
+
   const dentist = async () => {
     const data = await axios.get(API_ROUTES['get-dentist-profile'].replace(':id', dentistID.id));
     setProfile({ ...data.dentistDTO });
+    setServicesList(data.dentistDTO.services);
     console.log(data.dentistDTO);
     setClinicProfile({ ...data.clinicDTO });
     console.log(data.clinicDTO);
   };
 
+  const revertDate = (date) => {
+    var momentVariable = moment(date, 'dddd DD/MM');
+    return momentVariable.format('YYYY-MM-DD');
+  };
+
   const timeList = async () => {
-    var momentVariable = moment(selectedDate, 'dddd DD/MM');
-    var stringValue = momentVariable.format('YYYY-MM-DD');
+    var stringValue = revertDate(selectedDate);
     const data = await axios.get(API_ROUTES['get-available-bookings'], {
       params: {
         dentistId: profile.dentistID,
         date: stringValue
       }
     });
-    console.log(data);
-    const timeList = data.map(function(element){
+    const timeList = data.map(function (element) {
       return SCHEDULE_TIMER[element];
     });
-    // setSelectedDate(datechoose);
     setTimeSelect(timeList);
   };
 
@@ -106,16 +122,24 @@ const DentistPage = ({ t }) => {
     handleSubmit,
     formState: { errors }
   } = useForm({
+    defaultValues,
     resolver: yupResolver(schema)
   });
 
   const onSubmit = async (data) => {
     dispatch(init());
+    const serviceDetail = await axios.get(API_ROUTES['get-service-by-id'].replace(':id',selectedService.id));
+    console.log(serviceDetail);
     try {
-      const { code } = await axios.post(`${API_ROUTES.register}`, {
+      const { code } = await axios.post(`${API_ROUTES['bookings']}`, {
         ...data,
-        gender: +data.gender,
-        dob: moment(data.dob).format(DATE_FORMAT['yyyy-MM-DD'])
+        dentistIds: [profile.dentistID],
+        userId: userInfo.id,
+        date: revertDate(selectedDate),
+        note: data.note,
+        keyTimes: [SCHEDULE_TIMER.indexOf(selectedTime)],
+        serviceIds: [selectedService.id],
+        total: serviceDetail.service.price
       });
       if (+code === API_CODE.OK) {
         console.log(code);
@@ -129,12 +153,15 @@ const DentistPage = ({ t }) => {
   };
 
   useEffect(() => {
-    
     timeList();
   }, [selectedDate]);
 
+
+  
+
   useEffect(() => {
     dentist();
+    
     const handler = () => {
       const innerEle = ref.current;
       const scrollPos = window.pageYOffset;
@@ -246,48 +273,79 @@ const DentistPage = ({ t }) => {
         )}
 
         <Flex marginTop="2rem" className="bs-detail-info">
-          <Flex w="40%">
-            <Dropdown
-              className="date-dropdown"
-              panelClassName="date-dropdown-list"
-              placeholder={t('home.dentist.booking.daypickerPlaceholder')}
-              value={selectedDate}
-              options={dayList}
-              onChange={onDateChange}
-            />
-            <Dropdown
-              className="date-dropdown"
-              panelClassName="date-dropdown-list"
-              placeholder={t('home.dentist.booking.daypickerPlaceholder')}
-              value={selectedTime}
-              options={timeSelect}
-              onChange={onTimeChange}
-            />
-            <Button colorScheme="blue" className="booking-btn" size="lg" onClick={onOpen}>
-              {t('home.dentist.booking.bookingNow')}
-            </Button>
-            <Modal isOpen={isOpen} onClose={onClose} isCentered>
-              <ModalOverlay />
-              <ModalContent id="booking-modal-form">
-                <ModalHeader>Booking Information</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  <form onSubmit={handleSubmit(onSubmit)} style={{ position: '' }}>
-                    <InputField errors={errors} control={control} name="firstName" placeholder="Enter your full name" />
-                    <InputField errors={errors} control={control} name="phoneNumber" placeholder="Enter your phone" />
-                  </form>
-                </ModalBody>
-                <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={onClose}>
-                    Close
-                  </Button>
-                  <Button variant="ghost" type="submit">
-                    Submit
-                  </Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
-          </Flex>
+          <Box className="booking-section" w="60%">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Flex>
+                <Controller
+                  name="date"
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <Dropdown
+                        {...field}
+                        className="date-dropdown"
+                        panelClassName="date-dropdown-list"
+                        placeholder={t('home.dentist.booking.daypickerPlaceholder')}
+                        value={selectedDate}
+                        options={dayList}
+                        onChange={onDateChange}
+                      />
+                    );
+                  }}
+                />
+                <Controller
+                  name="keyTimes"
+                  control={control}
+                  render={({ field }) => (
+                    <Dropdown
+                      {...field}
+                      className="date-dropdown"
+                      panelClassName="date-dropdown-list"
+                      placeholder={t('home.dentist.booking.timepickerPlaceholder')}
+                      value={selectedTime}
+                      options={timeSelect}
+                      onChange={onTimeChange}
+                    />
+                  )}
+                />
+                <Controller
+                  name="service"
+                  control={control}
+                  render={({ field }) => (
+                    <Dropdown
+                      {...field}
+                      className="date-dropdown"
+                      panelClassName="date-dropdown-list"
+                      placeholder={t('home.dentist.booking.servicepickerPlaceholder')}
+                      value={selectedService}
+                      options={servicesList}
+                      optionLabel="serviceName"
+                      onChange={onServiceChange}
+                    />
+                  )}
+                />
+                <Button colorScheme="blue" className="booking-btn" size="lg" type="submit">
+                  {t('home.dentist.booking.bookingNow')}
+                </Button>
+              </Flex>
+              <Box>
+                <Controller
+                  name="note"
+                  control={control}
+                  render={({ field }) => (
+                    <Textarea
+                      {...field}
+                      className="note-textarea"
+                      placeholder={t('home.dentist.booking.notePlaceholder')}
+                      size="sm"
+                      resize="none"
+                    />
+                  )}
+                />
+              </Box>
+            </form>
+          </Box>
+
           {clinicProfile && (
             <Box className="clinic-info-wrapper">
               <Box className="info-container" w="100%" paddingBottom="2rem">

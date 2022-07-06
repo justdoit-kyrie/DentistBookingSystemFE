@@ -45,7 +45,6 @@ export const ROUTES = [
   {
     path: PATH.customer.dentist,
     component: DentistPage,
-    isPublic: true,
     layout: null
   },
   {

@@ -34,14 +34,6 @@ export const PATH = {
   dentist: {
     home: '/dashboard/:id/overview',
     appointment: '/dashboard/:id/appointment',
-<<<<<<< HEAD
-    myPatients: '/dashboard/:id/myPatients',
-    message: '/dashboard/:id/message',
-    blog: '/dashboard/:id/blog',
-    profile: '/dashboard/:id/profile',
-    setting: '/dashboard/:id/setting'
-  },
-=======
     profile: '/dashboard/:id/profile'
   },
   admin: {
@@ -52,7 +44,6 @@ export const PATH = {
     service: '/dashboard/:id/services',
     profile: '/dashboard/:id/profile'
   }
->>>>>>> 231ca759efe717001b5170669f67e95404744d57
 };
 
 // language
@@ -122,11 +113,14 @@ export const API_ROUTES = {
   'get-booking-by-dentist-it': '/bookings/dentist/:id',
   'get-dentist-profile': '/dentists/:id',
   'get-available-bookings': '/bookings/available',
+  'bookings':'/bookings',
+  'get-service-by-id': '/services/:id',
   users: '/Users',
   dentists: '/dentists',
   'get-clinics': '/clinics/all',
   clinics: '/clinics',
   services: '/services'
+  
 };
 
 // api status code

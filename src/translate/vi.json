@@ -137,6 +137,8 @@
         "bookingNow": "Đặt Lịch Ngay",
         "daypickerPlaceholder": "Chọn Ngày",
         "timepickerPlaceholder": "Chọn Thời Gian",
+        "servicepickerPlaceholder": "Chọn Dịch Vụ",
+        "notePlaceholder": "Chú thích thêm...",
         "clinicInfo": "Thông Tin Phòng Khám",
         "clinicLocation": "Địa Chỉ Phòng Khám",
         "phone": "Số Điện Thoại:",

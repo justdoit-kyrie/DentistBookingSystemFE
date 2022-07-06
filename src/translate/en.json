@@ -145,6 +145,8 @@
         "bookingNow": "Book Now",
         "daypickerPlaceholder": "Select a day",
         "timepickerPlaceholder": "Select a time",
+        "servicepickerPlaceholder": "Select a service",
+        "notePlaceholder": "Additional note...",
         "clinicInfo": "Clinic Information",
         "clinicLocation": "Clinic Location",
         "phone": "Phone Number:",
