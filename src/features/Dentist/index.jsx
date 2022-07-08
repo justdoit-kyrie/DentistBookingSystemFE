@@ -32,7 +32,7 @@ import { MdCheckCircle } from 'react-icons/md';
 import styles from './Dentist.module.scss';
 import classNames from 'classnames/bind';
 import { useRef } from 'react';
-import { Footer } from '~/components';
+import { Footer, SelectField } from '~/components';
 import { API_CODE, API_ROUTES, SCHEDULE_TIMER } from '~/app/constants';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axios } from '~/apis';
@@ -42,6 +42,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { init, selectLoggedUser } from '../Auth/authSlice';
 import * as yup from 'yup';
+import { MultiSelect } from 'primereact/multiselect';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -128,26 +130,31 @@ const DentistPage = ({ t }) => {
 
   const onSubmit = async (data) => {
     dispatch(init());
-    const serviceDetail = await axios.get(API_ROUTES['get-service-by-id'].replace(':id',selectedService.id));
-    console.log(serviceDetail);
+    console.log(selectedService);
+    const serviceIdList= selectedService.map((item) => item.id);
+    console.log(serviceIdList);
+    const totalPrice = selectedService.map((item) => item.price).reduce((a,b) => a + b, 0);
+    console.log(totalPrice);
     try {
-      const { code } = await axios.post(`${API_ROUTES['bookings']}`, {
+      const { code,message } = await axios.post(`${API_ROUTES['bookings']}`, {
         ...data,
         dentistIds: [profile.dentistID],
         userId: userInfo.id,
         date: revertDate(selectedDate),
         note: data.note,
         keyTimes: [SCHEDULE_TIMER.indexOf(selectedTime)],
-        serviceIds: [selectedService.id],
-        total: serviceDetail.service.price
-      }); 
+        serviceIds: serviceIdList,
+        total: totalPrice
+      });
       if (+code === API_CODE.OK) {
+        toast.success(message);
         console.log(code);
       } else {
+        toast.error(message);
         console.log(code);
       }
     } catch (error) {
-      // show toast
+      toast.error(error);
       console.log(error);
     }
   };
@@ -156,12 +163,9 @@ const DentistPage = ({ t }) => {
     timeList();
   }, [selectedDate]);
 
-
-  
-
   useEffect(() => {
     dentist();
-    
+
     const handler = () => {
       const innerEle = ref.current;
       const scrollPos = window.pageYOffset;
@@ -312,7 +316,7 @@ const DentistPage = ({ t }) => {
                   name="service"
                   control={control}
                   render={({ field }) => (
-                    <Dropdown
+                    <MultiSelect
                       {...field}
                       className="date-dropdown"
                       panelClassName="date-dropdown-list"

@@ -9,16 +9,21 @@
   margin-right: 2rem;
   &:hover {
     border: 1px solid;
+    
   }
 
   & .p-dropdown-label {
     font-size: 1.5rem !important;
     color: inherit !important;
-    width: fit-content;
+    width: 10rem;
   }
 }
 
 .p-dropdown:not(.p-disabled).date-dropdown:hover {
+  border: 1px solid !important;
+}
+
+.p-multiselect.date-dropdown:not(.p-disabled):hover {
   border: 1px solid !important;
 }
 
@@ -197,4 +202,12 @@
   background-color: inherit !important;
   color: inherit !important;
   border-radius: 6px !important;
+}
+
+.multiselect-form{
+  width: fit-content !important;
+}
+
+.p-multiselect.date-dropdown{
+  min-width: 30rem !important;
 }

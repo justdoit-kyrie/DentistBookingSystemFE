@@ -35,7 +35,7 @@ import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, DATE_FORMAT, STATUS_CODE } from '~/app/constants';
 import common_styles from '~/features/Admin/styles/common.module.scss';
 import { DataTableWrapper } from '../../styles';
-import { CustomModal } from '../components';
+import { CustomModal } from '../Components';
 import specific_styles from './Services.module.scss';
 import { TabViewWrapper } from './style';
 
