@@ -74,7 +74,7 @@ const MOCK_DATA = {
 const Services = ({ t }) => {
   const { statusOpt, contentOpt, initialFilter } = MOCK_DATA;
 
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [paginationInfo, setPaginationInfo] = useState();
   const [editData, setEditData] = useState();
   const [dataTableFirst, setDataTableFirst] = useState(0);
