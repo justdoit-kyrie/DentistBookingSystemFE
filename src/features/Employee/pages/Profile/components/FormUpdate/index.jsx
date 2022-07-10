@@ -1,21 +1,20 @@
 import { Button, Circle, Flex, Grid, Heading, Progress, Text } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { motion } from 'framer-motion';
-import { useRef, useState } from 'react';
+import moment from 'moment';
+import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import { MdPhotoCamera } from 'react-icons/md';
-import * as yup from 'yup';
-import { API_CODE, API_ROUTES, DATE_FORMAT, EMAIL_REGEX, NAME_REGEX, PHONE_REGEX } from '~/app/constants';
-import { CalendarField, FormFieldWrapper, InputField, Loading, RadioField } from '~/components';
-import React from 'react';
-import { toast } from 'react-toastify';
-import { Firebase } from '~/app/firebase';
-import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import moment from 'moment';
-import DEFAULT_AVATAR from '~/assets/images/default_avatar.jpg';
-import { axios } from '~/apis';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import * as yup from 'yup';
+import { axios } from '~/apis';
+import { API_CODE, API_ROUTES, DATE_FORMAT, EMAIL_REGEX, NAME_REGEX, PHONE_REGEX } from '~/app/constants';
+import { Firebase } from '~/app/firebase';
+import DEFAULT_AVATAR from '~/assets/images/default_avatar.jpg';
+import { CalendarField, FormFieldWrapper, InputField, Loading, RadioField } from '~/components';
 import { selectLoggedUser, updateLoggedUser } from '~/features/Auth/authSlice';
 
 // initial validation rules
@@ -32,6 +31,9 @@ const schema = yup
     dob: yup.string().required('Please select date of birth')
   })
   .required();
+
+const firebase = new Firebase();
+const storage = firebase.getStorage();
 
 const FormUpdate = ({ t, initialValue }) => {
   const {
@@ -61,7 +63,8 @@ const FormUpdate = ({ t, initialValue }) => {
         userId: userInfo.id,
         gender: +data.gender,
         dob: moment(data.dob).format(DATE_FORMAT['YYYY-MM-DD']),
-        imageUrl: imageUrl ? imageUrl : undefined
+        imageUrl: imageUrl ? imageUrl : undefined,
+        phone: data.phoneNumber
       });
       if (+res.code === API_CODE.OK) {
         dispatch(updateLoggedUser({ ...data, imageUrl, dob: moment(data.dob).format(DATE_FORMAT['YYYY-MM-DD']) }));
@@ -74,8 +77,6 @@ const FormUpdate = ({ t, initialValue }) => {
 
   const handleFileChange = async (e) => {
     try {
-      const firebase = new Firebase();
-      const storage = firebase.getStorage();
       const file = e.target.files[0];
       if (prevImage) {
         const storageRef = ref(storage, prevImage);
@@ -90,7 +91,7 @@ const FormUpdate = ({ t, initialValue }) => {
         file.type === 'image/svg' ||
         file.type === 'image/gif'
       ) {
-        const storageRef = ref(storage, `${moment(file.lastModifiedDate).toJSON()}_${file.name}`);
+        const storageRef = ref(storage, `${userInfo.id}_${moment(file.lastModifiedDate).toJSON()}_${file.name}`);
         const uploadTask = uploadBytesResumable(storageRef, file);
 
         uploadTask.on(
@@ -116,7 +117,7 @@ const FormUpdate = ({ t, initialValue }) => {
               setLoading(false);
               setHover(false);
               setImageUrl(downloadURL);
-              setPrevImage(`${moment(file.lastModifiedDate).toJSON()}_${file.name}`);
+              setPrevImage(`${userInfo.id}_${moment(file.lastModifiedDate).toJSON()}_${file.name}`);
             });
           }
         );
@@ -137,6 +138,7 @@ const FormUpdate = ({ t, initialValue }) => {
         bg={`url('${imageUrl ? imageUrl : DEFAULT_AVATAR}') no-repeat center center`}
         bgSize="cover"
         onMouseOver={() => setHover(true)}
+        onError={(e) => (e.backgroundImage = `url('${DEFAULT_AVATAR}')`)}
       >
         {loading && (
           <Loading position="absolute">

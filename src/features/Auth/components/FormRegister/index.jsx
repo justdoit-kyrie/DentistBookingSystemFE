@@ -1,40 +1,29 @@
-/* eslint-disable no-unused-vars */
-import {
-  // Box,
-  Button,
-  Flex,
-  Grid,
-  Text,
-  InputGroup,
-  InputRightElement,
-  RadioGroup,
-  Radio
-} from '@chakra-ui/react';
+import { Button, Flex, Grid, InputGroup, InputRightElement, Radio, RadioGroup, Text } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import React, { useState } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import {
-  API_ROUTES,
-  PWD_REGEX,
-  EMAIL_REGEX,
-  PHONE_REGEX,
-  USER_REGEX,
-  NAME_REGEX,
-  DATE_FORMAT,
   API_CODE,
-  PATH
+  API_ROUTES,
+  DATE_FORMAT,
+  EMAIL_REGEX,
+  NAME_REGEX,
+  PATH,
+  PHONE_REGEX,
+  PWD_REGEX,
+  USER_REGEX
 } from '~/app/constants';
 import { InputField ,CalendarField} from '~/components';
-import { withTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import './FormRegister.scss';
-import { axios } from '~/apis';
 import moment from 'moment';
+import { withTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+import { axios } from '~/apis';
 import { init, loginFailed, registerSuccess } from '../../authSlice';
+import './FormRegister.scss';
 
 // initial validation rules
 const schema = yup
@@ -100,7 +89,7 @@ const FormRegister = ({ t }) => {
   const onSubmit = async (data) => {
     dispatch(init());
     try {
-      const { code, message } = await axios.post(`${API_ROUTES.register}`, {
+      const { code } = await axios.post(`${API_ROUTES.register}`, {
         ...data,
         gender: +data.gender,
         dob: moment(data.dob).format(DATE_FORMAT['yyyy-MM-DD'])

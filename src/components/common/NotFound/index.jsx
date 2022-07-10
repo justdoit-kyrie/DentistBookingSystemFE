@@ -1,7 +1,5 @@
-/* eslint-disable no-unused-vars */
 import { Box, Flex, Image, Text } from '@chakra-ui/react';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import notFoundBG from '~/assets/images/notFound-bg.png';
 import notFoundIcon from '~/assets/images/notFoundIcon.png';
 

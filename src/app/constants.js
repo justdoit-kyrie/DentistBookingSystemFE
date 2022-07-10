@@ -34,12 +34,25 @@ export const PATH = {
   dentist: {
     home: '/dashboard/:id/overview',
     appointment: '/dashboard/:id/appointment',
+<<<<<<< HEAD
     myPatients: '/dashboard/:id/myPatients',
     message: '/dashboard/:id/message',
     blog: '/dashboard/:id/blog',
     profile: '/dashboard/:id/profile',
     setting: '/dashboard/:id/setting'
   },
+=======
+    profile: '/dashboard/:id/profile'
+  },
+  admin: {
+    home: '/dashboard/:id/statistics',
+    user: '/dashboard/:id/users',
+    dentist: '/dashboard/:id/dentists',
+    clinic: '/dashboard/:id/clinics',
+    service: '/dashboard/:id/services',
+    profile: '/dashboard/:id/profile'
+  }
+>>>>>>> 231ca759efe717001b5170669f67e95404744d57
 };
 
 // language
@@ -94,7 +107,8 @@ export const DATE_FORMAT = {
   'yyyy-MM-DD': 'yyyy-MM-DD',
   'DD-MM-YYYY': 'DD-MM-YYYY',
   'YYYY-MM-DD': 'YYYY-MM-DD',
-  'dd/mm/yy': 'dd/mm/yy'
+  'dd/mm/yy': 'dd/mm/yy',
+  'DD/MM/YYYY': 'DD/MM/YYYY'
 };
 
 // api routes
@@ -103,11 +117,16 @@ export const API_ROUTES = {
   register: '/Users/register',
   logout: '/logout',
   refreshToken: '/Users/refresh',
-  'get-clinics': '/clinics',
-  'get-dentists': '/dentists',
+  'get-dentists': '/dentists/user',
   'get-profile': '/Users/getProfile',
   'get-booking-by-dentist-it': '/bookings/dentist/:id',
-  users: '/Users'
+  'get-dentist-profile': '/dentists/:id',
+  'get-available-bookings': '/bookings/available',
+  users: '/Users',
+  dentists: '/dentists',
+  'get-clinics': '/clinics/all',
+  clinics: '/clinics',
+  services: '/services'
 };
 
 // api status code
@@ -197,16 +216,40 @@ export const MONTH = (t) => ({
   11: t('common.month.december')
 });
 
+export const MONTH_VALUE = {
+  0: '1',
+  1: '2',
+  2: '3',
+  3: '4',
+  4: '5',
+  5: '6',
+  6: '7',
+  7: '8',
+  8: '9',
+  9: '10',
+  10: '11',
+  11: '12'
+};
+
+export const STATUS_CODE = {
+  0: 'active',
+  1: 'inActive',
+  2: 'pending',
+  3: 'confirmed',
+  4: 'done',
+  5: 'declined'
+};
+
 export const BOOKING_STATUS = (t) => [
   {
     label: t('dashboard.dentist.appointment.table-footer.pending'),
     value: 'active',
-    color: 'red'
+    color: 'green'
   },
   {
     label: t('dashboard.dentist.appointment.table-footer.pending'),
     value: 'inactive',
-    color: 'black'
+    color: 'red'
   },
   {
     label: t('dashboard.dentist.appointment.table-footer.pending'),

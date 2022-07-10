@@ -1,93 +1,115 @@
 @import '../../../../../../app/styles/variables.scss';
 
 .chakra-modal__content-container {
-  z-index: 2 !important;
+  z-index: 999 !important;
 }
 
-.p-column-filter-element .p-inputtext {
-  transform: translateX(-1rem);
-}
-
-.p-calendar.modal-calendar > .p-inputtext {
-  font-size: 1.2rem !important;
-}
-
-.p-dropdown {
-  background: transparent;
-  padding-left: 1.2rem;
-  transform: translateX(-1.2rem);
-  &-item,
-  &-label {
-    font-size: 1.1rem !important;
+.modal-dataTable {
+  .p-column-filter-element .p-inputtext {
+    transform: translateX(-1rem);
   }
 
-  &-label {
-    padding: 1rem 0 1rem 1.2rem !important;
-  }
-}
-
-.modal-dataTable-dark {
-  & .p-datatable-thead > tr > th .p-sortable-column-icon,
-  & .p-datatable-thead > tr > th .p-column-title {
-    color: white;
+  .p-calendar.modal-calendar > .p-inputtext {
+    font-size: 1.2rem !important;
   }
 
-  & .p-sortable-column.p-highlight {
-    background: $dark-mode-color-650;
-
-    & .p-sortable-column-icon {
-      color: $primary-500;
-    }
-
-    &:focus {
-      box-shadow: none;
-    }
-  }
-
-  & .p-sortable-column:not(.p-highlight):not(.p-sortable-disabled):hover,
-  & .p-sortable-column.p-highlight:not(.p-sortable-disabled):hover {
-    background: $navy-100;
-    & .p-sortable-column-icon {
-      color: $primary-500;
-    }
-  }
-
-  & .p-datatable-table,
-  & .p-datatable-thead > tr > th,
-  & .p-datatable-tbody > tr {
-    background: $dark-mode-color-650;
-  }
-
-  & .p-dropdown-items {
-    background: $dark-mode-color-650 !important;
-    & > * {
-      color: white !important;
-    }
-
-    & .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
-      background: $dark-mode-color-500 !important;
-    }
-  }
-
-  .p-datatable-header,
-  .p-paginator,
   .p-dropdown {
-    background: transparent !important;
-  }
+    background: transparent;
+    padding-left: 1.2rem;
+    transform: translateX(-1.2rem);
+    &-item,
+    &-label {
+      font-size: 1.1rem !important;
+    }
 
-  .p-datatable-header {
-    margin-bottom: 1rem;
-  }
-
-  .p-paginator {
-    & > * {
-      color: white !important;
+    &-label {
+      padding: 1rem 0 1rem 1.2rem !important;
     }
   }
 
-  .p-calendar {
-    .p-inputtext {
-      border-color: white !important;
+  &.modal-dataTable-dark {
+    .p-column-filter-element .p-inputtext {
+      color: white;
+    }
+
+    .p-datatable-emptymessage {
+      color: white;
+    }
+
+    & .p-datatable-thead > tr > th .p-sortable-column-icon,
+    & .p-datatable-thead > tr > th .p-column-title {
+      color: white;
+    }
+
+    & .p-sortable-column.p-highlight {
+      background: $dark-mode-color-650;
+
+      & .p-sortable-column-icon {
+        color: $primary-500;
+      }
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    & .p-sortable-column:not(.p-highlight):not(.p-sortable-disabled):hover,
+    & .p-sortable-column.p-highlight:not(.p-sortable-disabled):hover {
+      background: $navy-100;
+      & .p-sortable-column-icon {
+        color: $primary-500;
+      }
+    }
+
+    & .p-datatable-table,
+    & .p-datatable-thead > tr > th,
+    & .p-datatable-tbody > tr {
+      background: $dark-mode-color-650;
+    }
+
+    & .p-dropdown-items {
+      background: $dark-mode-color-650 !important;
+      & > * {
+        color: white !important;
+      }
+
+      & .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
+        background: $dark-mode-color-500 !important;
+      }
+    }
+
+    .p-datatable-header,
+    .p-paginator,
+    .p-dropdown {
+      background: transparent !important;
+    }
+
+    .p-datatable-header {
+      margin-bottom: 1rem;
+    }
+
+    .p-paginator {
+      & > * {
+        color: white !important;
+      }
+    }
+
+    .p-calendar {
+      .p-inputtext {
+        border-color: white !important;
+      }
+    }
+  }
+}
+
+.modal-dataTable-dropdown-dark {
+  background: $dark-mode-color-650;
+  & .p-dropdown-item {
+    color: white !important;
+
+    &:hover {
+      background: $dark-mode-color-500 !important;
+      color: white !important;
     }
   }
 }

@@ -1,0 +1,27 @@
+@import '../../../../app/styles/variables.scss';
+
+.select-field {
+  transform: none !important;
+  padding-left: revert !important;
+  width: 100%;
+  border-color: $grey-300;
+
+  & > * {
+    font-size: 1.5rem !important;
+  }
+
+  &:not(.p-disabled):hover {
+    border-color: $focus-text-field;
+  }
+
+  &.is-invalid {
+    border-color: $invalid-text-field-color;
+    border-width: 2px;
+  }
+}
+
+.multi-select-field {
+  &-panel * {
+    font-size: 1.5rem;
+  }
+}

@@ -6,41 +6,54 @@
   height: 4rem;
   justify-content: center;
   align-items: center;
+  margin-right: 2rem;
   &:hover {
     border: 1px solid;
   }
-}
 
-.p-dropdown:not(.p-disabled):hover {
-  border: 1px solid;
-}
-
-.date-dropdown-list {
-  background-color: inherit !important;
-  border-radius: 2rem;
-  color: inherit;
-}
-
-.p-dropdown-items-wrapper {
-  background-color: inherit !important;
-  border: 1px solid white;
-  border-radius: 1rem;
-}
-
-.p-dropdown-item {
-  border-radius: 0.5rem !important;
-  color: inherit !important;
-  font-size: 1.5rem !important;
-  &.p-highlight {
-    background-color: var(--chakra-colors-gray-400) !important;
+  & .p-dropdown-label {
+    font-size: 1.5rem !important;
+    color: inherit !important;
+    width: fit-content;
   }
 }
 
-.p-dropdown .p-dropdown-label {
-  font-size: 1.5rem !important;
-  color: inherit !important;
-  width: fit-content;
+.p-dropdown:not(.p-disabled).date-dropdown:hover {
+  border: 1px solid !important;
 }
+
+.p-dropdown.date-dropdown {
+  transform: translateX(0) !important;
+}
+.date-dropdown-list {
+  background-color: inherit !important;
+  border-color: var(--chakra-colors-blue-200) !important;
+  border: 1px solid;
+  box-shadow: 0 0 0 0.2rem #c7d2fe !important;
+  border-radius: 1rem;
+  color: inherit;
+  & .p-dropdown-item {
+    border-radius: 0.5rem !important;
+    color: inherit !important;
+    font-size: 1.5rem !important;
+    &.p-highlight {
+      background-color: var(--chakra-colors-gray-400) !important;
+    }
+  }
+
+  & .p-dropdown-items-wrapper {
+    background-color: inherit !important;
+    border: 1px solid white;
+    border-radius: 1rem;
+  }
+
+  & .p-dropdown-items-wrapper {
+    background-color: inherit !important;
+    border: 1px solid white;
+    border-radius: 1rem;
+  }
+}
+
 .time-select-button {
   background: inherit !important;
 }
@@ -94,7 +107,6 @@
 }
 
 .booking-btn {
-  margin-left: 2rem;
   height: 3.9rem !important;
 }
 
@@ -157,7 +169,7 @@
   & .clinic-accordion-item {
     border: none;
   }
-  & .accordion-button{
+  & .accordion-button {
     padding: 1rem;
   }
   &:hover {
@@ -167,3 +179,15 @@
     transition: all 0.2s;
   }
 }
+
+.override-panel{
+  z-index: 10000;
+}
+
+.doctor-avatar{
+  height:15rem !important;
+  width:15rem !important;
+}
+
+
+
