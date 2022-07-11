@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import classNames from 'classnames/bind';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { withTranslation } from 'react-i18next';
 import * as yup from 'yup';
@@ -34,55 +34,82 @@ import { CalendarField, InputField, Loading, RadioField, SelectField } from '~/c
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import _ from 'lodash';
 import moment from 'moment';
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import { MdPhotoCamera } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { axios } from '~/apis';
 import { Firebase } from '~/app/firebase';
 import styles from '../styles/common.module.scss';
-import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 
 const commonCx = classNames.bind(styles);
-
-// initial validation rules
-const schema = yup
-  .object({
-    gender: yup.string().required('gender is required'),
-    position: yup.number().required('position is required'),
-    clinicID: yup.number().required('clinic is required'),
-    serviceId: yup.array().min(1, 'service is required'),
-    username: yup
-      .string()
-      .required('User name is required')
-      .min(5, 'User name must have at least 5 characters')
-      .max(30, 'User name must have less than 30 characters')
-      .matches(USER_REGEX, 'Please enter a valid user name'),
-    password: yup
-      .string()
-      .required('Password is required')
-      .min(8, 'Password is longer than 8 characters')
-      .matches(
-        PWD_REGEX,
-        'Password is at least one uppercase letter, one lowercase letter, one number and one special character'
-      ),
-    confirmPassword: yup
-      .string()
-      .required('Confirm password is required')
-      .oneOf([yup.ref('password'), null], 'Passwords must match'),
-    email: yup.string().required('Email is required').matches(EMAIL_REGEX, 'Please enter a valid email address'),
-    phone: yup.string().required('Phone number is required').matches(PHONE_REGEX, 'Please enter a valid phone number'),
-    firstName: yup.string().required('First name is required').matches(NAME_REGEX, 'Please enter a valid first name'),
-    lastName: yup.string().required('Last name is required').matches(NAME_REGEX, 'Please enter a valid last name'),
-    dob: yup
-      .date()
-      .max(moment().subtract(1, 'days').toDate(), 'date of birth must be at earlier than now')
-      .required('Please select date of birth')
-  })
-  .required();
 
 const firebase = new Firebase();
 const storage = firebase.getStorage();
 
+const MOCK_DATA = {
+  'yup-validation': {
+    create: {
+      gender: yup.string().required('gender is required'),
+      position: yup.number().required('position is required'),
+      clinicID: yup.number().required('clinic is required'),
+      serviceId: yup.array().min(1, 'service is required'),
+      username: yup
+        .string()
+        .required('User name is required')
+        .min(5, 'User name must have at least 5 characters')
+        .max(30, 'User name must have less than 30 characters')
+        .matches(USER_REGEX, 'Please enter a valid user name'),
+      password: yup
+        .string()
+        .required('Password is required')
+        .min(8, 'Password is longer than 8 characters')
+        .matches(
+          PWD_REGEX,
+          'Password is at least one uppercase letter, one lowercase letter, one number and one special character'
+        ),
+      confirmPassword: yup
+        .string()
+        .required('Confirm password is required')
+        .oneOf([yup.ref('password'), null], 'Passwords must match'),
+      email: yup.string().required('Email is required').matches(EMAIL_REGEX, 'Please enter a valid email address'),
+      phone: yup
+        .string()
+        .required('Phone number is required')
+        .matches(PHONE_REGEX, 'Please enter a valid phone number'),
+      firstName: yup.string().required('First name is required').matches(NAME_REGEX, 'Please enter a valid first name'),
+      lastName: yup.string().required('Last name is required').matches(NAME_REGEX, 'Please enter a valid last name'),
+      dob: yup
+        .date()
+        .max(moment().subtract(1, 'days').toDate(), 'date of birth must be at earlier than now')
+        .required('Please select date of birth')
+    },
+    edit: {
+      gender: yup.string().required('gender is required'),
+      position: yup.number().required('position is required'),
+      clinicID: yup.number().required('clinic is required'),
+      serviceId: yup.array().min(1, 'service is required'),
+      email: yup.string().required('Email is required').matches(EMAIL_REGEX, 'Please enter a valid email address'),
+      phone: yup
+        .string()
+        .required('Phone number is required')
+        .matches(PHONE_REGEX, 'Please enter a valid phone number'),
+      firstName: yup.string().required('First name is required').matches(NAME_REGEX, 'Please enter a valid first name'),
+      lastName: yup.string().required('Last name is required').matches(NAME_REGEX, 'Please enter a valid last name'),
+      dob: yup
+        .date()
+        .max(moment().subtract(1, 'days').toDate(), 'date of birth must be at earlier than now')
+        .required('Please select date of birth')
+    }
+  }
+};
+
 const FormDentist = ({ t, defaultValues, BtnRef, loading, setLoading, callback, isEdit }) => {
+  const schema = useMemo(() => {
+    return defaultValues.username === '' && defaultValues.password === '' && defaultValues.confirmPassword === ''
+      ? yup.object(MOCK_DATA['yup-validation'].create).required()
+      : yup.object(MOCK_DATA['yup-validation'].edit).required();
+  }, []);
+
   const [hover, setHover] = useState(false);
   const [progress, setProgress] = useState(0);
   const [prevImage, setPrevImage] = useState('');
@@ -110,7 +137,7 @@ const FormDentist = ({ t, defaultValues, BtnRef, loading, setLoading, callback, 
     try {
       const [{ code: clinicOptCode, content: clinicOptContent }, { code: serviceOptCode, content: serviceOptContent }] =
         await Promise.all([
-          axios.get(API_ROUTES.clinics, {
+          axios.get(`${API_ROUTES.clinics}/all`, {
             params: { _all: true, _by: 'id', _order: '-1' }
           }),
           axios.get(API_ROUTES.services, {

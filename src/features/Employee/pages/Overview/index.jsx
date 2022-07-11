@@ -157,7 +157,6 @@ const OverViewPage = ({ t }) => {
   useEffect(() => {
     const day = date.getDate();
     const week = date.getDay();
-    console.log({ day, week });
 
     let prevDay = week === 0 ? day : day - week;
     let nextDay = week === 6 ? day : day + (6 - week);

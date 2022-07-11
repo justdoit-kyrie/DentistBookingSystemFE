@@ -34,7 +34,7 @@ import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, DATE_FORMAT, STATUS_CODE } from '~/app/constants';
 import styles from '~/features/Admin/styles/common.module.scss';
 import { DataTableWrapper } from '../../styles';
-import { CustomModal } from '../Components';
+import { CustomModal } from '../components';
 import { DetailModal } from './components';
 import { DropdownWrapper } from './style';
 
@@ -317,7 +317,9 @@ const OverView = ({ t }) => {
         />
       )}
 
-      {isOpen && isSelected.current && <DetailModal isOpen={isOpen} onClose={onClose} data={selectedAppointment} />}
+      {isOpen && isSelected.current && (
+        <DetailModal isOpen={isOpen} onClose={onClose} data={{ ...selectedAppointment, date: moment('7/7/2022') }} />
+      )}
 
       <Heading mb="2rem" color="primary.500" textTransform="uppercase" letterSpacing="0.25rem">
         Appointment management

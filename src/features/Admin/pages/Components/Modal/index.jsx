@@ -13,7 +13,12 @@ import {
 import { motion } from 'framer-motion';
 import React, { useRef, useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { FormAppointment, FormClinic, FormDentist, FormDiscount, FormService, FormUser } from '..';
+import FormAppointment from '../FormAppointment';
+import FormClinic from '../FormClinic';
+import FormDentist from '../FormDentist';
+import FormDiscount from '../FormDiscount';
+import FormService from '../FormService';
+import FormUser from '../FormUser';
 
 const MOCK_DATA = {
   clinic: {

@@ -35,7 +35,7 @@ import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, DATE_FORMAT, STATUS_CODE } from '~/app/constants';
 import common_styles from '~/features/Admin/styles/common.module.scss';
 import { DataTableWrapper } from '../../styles';
-import { CustomModal } from '../Components';
+import { CustomModal } from '../components';
 import specific_styles from './Services.module.scss';
 import { TabViewWrapper } from './style';
 
@@ -74,7 +74,7 @@ const MOCK_DATA = {
 const Services = ({ t }) => {
   const { statusOpt, contentOpt, initialFilter } = MOCK_DATA;
 
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
   const [paginationInfo, setPaginationInfo] = useState();
   const [editData, setEditData] = useState();
   const [dataTableFirst, setDataTableFirst] = useState(0);

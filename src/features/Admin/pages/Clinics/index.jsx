@@ -31,7 +31,7 @@ import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, STATUS_CODE } from '~/app/constants';
 import styles from '~/features/Admin/styles/common.module.scss';
 import { DataTableWrapper } from '../../styles';
-import { CustomModal } from '../Components';
+import { CustomModal } from '../components';
 
 const cx = classNames.bind(styles);
 

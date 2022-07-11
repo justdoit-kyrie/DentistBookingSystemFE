@@ -35,7 +35,7 @@ import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, DATE_FORMAT, STATUS_CODE, USER_POSITION, USER_SEXUAL } from '~/app/constants';
 import styles from '~/features/Admin/styles/common.module.scss';
 import { DataTableWrapper } from '../../styles';
-import { CustomModal } from '../Components';
+import { CustomModal } from '../components';
 const cx = classNames.bind(styles);
 
 const MOCK_DATA = {

@@ -3,17 +3,21 @@ import {
   AppointmentPage,
   BlogPage,
   ClinicPage,
+  ClinicsPage,
   DentistPage,
+  DentistsPage,
   HomePage,
   LoginPage,
   MessagePage,
   MyPatientsPage,
+  Overview,
   OverViewPage,
   ProfilePage,
   RegisterPage,
-  SettingPage
+  ServicesPage,
+  SettingPage,
+  UsersPage
 } from '~/features';
-import { ClinicsPage, DentistsPage, Overview, ServicesPage, UsersPage } from '~/features/Admin/pages';
 import { PATH } from './constants';
 
 //#region routes
@@ -45,6 +49,7 @@ export const ROUTES = [
   {
     path: PATH.customer.dentist,
     component: DentistPage,
+    isPublic: true,
     layout: null
   },
   {
@@ -53,7 +58,7 @@ export const ROUTES = [
     isPublic: true,
     layout: null
   },
-  
+
   { path: PATH.dentist.home, component: OverViewPage, layout: DashboardLayout, role: 1 },
   { path: PATH.dentist.appointment, component: AppointmentPage, layout: DashboardLayout, role: 1 },
   { path: PATH.dentist.blog, component: BlogPage, layout: DashboardLayout, role: 1, isPublic: true },

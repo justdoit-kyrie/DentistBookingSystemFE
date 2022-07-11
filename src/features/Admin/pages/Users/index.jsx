@@ -1,11 +1,11 @@
 import {
+  Avatar,
   Badge,
   Box,
   Button,
   Circle,
   Flex,
   Heading,
-  Image,
   Input,
   InputGroup,
   InputLeftElement,
@@ -35,7 +35,7 @@ import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, DATE_FORMAT, STATUS_CODE, USER_SEXUAL } from '~/app/constants';
 import styles from '~/features/Admin/styles/common.module.scss';
 import { DataTableWrapper } from '../../styles';
-import { CustomModal } from '../Components';
+import { CustomModal } from '../components';
 
 const cx = classNames.bind(styles);
 
@@ -149,18 +149,11 @@ const Users = ({ t }) => {
     );
   };
 
-  const patientNameTemplate = ({ firstName, lastName, imageUrl }) => {
+  const userNameTemplate = ({ firstName, lastName, imageUrl }) => {
     return (
       <Flex gap="1rem" align="center">
         <Circle size="3rem" overflow="hidden">
-          <Image
-            src={
-              imageUrl
-                ? imageUrl
-                : 'https://images.unsplash.com/photo-1654552643262-192b454c5c62?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60'
-            }
-            alt="avatar"
-          />
+          <Avatar src={imageUrl} name={`${firstName} ${lastName}`} alt="avatar" />
         </Circle>
         <Text fontWeight="500" color={colorMode === 'light' ? 'grey.300' : 'white'} fontSize="1.4rem">
           {`${lastName} ${firstName}`}
@@ -204,7 +197,7 @@ const Users = ({ t }) => {
           onClick={(e) => {
             e.stopPropagation();
             onOpen();
-            const { id: userId, email, firstName, lastName, phone, dob, gender } = rowData;
+            const { id: userId, email, firstName, lastName, phone, dob, gender, imageUrl } = rowData;
             setEditCustomer({
               userId,
               email,
@@ -212,7 +205,8 @@ const Users = ({ t }) => {
               lastName,
               phone,
               dob,
-              gender
+              gender,
+              imageUrl
             });
           }}
         >
@@ -387,7 +381,7 @@ const Users = ({ t }) => {
           >
             <Column
               header={t('dashboard.dentist.header.table-header.name')}
-              body={patientNameTemplate}
+              body={userNameTemplate}
               sortField="firstName"
               filterField="lastName"
               sortable
