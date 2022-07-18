@@ -24,7 +24,7 @@ const schema = yup
   .required();
 
 // eslint-disable-next-line no-unused-vars
-const FormService = ({ t, defaultValues, BtnRef, callback, isEdit }) => {
+const FormService = ({ t, onClose, defaultValues, BtnRef, callback, isEdit }) => {
   const {
     control,
     handleSubmit,
@@ -120,6 +120,7 @@ const FormService = ({ t, defaultValues, BtnRef, callback, isEdit }) => {
         if (+code === API_CODE.OK) {
           toast.success(message);
           if (typeof callback === 'function') callback();
+          onClose();
         }
       }
     } catch (error) {

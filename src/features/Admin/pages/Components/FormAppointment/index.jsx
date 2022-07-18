@@ -25,7 +25,7 @@ const schema = yup
   })
   .required();
 
-const FormAppointment = ({ t, defaultValues, BtnRef, callback, isEdit }) => {
+const FormAppointment = ({ t, onClose, defaultValues, BtnRef, callback, isEdit }) => {
   const {
     control,
     handleSubmit,
@@ -48,6 +48,7 @@ const FormAppointment = ({ t, defaultValues, BtnRef, callback, isEdit }) => {
         if (+code === API_CODE.OK) {
           toast.success(message);
           if (typeof callback === 'function') callback();
+          onClose();
         }
       }
     } catch (error) {

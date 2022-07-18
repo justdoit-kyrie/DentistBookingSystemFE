@@ -366,7 +366,7 @@ const OverView = ({ t }) => {
             <Column
               field="userId"
               header="User"
-              body={(rowData) => bodyDataTableTemplate(rowData.userId)}
+              body={(rowData) => bodyDataTableTemplate(`${rowData.user.firstName} ${rowData.user.lastName}`)}
               sortable
               filter
               filterPlaceholder="Search by user"
