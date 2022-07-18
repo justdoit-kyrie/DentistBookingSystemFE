@@ -29,7 +29,7 @@ const ProfilePage = () => {
     : defaultValues;
   return (
     <>
-      <Heading color="primary.500" textTransform="capitalize">
+      <Heading color="primary.500" textTransform="capitalize" letterSpacing="0.25rem">
         Profile
       </Heading>
 

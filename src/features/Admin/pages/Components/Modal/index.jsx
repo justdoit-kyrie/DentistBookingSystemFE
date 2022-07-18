@@ -107,6 +107,7 @@ const CustomModal = ({ label, data, isOpen, onClose, callback, minW = '40vw', mi
             isEdit={data ? true : false}
             loading={loading}
             setLoading={setLoading}
+            onClose={onClose}
           />
         );
       case discount.value:
@@ -118,6 +119,7 @@ const CustomModal = ({ label, data, isOpen, onClose, callback, minW = '40vw', mi
             isEdit={data ? true : false}
             loading={loading}
             setLoading={setLoading}
+            onClose={onClose}
           />
         );
       case service.value:
@@ -129,6 +131,7 @@ const CustomModal = ({ label, data, isOpen, onClose, callback, minW = '40vw', mi
             isEdit={data ? true : false}
             loading={loading}
             setLoading={setLoading}
+            onClose={onClose}
           />
         );
       case clinic.value:
@@ -140,6 +143,7 @@ const CustomModal = ({ label, data, isOpen, onClose, callback, minW = '40vw', mi
             isEdit={data ? true : false}
             loading={loading}
             setLoading={setLoading}
+            onClose={onClose}
           />
         );
       case user.value:
@@ -150,6 +154,7 @@ const CustomModal = ({ label, data, isOpen, onClose, callback, minW = '40vw', mi
             setLoading={setLoading}
             defaultValues={data ? data : user.defaultValues}
             callback={callback}
+            onClose={onClose}
           />
         );
       case dentist.value:
@@ -161,6 +166,7 @@ const CustomModal = ({ label, data, isOpen, onClose, callback, minW = '40vw', mi
             setLoading={setLoading}
             callback={callback}
             isEdit={data ? true : false}
+            onClose={onClose}
           />
         );
     }

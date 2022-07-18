@@ -44,7 +44,10 @@ const specific_cx = classNames.bind(specific_styles);
 
 const MOCK_DATA = {
   statusOpt: [0, 1],
-  contentOpt: ['services', 'discounts'],
+  contentOpt: [
+    { route: 'services', callback: (value) => ({ serviceId: value }) },
+    { route: 'discounts', callback: (value) => ({ discountId: value }) }
+  ],
   initialFilter: {
     common: {
       global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -85,7 +88,7 @@ const Services = ({ t }) => {
   const [sortField, setSortField] = useState('');
   const [sortOrder, setSortOrder] = useState(1);
   const [globalFilterValue, setGlobalFilterValue] = useState('');
-  const [filters, setFilters] = useState({ ...initialFilter.common, ...initialFilter[contentOpt[activeIndex]] });
+  const [filters, setFilters] = useState({ ...initialFilter.common, ...initialFilter[contentOpt[activeIndex].route] });
 
   const { colorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -101,7 +104,7 @@ const Services = ({ t }) => {
 
   const fetchData = async () => {
     try {
-      const { code, content, pagination } = await axios.get(API_ROUTES[contentOpt[activeIndex]], {
+      const { code, content, pagination } = await axios.get(API_ROUTES[contentOpt[activeIndex].route], {
         params: { pageNumber: dataTablePage + 1 }
       });
       if (+code === API_CODE.OK) {
@@ -119,14 +122,15 @@ const Services = ({ t }) => {
   }, [dataTablePage, activeIndex]);
 
   const initFilter = () => {
-    setFilters({ ...initialFilter.common, ...initialFilter[contentOpt[activeIndex]] });
+    setFilters({ ...initialFilter.common, ...initialFilter[contentOpt[activeIndex].route] });
     setGlobalFilterValue('');
   };
 
   const handleDeleteRow = async (id) => {
     try {
-      const { code, message } = await axios.delete(API_ROUTES.services, {
-        params: { serviceId: id }
+      const { route, callback } = contentOpt[activeIndex];
+      const { code, message } = await axios.delete(API_ROUTES[route], {
+        params: callback(id)
       });
       if (+code === API_CODE.OK) {
         toast.success(message);
@@ -334,7 +338,7 @@ const Services = ({ t }) => {
     <>
       {isOpen && (
         <CustomModal
-          label={contentOpt[activeIndex]}
+          label={contentOpt[activeIndex].route}
           isOpen={isOpen}
           onClose={onClose}
           data={editData}
@@ -351,7 +355,7 @@ const Services = ({ t }) => {
           activeIndex={activeIndex}
           onTabChange={(e) => {
             setActiveIndex(e.index);
-            setFilters({ ...initialFilter.common, ...initialFilter[contentOpt[e.index]] });
+            setFilters({ ...initialFilter.common, ...initialFilter[contentOpt[e.index].route] });
           }}
         >
           <TabPanel header="services" className={specific_cx('services-tab-panel')}>

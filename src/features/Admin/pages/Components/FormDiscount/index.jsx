@@ -28,7 +28,7 @@ const schema = yup
   })
   .required();
 
-const FormDiscount = ({ t, defaultValues, BtnRef, callback, isEdit }) => {
+const FormDiscount = ({ t, onClose, defaultValues, BtnRef, callback, isEdit }) => {
   const {
     control,
     handleSubmit,
@@ -63,6 +63,7 @@ const FormDiscount = ({ t, defaultValues, BtnRef, callback, isEdit }) => {
         if (+code === API_CODE.OK) {
           toast.success(message);
           if (typeof callback === 'function') callback();
+          onClose();
         }
       }
     } catch (error) {

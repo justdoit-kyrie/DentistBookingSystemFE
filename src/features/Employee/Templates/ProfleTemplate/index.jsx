@@ -12,11 +12,8 @@ const ProfileTemplate = ({ gap = '1rem', titleColor, flex, icon, user }, ref) =>
   return (
     <Flex ref={ref} gap={gap} flex={flex} align="center">
       <Avatar size="lg" name={`${lastName} ${firstName}`} src={imageUrl} />
-      {/* <Circle size="4rem" overflow="hidden">
-        <Image h="100%" w="100%" src={imageUrl ? imageUrl : DEFAULT_AVATAR} alt="avatar" objectFit="cover" />
-      </Circle> */}
       <Box>
-        <Heading fontSize="1.5rem" color={titleColor}>{`${lastName} ${firstName}`}</Heading>
+        <Heading fontSize="1.5rem" color={titleColor}>{`${firstName} ${lastName}`}</Heading>
         <Text fontSize="1.2rem" color="grey.300" mt="0.5rem">
           {email}
         </Text>

@@ -29,7 +29,7 @@ import {
   USER_REGEX
 } from '~/app/constants';
 import DEFAULT_AVATAR from '~/assets/images/default_avatar.jpg';
-import { CalendarField, InputField, Loading, RadioField, SelectField } from '~/components';
+import { CalendarField, InputField, Loading, RadioField, SelectField, TextareaField } from '~/components';
 
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import _ from 'lodash';
@@ -103,7 +103,7 @@ const MOCK_DATA = {
   }
 };
 
-const FormDentist = ({ t, defaultValues, BtnRef, loading, setLoading, callback, isEdit }) => {
+const FormDentist = ({ t, onClose, defaultValues, BtnRef, loading, setLoading, callback, isEdit }) => {
   const schema = useMemo(() => {
     return defaultValues.username === '' && defaultValues.password === '' && defaultValues.confirmPassword === ''
       ? yup.object(MOCK_DATA['yup-validation'].create).required()
@@ -192,6 +192,7 @@ const FormDentist = ({ t, defaultValues, BtnRef, loading, setLoading, callback, 
         if (+code === API_CODE.OK) {
           toast.success(message);
           if (typeof callback === 'function') callback();
+          onClose();
         }
       }
     } catch (error) {
@@ -466,6 +467,21 @@ const FormDentist = ({ t, defaultValues, BtnRef, loading, setLoading, callback, 
             panelClassName={commonCx('user-edit-calendar-panel')}
             inputClassName={commonCx('user-edit-calendar-input')}
             placeholder={t('auth.register.dobPlaceholder')}
+          />
+        </Flex>
+
+        <Flex direction="column" gap="1rem">
+          <Heading fontSize="1.3rem" textTransform="capitalize">
+            description
+          </Heading>
+          <TextareaField
+            name="description"
+            errors={errors}
+            control={control}
+            py="1rem"
+            fontSize="1.5rem"
+            borderColor="grey.300"
+            _hover={{}}
           />
         </Flex>
 
