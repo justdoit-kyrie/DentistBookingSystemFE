@@ -55,7 +55,9 @@ const CalendarField = (props) => {
               <Calendar
                 {...field}
                 onFocus={() => setIsFocus(!isFocus)}
-                onBlur={() => setIsFocus(false)}
+                onBlur={() => {
+                  setIsFocus(false);
+                }}
                 id={id}
                 placeholder={placeholder}
                 h="3.5rem"

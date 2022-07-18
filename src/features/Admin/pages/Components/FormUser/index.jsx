@@ -35,7 +35,7 @@ const schema = yup
 const firebase = new Firebase();
 const storage = firebase.getStorage();
 
-const FormUser = ({ t, BtnRef, defaultValues, callback, loading, setLoading }) => {
+const FormUser = ({ t, onClose, BtnRef, defaultValues, callback, loading, setLoading }) => {
   const [hover, setHover] = useState(false);
   const [progress, setProgress] = useState(0);
   const [prevImage, setPrevImage] = useState('');
@@ -62,7 +62,8 @@ const FormUser = ({ t, BtnRef, defaultValues, callback, loading, setLoading }) =
       });
       if (+code === API_CODE.OK) {
         toast.success(message);
-        callback();
+        if (typeof callback === 'function') callback();
+        onClose();
       }
     } catch (error) {
       toast.error(error.message);

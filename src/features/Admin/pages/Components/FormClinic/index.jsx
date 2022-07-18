@@ -61,11 +61,11 @@ const storage = firebase.getStorage();
 const NOW = moment().toISOString();
 
 // eslint-disable-next-line no-unused-vars
-const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit, callback }) => {
+const FormClinic = ({ t, onClose, defaultValues, BtnRef, loading, setLoading, isEdit, callback }) => {
   const { btnEffect } = effect;
   const userInfo = useSelector(selectLoggedUser);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose: OnCloseAlert } = useDisclosure();
 
   const itemId = useRef();
   const totalFileUrls = useRef();
@@ -254,8 +254,9 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit, cal
 
         if (+code === API_CODE.OK) {
           totalFileUrls.current = [];
-          if (typeof callback === 'function') callback();
           toast.success('update successfully');
+          if (typeof callback === 'function') callback();
+          onClose();
         }
       }
     } catch (error) {
@@ -267,7 +268,7 @@ const FormClinic = ({ t, defaultValues, BtnRef, loading, setLoading, isEdit, cal
     <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%', height: 'auto' }}>
       {isOpen && (
         <AlertDialog
-          onClose={onClose}
+          onClose={OnCloseAlert}
           isOpen={isOpen}
           headerContent="Delete Image"
           bodyContent="Are you sure? You can't undo this action afterwards."
