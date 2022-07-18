@@ -67,7 +67,6 @@ const DentistPage = ({ t }) => {
     const list = [...dropdownList];
     list[index][name] = value;
     setDropDownList(list);
-
   };
 
   const onDateChange = (e) => {
@@ -79,11 +78,9 @@ const DentistPage = ({ t }) => {
     const list = [...dropdownList];
     list[index][name] = value;
     setDropDownList(list);
-
   };
 
   const [dropdownList, setDropDownList] = useState([{ keyTimes: '', service: '' }]);
-
 
   // handle click event of the Remove button
   const handleRemoveClick = (index) => {
@@ -110,9 +107,8 @@ const DentistPage = ({ t }) => {
     const data = await axios.get(API_ROUTES['get-dentist-profile'].replace(':id', dentistID.id));
     setProfile({ ...data.dentistDTO });
     setServicesList(data.dentistDTO.services);
-    console.log(data.dentistDTO.services);
+
     setClinicProfile({ ...data.clinicDTO });
-    console.log(data.clinicDTO);
   };
 
   const revertDate = (date) => {
@@ -134,17 +130,14 @@ const DentistPage = ({ t }) => {
     setTimeSelect(timeList);
   };
 
-  const {
-    control,
-    handleSubmit,
-  } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues,
     resolver: yupResolver(schema)
   });
 
   const onSubmit = async (data) => {
     dispatch(init());
-    console.log(dropdownList);
+
     const timeSelect = dropdownList.map(function (a) {
       return SCHEDULE_TIMER.indexOf(a.keyTimes);
     });
@@ -152,10 +145,12 @@ const DentistPage = ({ t }) => {
       return a.service.id;
     });
 
-    const totalPrice= dropdownList.map(function (a) {
-      return a.service.price;
-    }).reduce((partialSum, a) => partialSum + a, 0);
-    console.log(serviceSelect);
+    const totalPrice = dropdownList
+      .map(function (a) {
+        return a.service.price;
+      })
+      .reduce((partialSum, a) => partialSum + a, 0);
+
     try {
       const { code, message } = await axios.post(`${API_ROUTES['bookings']}`, {
         ...data,
@@ -169,15 +164,12 @@ const DentistPage = ({ t }) => {
       });
       if (+code === API_CODE.OK) {
         toast.success(message);
-        // window.location.reload(false);
-        console.log(code);
+        window.location.reload(false);
       } else {
         toast.error(message);
-        console.log(code);
       }
     } catch (error) {
       toast.error(error);
-      console.log(error);
     }
   };
 
