@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable react/jsx-key */
 import {
   Accordion,
   AccordionButton,
@@ -32,9 +31,9 @@ import { MdCheckCircle } from 'react-icons/md';
 import styles from './Dentist.module.scss';
 import classNames from 'classnames/bind';
 import { useRef } from 'react';
-import { Footer, SelectField } from '~/components';
+import { Footer } from '~/components';
 import { API_CODE, API_ROUTES, SCHEDULE_TIMER } from '~/app/constants';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { axios } from '~/apis';
 import moment from 'moment';
 import { Controller, useForm } from 'react-hook-form';
@@ -42,45 +41,61 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { init, selectLoggedUser } from '../Auth/authSlice';
 import * as yup from 'yup';
-import { MultiSelect } from 'primereact/multiselect';
 import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
 const DentistPage = ({ t }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const userInfo = useSelector(selectLoggedUser);
   const [selectedDate, setSelectedDate] = useState(null);
   const dentistID = useParams();
   const ref = useRef();
   const { colorMode } = useColorMode();
-  const [selectedTime, setSelectedTime] = useState(null);
   const [profile, setProfile] = useState();
   const [clinicProfile, setClinicProfile] = useState();
   const [dayList, setDayList] = useState([]);
   const [timeSelect, setTimeSelect] = useState();
   const [servicesList, setServicesList] = useState();
-  const [selectedService, setSelectedService] = useState();
 
   const schema = yup.object({}).required();
 
-  console.log(userInfo);
-
   const datetest = new Date();
 
-  const onTimeChange = (e) => {
-    setSelectedTime(e.value);
+  const onTimeChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...dropdownList];
+    list[index][name] = value;
+    setDropDownList(list);
+
   };
 
   const onDateChange = (e) => {
     setSelectedDate(e.value);
   };
 
-  const onServiceChange = (e) => {
-    setSelectedService(e.value);
+  const onServiceChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...dropdownList];
+    list[index][name] = value;
+    setDropDownList(list);
+
   };
 
+  const [dropdownList, setDropDownList] = useState([{ keyTimes: '', service: '' }]);
+
+
+  // handle click event of the Remove button
+  const handleRemoveClick = (index) => {
+    const list = [...dropdownList];
+    list.splice(index, 1);
+    setDropDownList(list);
+  };
+
+  // handle click event of the Add button
+  const handleAddClick = () => {
+    setDropDownList([...dropdownList, { keyTimes: '', service: '' }]);
+  };
   const defaultValues = {
     userId: '',
     dentistIds: [],
@@ -95,7 +110,7 @@ const DentistPage = ({ t }) => {
     const data = await axios.get(API_ROUTES['get-dentist-profile'].replace(':id', dentistID.id));
     setProfile({ ...data.dentistDTO });
     setServicesList(data.dentistDTO.services);
-    console.log(data.dentistDTO);
+    console.log(data.dentistDTO.services);
     setClinicProfile({ ...data.clinicDTO });
     console.log(data.clinicDTO);
   };
@@ -122,7 +137,6 @@ const DentistPage = ({ t }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors }
   } = useForm({
     defaultValues,
     resolver: yupResolver(schema)
@@ -130,24 +144,32 @@ const DentistPage = ({ t }) => {
 
   const onSubmit = async (data) => {
     dispatch(init());
-    console.log(selectedService);
-    const serviceIdList= selectedService.map((item) => item.id);
-    console.log(serviceIdList);
-    const totalPrice = selectedService.map((item) => item.price).reduce((a,b) => a + b, 0);
-    console.log(totalPrice);
+    console.log(dropdownList);
+    const timeSelect = dropdownList.map(function (a) {
+      return SCHEDULE_TIMER.indexOf(a.keyTimes);
+    });
+    const serviceSelect = dropdownList.map(function (a) {
+      return a.service.id;
+    });
+
+    const totalPrice= dropdownList.map(function (a) {
+      return a.service.price;
+    }).reduce((partialSum, a) => partialSum + a, 0);
+    console.log(serviceSelect);
     try {
-      const { code,message } = await axios.post(`${API_ROUTES['bookings']}`, {
+      const { code, message } = await axios.post(`${API_ROUTES['bookings']}`, {
         ...data,
         dentistIds: [profile.dentistID],
         userId: userInfo.id,
         date: revertDate(selectedDate),
         note: data.note,
-        keyTimes: [SCHEDULE_TIMER.indexOf(selectedTime)],
-        serviceIds: serviceIdList,
+        keyTimes: timeSelect,
+        serviceIds: serviceSelect,
         total: totalPrice
       });
       if (+code === API_CODE.OK) {
         toast.success(message);
+        // window.location.reload(false);
         console.log(code);
       } else {
         toast.error(message);
@@ -244,21 +266,23 @@ const DentistPage = ({ t }) => {
       </div>
       <Box className="container doctor-intro" w="100%" h="100%" mt="2rem">
         <Box size="3rem">
-          <Breadcrumb spacing="0.8rem" separator={<BsChevronRight color="gray.500" />} fontSize="1.5rem">
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">
-                <BsHouseFill />
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="#">Docs</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink href="#" isCurrentPage>
-                Breadcrumb
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </Breadcrumb>
+          {profile && clinicProfile && (
+            <Breadcrumb spacing="0.8rem" separator={<BsChevronRight color="gray.500" />} fontSize="1.5rem">
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">
+                  <BsHouseFill />
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#">{clinicProfile.name}</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem isCurrentPage>
+                <BreadcrumbLink href="#" isCurrentPage>
+                  {profile.lastName + ' ' + profile.firstName}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            </Breadcrumb>
+          )}
         </Box>
 
         {profile && (
@@ -297,56 +321,78 @@ const DentistPage = ({ t }) => {
                     );
                   }}
                 />
-                <Controller
-                  name="keyTimes"
-                  control={control}
-                  render={({ field }) => (
-                    <Dropdown
-                      {...field}
-                      className="date-dropdown"
-                      panelClassName="date-dropdown-list"
-                      placeholder={t('home.dentist.booking.timepickerPlaceholder')}
-                      value={selectedTime}
-                      options={timeSelect}
-                      onChange={onTimeChange}
-                    />
-                  )}
-                />
-                <Controller
-                  name="service"
-                  control={control}
-                  render={({ field }) => (
-                    <MultiSelect
-                      {...field}
-                      className="date-dropdown"
-                      panelClassName="date-dropdown-list"
-                      placeholder={t('home.dentist.booking.servicepickerPlaceholder')}
-                      value={selectedService}
-                      options={servicesList}
-                      optionLabel="serviceName"
-                      onChange={onServiceChange}
-                    />
-                  )}
-                />
-                <Button colorScheme="blue" className="booking-btn" size="lg" type="submit">
-                  {t('home.dentist.booking.bookingNow')}
-                </Button>
+
+                <Box width="100%">
+                  {dropdownList.map((x, i) => {
+                    return (
+                      <Flex marginBottom="1rem">
+                        <Controller
+                          name="keyTimes"
+                          control={control}
+                          render={({ field }) => (
+                            <Dropdown
+                              {...field}
+                              className="date-dropdown"
+                              panelClassName="date-dropdown-list"
+                              placeholder={t('home.dentist.booking.timepickerPlaceholder')}
+                              value={x.keyTimes}
+                              options={timeSelect}
+                              onChange={(e) => onTimeChange(e, i)}
+                            />
+                          )}
+                        />
+                        <Controller
+                          name="service"
+                          control={control}
+                          render={({ field }) => (
+                            <Dropdown
+                              {...field}
+                              className="date-dropdown"
+                              panelClassName="date-dropdown-list"
+                              placeholder={t('home.dentist.booking.servicepickerPlaceholder')}
+                              value={x.service}
+                              options={servicesList}
+                              optionLabel="serviceName"
+                              onChange={(e) => onServiceChange(e, i)}
+                            />
+                          )}
+                        />
+                        {dropdownList.length !== 1 && (
+                          <Button
+                            colorScheme="blue"
+                            className="remove-btn"
+                            size="lg"
+                            onClick={() => handleRemoveClick(i)}
+                          >
+                            {t('home.dentist.booking.Remove')}
+                          </Button>
+                        )}
+                        {servicesList && dropdownList.length - 1 === i && dropdownList.length < servicesList.length && (
+                          <Button colorScheme="blue" className="add-btn" size="lg" onClick={handleAddClick}>
+                            {t('home.dentist.booking.addMore')}
+                          </Button>
+                        )}
+                      </Flex>
+                    );
+                  })}
+                </Box>
               </Flex>
-              <Box>
-                <Controller
-                  name="note"
-                  control={control}
-                  render={({ field }) => (
-                    <Textarea
-                      {...field}
-                      className="note-textarea"
-                      placeholder={t('home.dentist.booking.notePlaceholder')}
-                      size="sm"
-                      resize="none"
-                    />
-                  )}
-                />
-              </Box>
+              <Controller
+                name="note"
+                control={control}
+                render={({ field }) => (
+                  <Textarea
+                    {...field}
+                    className="note-textarea"
+                    placeholder={t('home.dentist.booking.notePlaceholder')}
+                    size="sm"
+                    resize="none"
+                  />
+                )}
+              />
+              <Button colorScheme="blue" className="booking-btn" size="lg" type="submit">
+                {t('home.dentist.booking.bookingNow')}
+              </Button>
             </form>
           </Box>
 

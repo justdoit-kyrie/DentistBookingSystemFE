@@ -111,12 +111,28 @@
   }
 }
 
-.booking-btn {
+.remove-btn {
   height: 3.9rem !important;
+  width: 8rem !important;
+  box-shadow: none !important;
+  vertical-align: top !important;
+  margin-right: 1rem;
+}
+.add-btn {
+  height: 3.9rem !important;
+  width: 8rem !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  vertical-align: top !important;
+}
+.booking-btn{
+  height: 3.9rem !important;
+  width: 100% !important;
+  margin-top: 2rem;
 }
 
 .clinic-info-wrapper {
-  margin-left: 10rem;
+  margin-left: 2rem;
   border-left: 1px solid;
   padding-left: 2rem;
   border-color: var(--chakra-colors-grey-300);

@@ -102,6 +102,9 @@ const DefaultLayout = ({ t, children }) => {
                 borderColor: 'primary.500',
                 color: 'primary.500'
               }}
+              onClick={() => {
+                window.scrollTo(0, 1900);
+              }}
             >
               {t('home.header.banners.action')}
             </Button>

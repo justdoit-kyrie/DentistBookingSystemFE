@@ -1,5 +1,4 @@
-import { Box, Button, Flex, Link, Text, useColorMode } from '@chakra-ui/react';
-import { motion } from 'framer-motion';
+import { Box, Flex, Link, Text, useColorMode } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { withTranslation } from 'react-i18next';
@@ -16,7 +15,7 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
-const headerOnlyLayout = ({t}) => {
+const headerOnlyLayout = () => {
   const navigate = useNavigate();
   const { colorMode } = useColorMode();
   const language = getLocalStorageWithoutParse(LANGUAGE_KEY);
@@ -62,12 +61,12 @@ const headerOnlyLayout = ({t}) => {
         <Flex justify="space-between" align="center" p="2.5rem 0 2.5rem 0" gap="2">
           <Flex>
             <BsArrowLeftCircle
-              onClick={() => navigate(-1)}
+              onClick={() => navigate('/')}
               fontSize="2.5rem"
               fontWeight="bold"
               className="back-arrow"
             />
-            <Link to="/" className={cx('logo')}>
+            <Link to="/" className={cx('logo')} onClick={() => navigate('/')}>
               <Text as="span">DENTA</Text>
               <Text as="span" fontWeight="700">
                 CARE
@@ -85,19 +84,7 @@ const headerOnlyLayout = ({t}) => {
                 className={cx('flag-icon')}
               />
             </Dropdown>
-            <Link to="/">
-              <Button
-                as={motion.button}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                variant="primary"
-                size="lg"
-                h="auto"
-                fontSize="1.5rem"
-              >
-                {t('auth.login.home')}
-              </Button>
-            </Link>
+
             <ToggleColorButton />
           </Flex>
         </Flex>

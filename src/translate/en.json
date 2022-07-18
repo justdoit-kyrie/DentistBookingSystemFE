@@ -143,6 +143,8 @@
       "desc": "A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences",
       "booking": {
         "bookingNow": "Book Now",
+        "addMore": "Add More",
+        "Remove": "Remove",
         "daypickerPlaceholder": "Select a day",
         "timepickerPlaceholder": "Select a time",
         "servicepickerPlaceholder": "Select a service",

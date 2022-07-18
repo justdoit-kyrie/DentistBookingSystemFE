@@ -135,6 +135,8 @@
       "desc": "Một con sông nhỏ có tên Duden chảy qua nơi họ ở và cung cấp cho nó những chất dinh dưỡng cần thiết. Đó là một đất nước hoang tưởng, trong đó các bộ phận của câu",
       "booking": {
         "bookingNow": "Đặt Lịch Ngay",
+        "addMore": "Thêm",
+        "Remove": "Xóa",
         "daypickerPlaceholder": "Chọn Ngày",
         "timepickerPlaceholder": "Chọn Thời Gian",
         "servicepickerPlaceholder": "Chọn Dịch Vụ",
