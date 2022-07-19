@@ -114,7 +114,7 @@ export const API_ROUTES = {
   'get-booking-by-dentist-it': '/bookings/dentist/:id',
   'get-dentist-profile': '/dentists/:id',
   'get-available-bookings': '/bookings/available',
-  'bookings':'/bookings',
+  bookings: '/bookings',
   'get-service-by-id': '/services/:id',
   'get-booking-all': '/bookings/getallbooking',
   bookingDetails: '/bookings/detail',

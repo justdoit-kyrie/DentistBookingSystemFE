@@ -25,16 +25,14 @@ import { Paginator } from 'primereact/paginator';
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { AiFillLock } from 'react-icons/ai';
-import { BiSearch, BiTrash } from 'react-icons/bi';
-import { BsFillUnlockFill } from 'react-icons/bs';
-import { MdModeEditOutline } from 'react-icons/md';
+import { BiSearch } from 'react-icons/bi';
+import { BsCheck, BsFillUnlockFill } from 'react-icons/bs';
 import { RiFilterOffLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { axios } from '~/apis';
 import { API_CODE, API_ROUTES, DATE_FORMAT, STATUS_CODE } from '~/app/constants';
 import styles from '~/features/Admin/styles/common.module.scss';
 import { DataTableWrapper } from '../../styles';
-import { CustomModal } from '../components';
 import { DetailModal } from './components';
 import { DropdownWrapper } from './style';
 
@@ -65,7 +63,6 @@ const OverView = ({ t }) => {
   const [paginationInfo, setPaginationInfo] = useState();
   const [dataTableFirst, setDataTableFirst] = useState(0);
   const [dataTablePage, setDataTablePage] = useState(0);
-  const [editAppointment, setEditAppointment] = useState();
   const [selectedAppointment, setSelectedAppointment] = useState();
   const [unlockedCustomers, setUnlockedCustomers] = useState([]);
   const [lockedCustomers, setLockedCustomers] = useState([]);
@@ -111,18 +108,6 @@ const OverView = ({ t }) => {
 
   const handleMapDate = (list) => list.map((item) => ({ ...item, date: moment(item.date).toDate() }));
 
-  const handleDeleteRow = async (id) => {
-    try {
-      const { code, message } = await axios.delete(API_ROUTES.users + `/${id}`);
-      if (+code === API_CODE.OK) {
-        toast.success(message);
-        fetchData();
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-
   const statusItemTemplate = (option, props) =>
     option || option === 0 ? <Badge variant={STATUS_CODE[option]}>{STATUS_CODE[option]}</Badge> : props?.placeholder;
 
@@ -141,6 +126,23 @@ const OverView = ({ t }) => {
         panelClassName={colorMode === 'dark' && cx('calendar-dark')}
       />
     );
+  };
+
+  const handleEditBooking = async (data) => {
+    try {
+      const tmp = _.invert(STATUS_CODE);
+      const { code, message } = await axios.put(`${API_ROUTES.bookings}/status`, {
+        ...data,
+        status: +tmp.confirmed,
+        bookingId: data.id
+      });
+      if (+code === API_CODE.OK) {
+        toast.success(message);
+        fetchData();
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   const toggleLock = (data, frozen, index) => {
@@ -179,25 +181,10 @@ const OverView = ({ t }) => {
             e.stopPropagation();
             onOpen();
             isSelected.current = false;
-            setEditAppointment({ ...rowData });
+            handleEditBooking(rowData);
           }}
         >
-          <MdModeEditOutline fontSize="2rem" />
-        </Circle>
-
-        <Circle
-          as={motion.div}
-          whileHover={{ scale: 0.9 }}
-          whileTap={{ scale: 1.1 }}
-          size="4rem"
-          bg="white.200"
-          _hover={{ bg: 'red.200', color: 'white' }}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleDeleteRow(rowData.id);
-          }}
-        >
-          <BiTrash fontSize="2rem" />
+          <BsCheck fontSize="2rem" />
         </Circle>
 
         <Button
@@ -306,20 +293,7 @@ const OverView = ({ t }) => {
 
   return (
     <>
-      {isOpen && !isSelected.current && (
-        <CustomModal
-          label="appointments"
-          isOpen={isOpen}
-          onClose={onClose}
-          data={editAppointment}
-          callback={fetchData}
-          minH="50vh"
-        />
-      )}
-
-      {isOpen && isSelected.current && (
-        <DetailModal isOpen={isOpen} onClose={onClose} data={{ ...selectedAppointment, date: moment('7/7/2022') }} />
-      )}
+      {isOpen && isSelected.current && <DetailModal isOpen={isOpen} onClose={onClose} data={selectedAppointment} />}
 
       <Heading mb="2rem" color="primary.500" textTransform="uppercase" letterSpacing="0.25rem">
         Appointment management

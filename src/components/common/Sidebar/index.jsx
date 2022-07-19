@@ -21,11 +21,6 @@ const MOCK_DATA = (t) => ({
     {
       list: [
         {
-          icon: BsGrid,
-          label: t('dashboard.dentist.sidebar.overview'),
-          to: getDestinationURL('overview')
-        },
-        {
           icon: AiOutlineCalendar,
           label: t('dashboard.dentist.sidebar.appointment'),
           to: getDestinationURL('appointment')

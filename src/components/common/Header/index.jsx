@@ -1,18 +1,19 @@
 import { Box, Button, Flex, Image, Text, useColorMode } from '@chakra-ui/react';
 import classNames from 'classnames/bind';
 import { motion } from 'framer-motion';
+import _ from 'lodash';
 import React, { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { withTranslation } from 'react-i18next';
 import { AiOutlineUser } from 'react-icons/ai';
 import { CgLogOut } from 'react-icons/cg';
 import { GrLanguage } from 'react-icons/gr';
-import { useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { LANGUAGES, LANGUAGE_KEY } from '~/app/constants';
 import i18n from '~/app/i18next';
 import { selectLoggedUser } from '~/features/Auth/authSlice';
-import { getLocalStorageWithoutParse } from '~/utils';
+import { getLocalStorageWithoutParse, logoutFunc } from '~/utils';
 import { Dropdown, ToggleColorButton } from '..';
 import DropDown from '../Dropdown';
 import CountryFlag from './components/CountryFlag';
@@ -53,6 +54,9 @@ const MOCK_DATA = {
 
 // eslint-disable-next-line no-unused-vars
 const Header = ({ t, tReady, i18n, ...passProps }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  _.set(MOCK_DATA, 'DROPDOWN_ITEMS[2].onClick', () => logoutFunc({ dispatch, navigate }));
   const { DROPDOWN_ITEMS, NAV_ITEMS } = MOCK_DATA;
   const { colorMode } = useColorMode();
 
