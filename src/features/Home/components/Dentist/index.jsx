@@ -31,7 +31,7 @@ const Dentist = (props) => {
     <Box
       className={cx('carousel-p-1')}
       cursor="pointer"
-      onClick={() => navigate(PATH.dentist.replace(':id', dentist.id))}
+      onClick={() => navigate(PATH.customer.dentist.replace(':id', dentist.id))}
     >
       <Flex
         borderRadius="12px"

@@ -142,7 +142,7 @@ const Header = ({ t, tReady, i18n, ...passProps }) => {
           </Dropdown>
           <Link to="/register">
             <Button variant="default" h="auto" fontSize="1.5rem">
-              sign up
+              {t('auth.login.signUp')}
             </Button>
           </Link>
           <Link to="/">
@@ -155,7 +155,7 @@ const Header = ({ t, tReady, i18n, ...passProps }) => {
               h="auto"
               fontSize="1.5rem"
             >
-              Home
+              {t('auth.login.home')}
             </Button>
           </Link>
           <ToggleColorButton />

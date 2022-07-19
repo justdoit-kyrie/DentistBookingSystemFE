@@ -1,7 +1,6 @@
 import { Button, Flex, Grid, InputGroup, InputRightElement, Radio, RadioGroup, Text } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React from 'react';
-// import GoogleLogin from 'react-google-login';
 import { Controller, useForm } from 'react-hook-form';
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,8 +16,7 @@ import {
   PWD_REGEX,
   USER_REGEX
 } from '~/app/constants';
-import { CalendarField, InputField } from '~/components';
-// import { AiOutlineGoogle } from 'react-icons/ai';
+import { InputField ,CalendarField} from '~/components';
 import { motion } from 'framer-motion';
 import moment from 'moment';
 import { withTranslation } from 'react-i18next';
@@ -176,6 +174,7 @@ const FormRegister = ({ t }) => {
           name="dob"
           errors={errors}
           control={control}
+          className="override-form-register-calendar"
           panelClassName="override-panel"
           placeholder={t('auth.register.dobPlaceholder')}
         />

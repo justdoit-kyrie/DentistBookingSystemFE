@@ -11,7 +11,7 @@ import { Wrapper } from './style';
 const cx = classNames.bind(styles);
 
 const SelectField = (props) => {
-  const { name, errors, options, control, placeholder, multiple, ...passProps } = props;
+  const { name, errors, options, control, placeholder, multiple,formclassNames, ...passProps } = props;
 
   const isError = errors[name] ? true : false;
 
@@ -25,7 +25,7 @@ const SelectField = (props) => {
           .map((item) => cx(item))
           .join(' ');
         return (
-          <FormControl isInvalid={isError}>
+          <FormControl isInvalid={isError} className={formclassNames}>
             <Wrapper className={isError ? cx('is-invalid') : ''}>
               {multiple ? (
                 <MultiSelect

@@ -1,0 +1,9 @@
+.logo {
+  padding-left: 2rem;
+  cursor: pointer;
+  z-index: 2;
+  font-size: 1.75rem;
+  &:hover {
+    text-decoration: none !important  ;
+  }
+}

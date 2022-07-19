@@ -61,6 +61,7 @@ const CalendarField = (props) => {
                 id={id}
                 placeholder={placeholder}
                 h="3.5rem"
+                baseZIndex="10000"
                 inputStyle={{
                   borderColor: getBorderColor(),
                   boxShadow: getBoxShadowColor()

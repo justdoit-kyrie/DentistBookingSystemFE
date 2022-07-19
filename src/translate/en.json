@@ -10,6 +10,7 @@
       "light": "Light",
       "dark": "Dark"
     },
+    "language": "en-US",
     "month": {
       "january": "january",
       "february": "february",
@@ -37,7 +38,9 @@
         "2": "Or Sign In With",
         "3": "Don't Have An Account?",
         "4": "Sign Up Now"
-      }
+      },
+      "home": "Home",
+      "signUp": "Sign Up"
     },
     "register": {
       "title": "{{logo}} register",
@@ -137,7 +140,50 @@
     },
     "dentist": {
       "title": "Meet Our Experience Dentist",
-      "desc": "A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences"
+      "desc": "A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences",
+      "booking": {
+        "bookingNow": "Book Now",
+        "addMore": "Add More",
+        "Remove": "Remove",
+        "daypickerPlaceholder": "Select a day",
+        "timepickerPlaceholder": "Select a time",
+        "servicepickerPlaceholder": "Select a service",
+        "notePlaceholder": "Additional note...",
+        "clinicInfo": "Clinic Information",
+        "clinicLocation": "Clinic Location",
+        "phone": "Phone Number:",
+        "doctor": "Doctor",
+        "trainingProcess": "Training Process",
+        "workingProcess": "Working Process",
+        "treatment": "Examination And Treatment",
+        "commentTitles": "Feedback from customers",
+        "dentacareRole": {
+          "title": "The Role Of DentaCare",
+          "heading": {
+            "1": "Help patients choose the right doctor and book an appointment quickly",
+            "2": "Support before, during and after the examination"
+          },
+          "subTitle": {
+            "before": "Before examination",
+            "during": "During examination",
+            "after": "After examination"
+          },
+          "subText": {
+            "1": "System of good and reputable specialists",
+            "2": "The doctor's information has been clearly and accurately verified",
+            "3": "Schedule an appointment with the correct doctor that the patient has chosen to schedule an appointment with",
+            "4": "Protecting the rights of patients when going to the doctor",
+            "5": "Free appointment",
+            "6": "Reminder of appointment schedule, advice to prepare before examination",
+            "7": "Travel guide, check-in procedures",
+            "8": "Support to solve problems during examination",
+            "9": "Support patients with arising requirements",
+            "10": "Record the patient's opinion after examination",
+            "11": "Support to answer and clarify professional issues",
+            "12": "Protecting the rights of patients when going to the doctor"
+          }
+        }
+      }
     },
     "clinic": {
       "title": "Meet Our Clinic",

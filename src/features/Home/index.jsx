@@ -365,6 +365,11 @@ const HomePage = ({ t }) => {
 
   useEffect(() => {
     fetchData();
+
+    // will unmout
+    return () => {
+      window.scrollTo(0, 0);
+    };
   }, []);
 
   return (
