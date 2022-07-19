@@ -186,8 +186,6 @@ const AppointmentPage = ({ t }) => {
   const [rowHeight, setRowHeight] = useState({ value: 200, num: 3 });
 
   const fetchData = async () => {
-    console.log({ userInfo });
-
     try {
       switch (field) {
         case _nav.day: {
