@@ -21,7 +21,6 @@ import { withTranslation } from 'react-i18next';
 import { AiOutlineCalendar } from 'react-icons/ai';
 import { BsAlarm } from 'react-icons/bs';
 import { GoPrimitiveDot } from 'react-icons/go';
-import { IoMdTrash } from 'react-icons/io';
 import { MdModeEditOutline } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -34,7 +33,8 @@ import {
   MONTH,
   MONTH_VALUE,
   SCHEDULE_TIMER,
-  SCHEDULE_WEEK
+  SCHEDULE_WEEK,
+  STATUS_CODE
 } from '~/app/constants';
 import { Dropdown, Loading } from '~/components';
 import { selectLoggedUser } from '~/features/Auth/authSlice';
@@ -163,6 +163,7 @@ const AppointmentPage = ({ t }) => {
   } = MOCK_DATA(t);
 
   const userInfo = useSelector(selectLoggedUser);
+  console.log({ userInfo });
 
   const BG = useColorModeValue('white', 'transparent');
   const disabledBg = useColorModeValue('grey.100', 'navy.500');
@@ -185,6 +186,8 @@ const AppointmentPage = ({ t }) => {
   const [rowHeight, setRowHeight] = useState({ value: 200, num: 3 });
 
   const fetchData = async () => {
+    console.log({ userInfo });
+
     try {
       switch (field) {
         case _nav.day: {
@@ -246,7 +249,7 @@ const AppointmentPage = ({ t }) => {
 
   useEffect(() => {
     setLoading(true);
-    fetchData();
+    if (userInfo) fetchData();
   }, [field, dateOfWeek, date, dateOfMonth]);
 
   const handleGetPositionTransform = (item, index, num) => {
@@ -337,6 +340,23 @@ const AppointmentPage = ({ t }) => {
     }
   };
 
+  const handleAcceptBookingDetail = async (item) => {
+    try {
+      const invert = _.invert(STATUS_CODE);
+      const { code, message } = await axios.put(`${API_ROUTES.bookingDetails}/status`, {
+        bookingDetailID: item.id,
+        status: +invert.done
+      });
+
+      if (+code === API_CODE.OK) {
+        toast.success(message);
+        fetchData();
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const renderDropdownItem = (item) => {
     return (
       <Flex direction="column" gap="2rem" p="1rem 2rem" minW="40rem">
@@ -355,23 +375,11 @@ const AppointmentPage = ({ t }) => {
               whileHover={{
                 scale: 1.1
               }}
+              onClick={() => {
+                handleAcceptBookingDetail(item);
+              }}
             >
               <MdModeEditOutline fontSize="3rem" />
-            </Circle>
-            <Circle
-              as={motion.div}
-              size="4rem"
-              p="1rem"
-              bg="black.200"
-              cursor="pointer"
-              whileTap={{
-                scale: 0.9
-              }}
-              whileHover={{
-                scale: 1.1
-              }}
-            >
-              <IoMdTrash fontSize="3rem" />
             </Circle>
           </Flex>
         </Flex>
@@ -419,6 +427,8 @@ const AppointmentPage = ({ t }) => {
           setRowHeight({ value: 33 * (num + 1) + 80, num });
         }
       }
+
+      console.log({ item });
 
       return (
         <Flex

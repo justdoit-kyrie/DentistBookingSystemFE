@@ -155,13 +155,6 @@ const DetailModal = ({ isOpen, onClose, data }) => {
     let color = '';
     const time = SCHEDULE_TIMER[keyTime];
 
-    if (STATUS_CODE[status] !== 'done')
-      return (
-        <Text color="red.200" fontSize="1.4rem" fontWeight="500" textTransform="capitalize">
-          canceled
-        </Text>
-      );
-
     if (compareDate(NOW, date)) {
       if (moment(time, 'h:mm').isSameOrAfter(moment(`${NOW.hour()}:${NOW.minute()}`, 'h:mm'))) {
         label = 'pending';
@@ -240,60 +233,6 @@ const DetailModal = ({ isOpen, onClose, data }) => {
           </Text>
         </Text>
       </Flex>
-
-      {isAction && STATUS_CODE[status] !== 'declined' && (
-        <Button
-          variant="outline"
-          color={STATUS_CODE[status] === 'declined' ? 'green.400' : 'red.200'}
-          _hover={{
-            bg: STATUS_CODE[status] === 'declined' ? 'green.400' : 'red.200',
-            color: 'white'
-          }}
-          onClick={() => {
-            const statusCodeInvert = _.invert(STATUS_CODE);
-            handleBanBookingDetail({
-              id,
-              status: +statusCodeInvert.declined
-            });
-          }}
-        >
-          <FaBan />
-        </Button>
-      )}
-
-      {isAction && STATUS_CODE[status] === 'declined' && (
-        <>
-          {statusEditing?.id !== id ? (
-            <Button
-              variant="outline"
-              color="yellow.500"
-              _hover={{
-                bg: 'yellow.500',
-                color: 'white'
-              }}
-              onClick={() => setStatusEditing({ id })}
-            >
-              <MdModeEditOutline />
-            </Button>
-          ) : (
-            <Dropdown
-              itemTemplate={statusDropdownTemplate}
-              options={_.values(STATUS_CODE).filter((item) => item !== 'declined' && item !== 'inActive')}
-              onChange={(e) => {
-                const statusCodeInvert = _.invert(STATUS_CODE);
-                handleBanBookingDetail({
-                  id,
-                  status: +statusCodeInvert[e.value]
-                });
-              }}
-              placeholder="Select a Status"
-              style={{
-                backgroundColor: 'transparent'
-              }}
-            />
-          )}
-        </>
-      )}
     </Flex>
   );
 

@@ -93,7 +93,7 @@ const FormLogin = ({ t, setWithoutDisplayName }) => {
           case ROLE[0]:
             return navigate(_.replace(PATH.admin.home, ':id', id));
           case ROLE[1]:
-            return navigate(_.replace(PATH.dentist.home, ':id', id));
+            return navigate(_.replace(PATH.dentist.appointment, ':id', id));
           default:
             return navigate(PATH.customer.home);
         }
