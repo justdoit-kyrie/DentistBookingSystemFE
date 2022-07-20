@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import {
   Accordion,
   AccordionButton,
@@ -57,6 +56,7 @@ const DentistPage = ({ t }) => {
   const [dayList, setDayList] = useState([]);
   const [timeSelect, setTimeSelect] = useState();
   const [servicesList, setServicesList] = useState();
+  const [showPrice, setShowPrice] = useState();
 
   const schema = yup.object({}).required();
 
@@ -73,11 +73,21 @@ const DentistPage = ({ t }) => {
     setSelectedDate(e.value);
   };
 
+  const formatCurrency = (value) => {
+    return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+  };
+
   const onServiceChange = (e, index) => {
     const { name, value } = e.target;
     const list = [...dropdownList];
     list[index][name] = value;
     setDropDownList(list);
+    const totalPrice = dropdownList
+      .map(function (a) {
+        return a.service.price;
+      })
+      .reduce((partialSum, a) => partialSum + a, 0);
+    setShowPrice(formatCurrency(totalPrice));
   };
 
   const [dropdownList, setDropDownList] = useState([{ keyTimes: '', service: '' }]);
@@ -107,7 +117,6 @@ const DentistPage = ({ t }) => {
     const data = await axios.get(API_ROUTES['get-dentist-profile'].replace(':id', dentistID.id));
     setProfile({ ...data.dentistDTO });
     setServicesList(data.dentistDTO.services);
-
     setClinicProfile({ ...data.clinicDTO });
   };
 
@@ -164,7 +173,9 @@ const DentistPage = ({ t }) => {
       });
       if (+code === API_CODE.OK) {
         toast.success(message);
-        window.location.reload(false);
+        setTimeout(function () {
+          window.location.reload(1);
+        }, 2000);
       } else {
         toast.error(message);
       }
@@ -270,7 +281,7 @@ const DentistPage = ({ t }) => {
               </BreadcrumbItem>
               <BreadcrumbItem isCurrentPage>
                 <BreadcrumbLink href="#" isCurrentPage>
-                  {profile.lastName + ' ' + profile.firstName}
+                  {profile.firstName + ' ' + profile.lastName}
                 </BreadcrumbLink>
               </BreadcrumbItem>
             </Breadcrumb>
@@ -279,12 +290,16 @@ const DentistPage = ({ t }) => {
 
         {profile && (
           <Flex p="2rem 0 0 0" className="bs-avatar">
-            <Avatar className="doctor-avatar" src={profile.imageUrl} />
+            <Avatar
+              className="doctor-avatar"
+              src={profile.imageUrl}
+              name={profile.firstName + ' ' + profile.lastName}
+            />
             <Box p="0 0 0 3rem" maxW="60%">
               <Flex className="bs-info">
                 <Heading fontSize="5rem">{t('home.dentist.booking.doctor')}</Heading>
                 <Heading fontSize="5rem" marginLeft="1.5rem">
-                  {profile.lastName + ' ' + profile.firstName}
+                {profile.firstName + ' ' + profile.lastName}
                 </Heading>
               </Flex>
               <Box fontSize="1.5rem" dangerouslySetInnerHTML={{ __html: profile.description }} />
@@ -317,7 +332,7 @@ const DentistPage = ({ t }) => {
                 <Box width="100%">
                   {dropdownList.map((x, i) => {
                     return (
-                      <Flex marginBottom="1rem">
+                      <Flex marginBottom="1rem" key={i}>
                         <Controller
                           name="keyTimes"
                           control={control}
@@ -382,9 +397,14 @@ const DentistPage = ({ t }) => {
                   />
                 )}
               />
-              <Button colorScheme="blue" className="booking-btn" size="lg" type="submit">
-                {t('home.dentist.booking.bookingNow')}
-              </Button>
+              <Flex>
+                <Box className="price-box">
+                  {t('home.dentist.booking.totalPrice')}: {showPrice}
+                </Box>
+                <Button colorScheme="blue" className="booking-btn" size="lg" type="submit">
+                  {t('home.dentist.booking.bookingNow')}
+                </Button>
+              </Flex>
             </form>
           </Box>
 
@@ -433,9 +453,11 @@ const DentistPage = ({ t }) => {
             <Heading fontSize="2.5rem" marginRight="0.3rem">
               {t('home.dentist.booking.doctor')}
             </Heading>
-            <Heading fontSize="2.5rem" marginLeft="1.5rem">
-              Vladimir Putin
-            </Heading>
+            {profile && (
+              <Heading fontSize="2.5rem" marginLeft="1.5rem">
+                {profile.firstName + ' ' + profile.lastName}
+              </Heading>
+            )}
           </HStack>
           <List spacing={3} fontSize="1.5rem" marginTop="1rem">
             <ListItem>

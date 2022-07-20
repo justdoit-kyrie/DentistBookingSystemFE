@@ -1,4 +1,4 @@
-import { Box, Circle, Flex, Heading, Image, Text } from '@chakra-ui/react';
+import { Avatar, Box, Circle, Flex, Heading, Text } from '@chakra-ui/react';
 import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -43,7 +43,7 @@ const Dentist = (props) => {
         border="1px solid grey"
       >
         <Circle size="15rem" overflow="hidden">
-          <Image src={dentist.avatar} alt="avatar" />
+          <Avatar src={dentist.imageUrl} className="doctor-avatar" alt="avatar" name={`${dentist.firstName} ${dentist.lastName}`}/>
         </Circle>
         <Flex
           direction="column"

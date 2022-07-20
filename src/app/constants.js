@@ -29,7 +29,8 @@ export const PATH = {
   customer: {
     home: '/',
     clinic: '/clinic/:id',
-    dentist: '/dentist/:id'
+    dentist: '/dentist/:id',
+    history: '/bookingHistory'
   },
   dentist: {
     home: '/dashboard/:id/overview',
@@ -117,6 +118,8 @@ export const API_ROUTES = {
   bookings: '/bookings',
   'get-service-by-id': '/services/:id',
   'get-booking-all': '/bookings/getallbooking',
+  'get-booking-for-user': '/bookings/:id',
+  'get-bookingDetail-for-user':'/bookings/getbookingdetail',
   bookingDetails: '/bookings/detail',
   users: '/Users',
   dentists: '/dentists',

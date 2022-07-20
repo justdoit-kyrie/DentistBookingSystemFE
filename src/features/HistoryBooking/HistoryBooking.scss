@@ -1,0 +1,36 @@
+.bookinghistory-title{
+    font-size: 5rem;
+    margin: 2rem 2rem 0 2rem;
+    text-align: center;
+}
+.datatable-rowexpansion-demo .product-image {
+    width: 100px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.datatable-rowexpansion-demo .orders-subtable {
+    padding: 1rem;
+}
+
+.datatable-wrapper{
+    margin: 0 2rem 2rem 2rem;
+    background: inherit !important;
+    & .p-datatable-header{
+        background: inherit !important;
+        border: none !important;
+    }
+    & .p-datatable-wrapper{
+        background: inherit !important;
+        border-radius: 10px;
+        border: 1px solid;
+        & th,tr,td,.p-sortable-column-icon{
+            background: inherit !important;
+            color: inherit !important;
+            font-size: 1.6rem;
+        }
+        & .p-datatable-row-expansion{
+            transition: linear;
+        }
+    }
+}
+

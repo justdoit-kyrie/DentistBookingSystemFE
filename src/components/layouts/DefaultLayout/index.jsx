@@ -103,7 +103,7 @@ const DefaultLayout = ({ t, children }) => {
                 color: 'primary.500'
               }}
               onClick={() => {
-                window.scrollTo(0, 1900);
+                window.scrollTo(0, 1930);
               }}
             >
               {t('home.header.banners.action')}

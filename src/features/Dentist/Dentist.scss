@@ -204,6 +204,9 @@
 .doctor-avatar {
   height: 15rem !important;
   width: 15rem !important;
+  & .chakra-avatar__initials{
+    font-size: 5rem;
+  }
 }
 
 .modal-overlay {
@@ -226,4 +229,14 @@
 
 .p-multiselect.date-dropdown{
   min-width: 30rem !important;
+}
+
+.price-box{
+  margin: 2rem 2rem 0 0;
+  font-size: 1.7rem;
+  text-align: left;
+  border: 1px solid;
+  border-radius: 4px;
+  width: 34%;
+  padding: 0.6rem;
 }
