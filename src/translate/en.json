@@ -2,6 +2,7 @@
   "common": {
     "dropdown": {
       "profile": "View profile",
+      "bookingHistory": "Appointment Schedule",
       "language": "Language",
       "logout": "Log out",
       "en": "english",
@@ -145,6 +146,7 @@
         "bookingNow": "Book Now",
         "addMore": "Add More",
         "Remove": "Remove",
+        "totalPrice": "Price",
         "daypickerPlaceholder": "Select a day",
         "timepickerPlaceholder": "Select a time",
         "servicepickerPlaceholder": "Select a service",

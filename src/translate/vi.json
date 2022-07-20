@@ -2,6 +2,7 @@
   "common": {
     "dropdown": {
       "profile": "xem thông tin",
+      "bookingHistory":"Lịch Đã Hẹn",
       "language": "ngôn ngữ",
       "logout": "đăng xuất",
       "en": "english",
@@ -137,6 +138,7 @@
         "bookingNow": "Đặt Lịch Ngay",
         "addMore": "Thêm",
         "Remove": "Xóa",
+        "totalPrice": "Giá",
         "daypickerPlaceholder": "Chọn Ngày",
         "timepickerPlaceholder": "Chọn Thời Gian",
         "servicepickerPlaceholder": "Chọn Dịch Vụ",

@@ -6,6 +6,7 @@ import {
   ClinicsPage,
   DentistPage,
   DentistsPage,
+  HistoryBookingPage,
   HomePage,
   LoginPage,
   MessagePage,
@@ -49,6 +50,11 @@ export const ROUTES = [
   {
     path: PATH.customer.dentist,
     component: DentistPage,
+    layout: null
+  },
+  {
+    path: PATH.customer.history,
+    component: HistoryBookingPage,
     layout: null
   },
   {

@@ -1,11 +1,11 @@
-import { Box, Button, Flex, Image, Text, useColorMode } from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Text, useColorMode } from '@chakra-ui/react';
 import classNames from 'classnames/bind';
 import { motion } from 'framer-motion';
 import _ from 'lodash';
 import React, { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { withTranslation } from 'react-i18next';
-import { AiOutlineUser } from 'react-icons/ai';
+import { AiOutlineHistory, AiOutlineUser } from 'react-icons/ai';
 import { CgLogOut } from 'react-icons/cg';
 import { GrLanguage } from 'react-icons/gr';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,6 +24,7 @@ const cx = classNames.bind(styles);
 const MOCK_DATA = {
   DROPDOWN_ITEMS: [
     { icon: AiOutlineUser, to: '/profile', label: 'profile' },
+    { icon: AiOutlineHistory, to: '/bookingHistory', label: 'bookingHistory' },
     {
       label: 'language',
       icon: GrLanguage,
@@ -56,7 +57,7 @@ const MOCK_DATA = {
 const Header = ({ t, tReady, i18n, ...passProps }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  _.set(MOCK_DATA, 'DROPDOWN_ITEMS[2].onClick', () => logoutFunc({ dispatch, navigate }));
+  _.set(MOCK_DATA, 'DROPDOWN_ITEMS[3].onClick', () => logoutFunc({ dispatch, navigate }));
   const { DROPDOWN_ITEMS, NAV_ITEMS } = MOCK_DATA;
   const { colorMode } = useColorMode();
 
@@ -120,14 +121,15 @@ const Header = ({ t, tReady, i18n, ...passProps }) => {
         <Flex gap="2rem" align="center">
           <Flex gap="2rem">{renderNavItems()}</Flex>
           <DropDown placement="bottom-end" items={DROPDOWN_ITEMS}>
-            <Image
+            <Avatar
               w="3.5rem"
               h="3.5rem"
               borderRadius="100rem"
-              src="https://i.pinimg.com/236x/8f/32/4b/8f324b31c0c8aca44dfa1d33894df48c.jpg"
+              name={`${userInfo.firstName} ${userInfo.lastName}`}
+              src={userInfo.imageUrl}
               cursor="pointer"
               zIndex="2"
-            ></Image>
+            />
           </DropDown>
           <ToggleColorButton />
         </Flex>

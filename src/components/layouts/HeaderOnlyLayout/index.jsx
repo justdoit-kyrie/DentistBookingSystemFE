@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import _ from 'lodash';
 import React from 'react';
 import { withTranslation } from 'react-i18next';
-import { AiOutlineUser } from 'react-icons/ai';
+import { AiOutlineHistory, AiOutlineUser } from 'react-icons/ai';
 import { BsArrowLeftCircle } from 'react-icons/bs';
 import { CgLogOut } from 'react-icons/cg';
 import { GrLanguage } from 'react-icons/gr';
@@ -21,6 +21,7 @@ const cx = classNames.bind(styles);
 const MOCK_DATA = {
   DROPDOWN_ITEMS: [
     { icon: AiOutlineUser, to: '/profile', label: 'profile' },
+    { icon: AiOutlineHistory, to: '/bookingHistory', label: 'bookingHistory' },
     {
       label: 'language',
       icon: GrLanguage,
@@ -52,7 +53,7 @@ const MOCK_DATA = {
 const headerOnlyLayout = ({ t }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  _.set(MOCK_DATA, 'DROPDOWN_ITEMS[2].onClick', () => logoutFunc({ dispatch, navigate }));
+  _.set(MOCK_DATA, 'DROPDOWN_ITEMS[3].onClick', () => logoutFunc({ dispatch, navigate }));
   const { DROPDOWN_ITEMS, NAV_ITEMS } = MOCK_DATA;
 
   const userInfo = useSelector(selectLoggedUser);
@@ -72,7 +73,7 @@ const headerOnlyLayout = ({ t }) => {
         <Flex justify="space-between" align="center" p="2.5rem 0 2.5rem 0" gap="2">
           <Flex>
             <BsArrowLeftCircle
-              onClick={() => navigate('/')}
+              onClick={() => navigate(-1)}
               fontSize="2.5rem"
               fontWeight="bold"
               className="back-arrow"
